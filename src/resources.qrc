@@ -1,0 +1,24 @@
+<!DOCTYPE RCC><RCC version="1.0">
+<qresource>
+    <file alias="arrow_in.png">icons/arrow_in.png</file>
+    <file alias="arrow_out.png">icons/arrow_out.png</file>
+    <file alias="arrow_rotate_anticlockwise.png">icons/arrow_rotate_anticlockwise.png</file>
+    <file alias="arrow_rotate_clockwise.png">icons/arrow_rotate_clockwise.png</file>
+    <file alias="page_copy.png">icons/page_copy.png</file>
+    <file alias="page_paste.png">icons/page_paste.png</file>
+    <file alias="redo.png">icons/redo.png</file>
+    <file alias="save.png">icons/save.png</file>
+    <file alias="shape_circle.png">icons/shape_circle.png</file>
+    <file alias="shape_handles.png">icons/shape_handles.png</file>
+    <file alias="shape_handles_free.png">icons/shape_handles_free.png</file>
+    <file alias="undo.png">icons/undo.png</file>
+    <file alias="zoom_in.png">icons/zoom_in.png</file>
+    <file alias="zoom_out.png">icons/zoom_out.png</file>
+</qresource>
+<qresource prefix="i18n">
+    <file alias="lang_bg.qm">i18n/lang_bg.qm</file>
+    <file alias="lang_es.qm">i18n/lang_es.qm</file>
+    <file alias="lang_ru.qm">i18n/lang_ru.qm</file>
+    <file alias="lang_uk.qm">i18n/lang_uk.qm</file>
+</qresource>
+</RCC>
