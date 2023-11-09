@@ -28,5 +28,5 @@ def main():
 
 
 if __name__ == "__main__":
-#    import resources
+    import resources
     main()

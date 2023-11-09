@@ -1,4 +1,4 @@
-#from ImageEditor.src import resources
+from ImageEditor.src import resources
 from ImageEditor.src.run import main
 
 
