@@ -1,13 +1,16 @@
 import sys
-from PySide6.QtCore import QLibraryInfo, QLocale, QTranslator
+from PySide6.QtCore import QCoreApplication, QLibraryInfo, QLocale, QSettings, QTranslator
 from PySide6.QtGui import QImage
 from PySide6.QtWidgets import QApplication, QDialog
-from ImageEditor import ImageEditorDialog
+from ImageEditorWindow import ImageEditorWindow
 from Tools import TemporaryDir
 
 
 def main():
     app = QApplication(sys.argv)
+
+    QCoreApplication.setOrganizationName('Janis')
+    QCoreApplication.setApplicationName('ImageEditor')
 
     TemporaryDir.init('ImageEditor')
 
@@ -22,16 +25,10 @@ def main():
     if translator.load(locale, 'qtbase', '_', path):
         app.installTranslator(translator)
 
+    dlg = ImageEditorWindow()
     if len(sys.argv) > 1:
         file_name = sys.argv[1]
-        image = QImage(file_name)
-    else:
-        image = None
-
-    dlg = ImageEditorDialog()
-    dlg.setWindowTitle('ImageEditor')
-    if image:
-        dlg.setImage(image)
+        dlg.loadFromFile(file_name)
     dlg.exec()
 
     # Clear temporary files

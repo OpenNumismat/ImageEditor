@@ -4,4 +4,4 @@ ImageEditor is a part of [OpenNumismat](http://opennumismat.github.io/) project,
 
 #### For run from source code
     pip3 install -r requirements.txt
-    python3 src/run.py
+    python3 src/run.py [<image_file_name>]
