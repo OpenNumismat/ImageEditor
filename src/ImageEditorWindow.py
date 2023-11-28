@@ -13,6 +13,7 @@ class ImageEditorWindow(ImageEditorDialog):
         self.latestDir = QStandardPaths.standardLocations(QStandardPaths.PicturesLocation)[0]
 
         self.setWindowTitle('ImageEditor')
+        self.setWindowIcon(QIcon(':/slide.png'))
 
     def createActions(self):
         super().createActions()

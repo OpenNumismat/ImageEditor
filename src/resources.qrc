@@ -11,6 +11,7 @@
     <file alias="shape_circle.png">icons/shape_circle.png</file>
     <file alias="shape_handles.png">icons/shape_handles.png</file>
     <file alias="shape_handles_free.png">icons/shape_handles_free.png</file>
+    <file alias="slide.png">icons/slide.png</file>
     <file alias="undo.png">icons/undo.png</file>
     <file alias="zoom_in.png">icons/zoom_in.png</file>
     <file alias="zoom_out.png">icons/zoom_out.png</file>
