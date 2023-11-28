@@ -6,7 +6,7 @@ from PySide6.QtWidgets import *
 from PySide6.QtCore import Signal as pyqtSignal
 
 try:
-    import OpenNumismat
+    from OpenNumismat import IMAGE_PATH
     from OpenNumismat.Tools import TemporaryDir
     from OpenNumismat.Tools.DialogDecorators import storeDlgSizeDecorator, storeDlgPositionDecorator
     from OpenNumismat.Tools.Gui import getSaveFileName
@@ -14,8 +14,10 @@ except ModuleNotFoundError:
     from Tools import TemporaryDir
     from Tools.DialogDecorators import storeDlgSizeDecorator, storeDlgPositionDecorator
     from Tools.Gui import getSaveFileName
-    
-    
+
+    IMAGE_PATH = QStandardPaths.standardLocations(QStandardPaths.PicturesLocation)[0]
+
+
 ZOOM_IN_FACTOR = 1.25
 ZOOM_MAX = 5
 UNDO_STACK_SIZE = 3
@@ -1025,7 +1027,7 @@ class ImageEditorDialog(QDialog):
         filters = (self.tr("Images (*.jpg *.jpeg *.bmp *.png *.tiff *.gif)"),
                    self.tr("All files (*.*)"))
         fileName, _selectedFilter = getSaveFileName(
-            self, 'save_image', self.name, OpenNumismat.IMAGE_PATH, filters)
+            self, 'save_image', self.name, IMAGE_PATH, filters)
         if fileName:
             self._pixmapHandle.pixmap().save(fileName)
 
