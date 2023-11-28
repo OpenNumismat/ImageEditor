@@ -1,0 +1,2 @@
+pyinstaller
+pyinstaller-versionfile; sys_platform == 'win32'
