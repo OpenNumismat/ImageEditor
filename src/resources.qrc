@@ -19,6 +19,7 @@
     <file alias="lang_bg.qm">i18n/lang_bg.qm</file>
     <file alias="lang_de.qm">i18n/lang_de.qm</file>
     <file alias="lang_es.qm">i18n/lang_es.qm</file>
+    <file alias="lang_it.qm">i18n/lang_it.qm</file>
     <file alias="lang_pt.qm">i18n/lang_pt.qm</file>
     <file alias="lang_ru.qm">i18n/lang_ru.qm</file>
     <file alias="lang_uk.qm">i18n/lang_uk.qm</file>
