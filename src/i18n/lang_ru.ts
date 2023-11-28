@@ -78,6 +78,13 @@
     </message>
 </context>
 <context>
+    <name>ImageEdit</name>
+    <message>
+        <source>Open File</source>
+        <translation>Открыть файл</translation>
+    </message>
+</context>
+<context>
     <name>ImageEditorDialog</name>
     <message>
         <source>Browse in viewer</source>
@@ -182,6 +189,13 @@
     <message>
         <source>Image was changed. Save changes?</source>
         <translation>Изображение изменено. Сохранить изменения?</translation>
+    </message>
+</context>
+<context>
+    <name>ImageEditorWindow</name>
+    <message>
+        <source>&amp;Open...</source>
+        <translation>&amp;Открыть...</translation>
     </message>
 </context>
 <context>
