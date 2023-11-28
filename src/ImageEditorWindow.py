@@ -26,6 +26,12 @@ class ImageEditorWindow(ImageEditorDialog):
 
         self.fileMenu.insertAction(self.openAct, self.openFileAct)
 
+    def createToolBar(self):
+        super().createToolBar()
+
+        self.toolBar.insertAction(self.zoomInAct, self.openFileAct)
+        self.toolBar.insertSeparator(self.zoomInAct)
+
     def openFile(self):
         supported_formats = QImageReader.supportedImageFormats()
         formats = "*.jpg *.jpeg *.bmp *.png *.tif *.tiff *.gif"
