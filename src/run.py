@@ -1,7 +1,8 @@
 import sys
-from PySide6.QtCore import QCoreApplication, QLibraryInfo, QLocale, QSettings, QTranslator
+from PySide6.QtCore import QCoreApplication, QLibraryInfo, QLocale, QTranslator
 from PySide6.QtGui import QImage
-from PySide6.QtWidgets import QApplication, QDialog
+from PySide6.QtWidgets import QApplication
+
 from ImageEditorWindow import ImageEditorWindow
 from Tools import TemporaryDir
 

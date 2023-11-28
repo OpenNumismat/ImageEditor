@@ -1,8 +1,8 @@
-from ImageEditor import ImageEditorDialog
+from PySide6.QtCore import QStandardPaths, QFileInfo
+from PySide6.QtGui import QIcon, QAction, QKeySequence, QImageReader, QImage
+from PySide6.QtWidgets import QApplication, QStyle, QFileDialog
 
-from PySide6.QtCore import *
-from PySide6.QtGui import *
-from PySide6.QtWidgets import *
+from ImageEditor import ImageEditorDialog
 
 
 class ImageEditorWindow(ImageEditorDialog):
