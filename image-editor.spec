@@ -14,12 +14,24 @@ a = Analysis(
 )
 pyz = PYZ(a.pure)
 
+
+import pyinstaller_versionfile
+import ImageEditor
+
+pyinstaller_versionfile.create_versionfile(
+    output_file="versionfile.txt",
+    version=ImageEditor.__version__,
+    file_description=ImageEditor.__name__,
+    internal_name=ImageEditor.__name__,
+)
+
+
 exe = EXE(
     pyz,
     a.scripts,
     [],
     exclude_binaries=True,
-    name='ImageEditor',
+    name=ImageEditor.__name__,
     debug=False,
     bootloader_ignore_signals=False,
     strip=False,
@@ -31,6 +43,7 @@ exe = EXE(
     target_arch=None,
     codesign_identity=None,
     entitlements_file=None,
+    version="versionfile.txt",
 )
 coll = COLLECT(
     exe,
@@ -39,10 +52,10 @@ coll = COLLECT(
     strip=False,
     upx=True,
     upx_exclude=[],
-    name='ImageEditor',
+    name=ImageEditor.__name__,
 )
 
 
 import shutil
 
-shutil.make_archive('ImageEditor', 'zip', 'dist')
+shutil.make_archive(f'{ImageEditor.__name__}-{ImageEditor.__version__}', 'zip', 'dist')
