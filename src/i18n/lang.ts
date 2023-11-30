@@ -192,6 +192,14 @@
         <source>Image was changed. Save changes?</source>
         <translation type="unfinished"></translation>
     </message>
+    <message>
+        <source>Save changes to current image?</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Don&apos;t show this again</source>
+        <translation type="unfinished"></translation>
+    </message>
 </context>
 <context>
     <name>ImageEditorWindow</name>

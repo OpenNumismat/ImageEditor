@@ -1538,15 +1538,30 @@ class ImageEditorDialog(QDialog):
             self.saveAct.setEnabled(self.isChanged)
 
     def save(self):
+        settings = QSettings()
+        show = settings.value('image_viewer/confirm_save', True, type=bool)
+        if show:
+            msg_box = QMessageBox(QMessageBox.Warning, self.tr("Save"),
+                                  self.tr("Save changes to current image?"),
+                                  QMessageBox.Save | QMessageBox.No,
+                                  self)
+            msg_box.setDefaultButton(QMessageBox.No)
+            cb = QCheckBox(self.tr("Don't show this again"))
+            msg_box.setCheckBox(cb)
+            result = msg_box.exec_()
+            if result != QMessageBox.Save:
+                return
+            else:
+                if cb.isChecked():
+                    cropTool = settings.setValue('image_viewer/confirm_save', False, type=bool)
+                    settings.setValue(key, False)
+
         if self.isChanged:
             self._origPixmap = self._pixmapHandle.pixmap()
-            self.imageSaved.emit(self.getImage())
+            self.imageSaved.emit(self.toImage())
 
         self.isChanged = False
         self._updateEditActions()
-
-    def getImage(self):
-        return self._origPixmap.toImage()
 
     def pushUndo(self, pixmap):
         self.undo_stack.append(pixmap)
