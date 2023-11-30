@@ -1025,6 +1025,9 @@ class ImageEditorDialog(QDialog):
 
         self.sizeLabel.setText("%dx%d" % (image.width(), image.height()))
 
+    def getImage(self):
+        return self._pixmapHandle.pixmap().toImage()
+
     def open(self):
         fileName = self._saveTmpImage()
 
@@ -1560,7 +1563,7 @@ class ImageEditorDialog(QDialog):
 
         if self.isChanged:
             self._origPixmap = self._pixmapHandle.pixmap()
-            self.imageSaved.emit(self.toImage())
+            self.imageSaved.emit(self.getImage())
 
         self.isChanged = False
         self._updateEditActions()

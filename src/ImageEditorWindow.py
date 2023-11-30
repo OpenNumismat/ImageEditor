@@ -14,6 +14,8 @@ class ImageEditorWindow(ImageEditorDialog):
 
         self.setWindowTitle('ImageEditor')
         self.setWindowIcon(QIcon(':/slide.png'))
+        
+        self.imageSaved.connect(self.saveImage)
 
     def createActions(self):
         super().createActions()
@@ -57,9 +59,5 @@ class ImageEditorWindow(ImageEditorDialog):
         image = QImage(fileName)
         self.setImage(image)
 
-    def save(self):
-        if self.isChanged:
-            image = self.toImage()
-            image.save(self.origFileName)
-
-        super().save()
+    def saveImage(self, image):
+        image.save(self.origFileName)
