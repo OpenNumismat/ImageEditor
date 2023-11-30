@@ -1553,8 +1553,7 @@ class ImageEditorDialog(QDialog):
                 return
             else:
                 if cb.isChecked():
-                    cropTool = settings.setValue('image_viewer/confirm_save', False, type=bool)
-                    settings.setValue(key, False)
+                    settings.setValue('image_viewer/confirm_save', False)
 
         if self.isChanged:
             self._origPixmap = self._pixmapHandle.pixmap()
