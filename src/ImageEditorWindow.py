@@ -51,6 +51,15 @@ class ImageEditorWindow(ImageEditorDialog):
 
             self.loadFromFile(fileName)
 
+            self.origFileName = fileName
+
     def loadFromFile(self, fileName):
         image = QImage(fileName)
         self.setImage(image)
+
+    def save(self):
+        if self.isChanged:
+            image = self.toImage()
+            image.save(self.origFileName)
+
+        super().save()
