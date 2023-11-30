@@ -948,6 +948,8 @@ class ImageEditorDialog(QDialog):
         self.menuBar.addMenu(self.viewMenu)
 
     def createToolBar(self):
+        self.toolBar.addAction(self.saveAct)
+        self.toolBar.addSeparator()
         self.toolBar.addAction(self.zoomInAct)
         self.toolBar.addAction(self.zoomOutAct)
         self.toolBar.addAction(self.normalSizeAct)
@@ -956,8 +958,6 @@ class ImageEditorDialog(QDialog):
         self.toolBar.addAction(self.rotateLeftAct)
         self.toolBar.addAction(self.rotateRightAct)
         self.toolBar.addAction(self.cropAct)
-        self.toolBar.addSeparator()
-        self.toolBar.addAction(self.saveAct)
 
     def showToolBar(self, status):
         settings = QSettings()

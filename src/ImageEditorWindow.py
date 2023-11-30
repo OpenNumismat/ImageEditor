@@ -30,8 +30,7 @@ class ImageEditorWindow(ImageEditorDialog):
     def createToolBar(self):
         super().createToolBar()
 
-        self.toolBar.insertAction(self.zoomInAct, self.openFileAct)
-        self.toolBar.insertSeparator(self.zoomInAct)
+        self.toolBar.insertAction(self.saveAct, self.openFileAct)
 
     def openFile(self):
         supported_formats = QImageReader.supportedImageFormats()
