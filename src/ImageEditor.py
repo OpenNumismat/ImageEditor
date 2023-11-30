@@ -826,6 +826,8 @@ class ImageEditorDialog(QDialog):
         super().__init__(parent, Qt.WindowSystemMenuHint |
                          Qt.WindowMinMaxButtonsHint | Qt.WindowCloseButtonHint)
 
+        settings = QSettings()
+
         self.scene = QGraphicsScene()
         self.viewer = GraphicsView(self.scene, self)
 
@@ -833,6 +835,8 @@ class ImageEditorDialog(QDialog):
         self.viewer.setVerticalScrollBarPolicy(Qt.ScrollBarAlwaysOff)
         self.viewer.installEventFilter(self)
         self.viewer.setResizeAnchor(QGraphicsView.AnchorViewCenter)
+        color = settings.value('image_viewer/background_color', QColor(Qt.white), type=QColor)
+        self.viewer.setBackgroundBrush(QBrush(color))
 
         self.menuBar = QMenuBar()
 
@@ -901,6 +905,7 @@ class ImageEditorDialog(QDialog):
         self.undoAct.setDisabled(True)
         self.redoAct = QAction(QIcon(':/redo.png'), self.tr("Redo"), self, shortcut=QKeySequence.Redo, triggered=self.redo)
         self.redoAct.setDisabled(True)
+        self.backgroundColorAct = QAction(self.tr("Background color"), self, triggered=self.selectBackgroundColor)
 
         settings = QSettings()
         toolBarShown = settings.value('image_viewer/tool_bar', True, type=bool)
@@ -943,9 +948,13 @@ class ImageEditorDialog(QDialog):
         self.viewMenu.addAction(self.showToolBarAct)
         self.viewMenu.addAction(self.showStatusBarAct)
 
+        self.settingsMenu = QMenu(self.tr("Settings"), self)
+        self.settingsMenu.addAction(self.backgroundColorAct)
+
         self.menuBar.addMenu(self.fileMenu)
         self.menuBar.addMenu(self.editMenu)
         self.menuBar.addMenu(self.viewMenu)
+        self.menuBar.addMenu(self.settingsMenu)
 
     def createToolBar(self):
         self.toolBar.addAction(self.saveAct)
@@ -968,6 +977,16 @@ class ImageEditorDialog(QDialog):
         settings = QSettings()
         settings.setValue('image_viewer/status_bar', status)
         self.statusBar.setVisible(status)
+
+    def selectBackgroundColor(self):
+        settings = QSettings()
+        color = settings.value('image_viewer/background_color', QColor(Qt.white), type=QColor)
+
+        dlg = QColorDialog(color, self)
+        if dlg.exec_() == QDialog.Accepted:
+            color = dlg.currentColor()
+            settings.setValue('image_viewer/background_color', color)
+            self.viewer.setBackgroundBrush(QBrush(color))
 
     def hasImage(self):
         return self._pixmapHandle is not None
