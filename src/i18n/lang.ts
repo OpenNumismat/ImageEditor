@@ -200,6 +200,14 @@
         <source>Don&apos;t show this again</source>
         <translation type="unfinished"></translation>
     </message>
+    <message>
+        <source>Background color</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Settings</source>
+        <translation type="unfinished"></translation>
+    </message>
 </context>
 <context>
     <name>ImageEditorWindow</name>
