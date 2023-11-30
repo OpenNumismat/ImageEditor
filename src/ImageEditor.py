@@ -1010,9 +1010,19 @@ class ImageEditorDialog(QDialog):
 
     def setImage(self, image):
         if type(image) is QPixmap:
-            pixmap = image
+            image = image.toImage()
+
+        if image.hasAlphaChannel():
+            # Fill transparent color if present
+            fixed_image = QImage(image.size(), QImage.Format_RGB32)
+            fixed_image.fill(Qt.white)
+            painter = QPainter(fixed_image)
+            painter.drawImage(0, 0, image)
+            painter.end()
         else:
-            pixmap = QPixmap.fromImage(image)
+            fixed_image = image
+
+        pixmap = QPixmap.fromImage(fixed_image)
 
         if self.hasImage():
             self._pixmapHandle.setPixmap(pixmap)
