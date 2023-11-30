@@ -1470,6 +1470,7 @@ class ImageEditorDialog(QDialog):
                               points[1].x() - points[3].x(),
                               points[2].y() - points[0].y()).toRect()
 
+                pixmap = pixmap.copy(pixmap.rect())
                 mask = QBitmap(pixmap.size())
                 mask.fill(Qt.white)
                 painter = QPainter()
@@ -1597,6 +1598,9 @@ class ImageEditorDialog(QDialog):
 
         self.setImage(pixmap)
 
+        self.isChanged = True
+        self._updateEditActions()
+
     def redo(self):
         pixmap = self.redo_stack.pop()
         self.undo_stack.append(self._pixmapHandle.pixmap())
@@ -1606,6 +1610,9 @@ class ImageEditorDialog(QDialog):
         self.undoAct.setDisabled(False)
 
         self.setImage(pixmap)
+
+        self.isChanged = True
+        self._updateEditActions()
 
     # Based on https://stackoverflow.com/questions/38285229/calculating-aspect-ratio-of-perspective-transform-destination-image
     def _perspectiveTransformation(self, points, rect):
