@@ -20,7 +20,7 @@ except ModuleNotFoundError:
 
 ZOOM_IN_FACTOR = 1.25
 ZOOM_MAX = 5
-UNDO_STACK_SIZE = 3
+UNDO_STACK_SIZE = 5
 
 
 @storeDlgPositionDecorator
