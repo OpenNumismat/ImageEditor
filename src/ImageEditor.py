@@ -1042,29 +1042,13 @@ class ImageEditorDialog(QDialog):
 
         return fileName
 
-    def toImage(self):
-        image = self._pixmapHandle.pixmap().toImage()
-
-        if image.hasAlphaChannel():
-            # Fill transparent color if present
-            fixed_image = QImage(image.size(), QImage.Format_RGB32)
-            fixed_image.fill(Qt.white)
-            painter = QPainter(fixed_image)
-            painter.drawImage(0, 0, image)
-            painter.end()
-        else:
-            fixed_image = image
-
-        return fixed_image
-
     def saveAs(self):
         filters = (self.tr("Images (*.jpg *.jpeg *.bmp *.png *.tiff *.gif)"),
                    self.tr("All files (*.*)"))
         fileName, _selectedFilter = getSaveFileName(
             self, 'save_image', self.name, IMAGE_PATH, filters)
         if fileName:
-            image = self.toImage()
-            image.save(fileName)
+            self._pixmapHandle.pixmap().save(fileName)
 
     def done(self, r):
         if self.cropDlg and self.cropDlg.isVisible():
@@ -1128,7 +1112,7 @@ class ImageEditorDialog(QDialog):
         self._updateZoomActions()
 
     def copy(self):
-        image = self.toImage()
+        image = self._pixmapHandle.pixmap().toImage()
         mime = QMimeData()
         mime.setImageData(image)
 
