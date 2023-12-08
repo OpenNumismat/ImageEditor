@@ -190,6 +190,22 @@
         <source>Image was changed. Save changes?</source>
         <translation>A imagem foi alterada. Gravar alterações?</translation>
     </message>
+    <message>
+        <source>Save changes to current image?</source>
+        <translation>Gravar alterações à imagem?</translation>
+    </message>
+    <message>
+        <source>Don&apos;t show this again</source>
+        <translation>Não mostrar novamente</translation>
+    </message>
+    <message>
+        <source>Background color</source>
+        <translation>Cor do fundo</translation>
+    </message>
+    <message>
+        <source>Settings</source>
+        <translation>Definições</translation>
+    </message>
 </context>
 <context>
     <name>ImageEditorWindow</name>
