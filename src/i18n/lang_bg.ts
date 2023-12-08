@@ -190,6 +190,22 @@
         <source>Image was changed. Save changes?</source>
         <translation>Изображението е променено. Да се запазят ли промените?</translation>
     </message>
+    <message>
+        <source>Save changes to current image?</source>
+        <translation>Да се запазят ли промените в текущото изображение?</translation>
+    </message>
+    <message>
+        <source>Don&apos;t show this again</source>
+        <translation>Не показвай това съобщение отново</translation>
+    </message>
+    <message>
+        <source>Background color</source>
+        <translation>Цвят на фона</translation>
+    </message>
+    <message>
+        <source>Settings</source>
+        <translation>Настройки</translation>
+    </message>
 </context>
 <context>
     <name>ImageEditorWindow</name>
