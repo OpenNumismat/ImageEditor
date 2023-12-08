@@ -116,7 +116,7 @@
     </message>
     <message>
         <source>&amp;Fit to Window</source>
-        <translation>An Fentster anpassen</translation>
+        <translation>&amp;An Fenster anpassen</translation>
     </message>
     <message>
         <source>Show Tool Bar</source>
@@ -189,6 +189,22 @@
     <message>
         <source>Image was changed. Save changes?</source>
         <translation>Das Bild wurde geändert. Änderungen speichern?</translation>
+    </message>
+    <message>
+        <source>Save changes to current image?</source>
+        <translation>Änderungen im aktuellen Bild speichern?</translation>
+    </message>
+    <message>
+        <source>Don&apos;t show this again</source>
+        <translation>Nicht mehr anzeigen</translation>
+    </message>
+    <message>
+        <source>Background color</source>
+        <translation>Hintergrundfarbe</translation>
+    </message>
+    <message>
+        <source>Settings</source>
+        <translation>Einstellungen</translation>
     </message>
 </context>
 <context>
