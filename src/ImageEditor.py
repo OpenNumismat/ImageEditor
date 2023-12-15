@@ -1501,18 +1501,23 @@ class ImageEditorDialog(QDialog):
                               points[1].x() - points[3].x(),
                               points[2].y() - points[0].y()).toRect()
 
-                pixmap = pixmap.copy(pixmap.rect())
-                mask = QBitmap(pixmap.size())
-                mask.fill(Qt.white)
-                painter = QPainter()
-                painter.begin(mask)
-                painter.setBrush(Qt.black)
-                painter.drawEllipse(rect)
-                painter.end()
-                pixmap.setMask(mask)
-
                 pixmap = pixmap.copy(rect)
-                self.setImage(pixmap)
+                # Create the output image with the same dimensions and an alpha channel
+                # and make it completely transparent:
+                out_img = QImage(pixmap.width(), pixmap.height(), QImage.Format_ARGB32)
+                out_img.fill(Qt.transparent)
+
+                # Create a texture brush and paint a circle with the original image onto
+                # the output image:
+                brush = QBrush(pixmap)       # Create texture brush
+                painter = QPainter(out_img)  # Paint the output image
+                painter.setBrush(brush)      # Use the image texture brush
+                painter.setPen(Qt.NoPen)     # Don't draw an outline
+                painter.setRenderHint(QPainter.Antialiasing, True)  # Use AA
+                painter.drawEllipse(pixmap.rect())  # Actually draw the circle
+                painter.end()                # We are done
+
+                self.setImage(out_img)
 
                 self.isChanged = True
             else:
