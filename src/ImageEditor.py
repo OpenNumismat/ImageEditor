@@ -995,6 +995,13 @@ class ImageEditorDialog(QDialog):
             competed_title_parts = [*title_parts, *competed_title_parts]
         super().setWindowTitle(' - '.join(competed_title_parts))
 
+    def markWindowTitle(self, is_changed):
+        title = self.windowTitle()
+        if title[0] != '*' and is_changed:
+            super().setWindowTitle('*' + title)
+        elif title[0] == '*' and not is_changed:
+            super().setWindowTitle(title[1:])
+
     def showToolBar(self, status):
         settings = QSettings()
         settings.setValue('image_viewer/tool_bar', status)
@@ -1166,6 +1173,7 @@ class ImageEditorDialog(QDialog):
             self.pushUndo(pixmap)
             self.setImage(mime.imageData())
             self.isChanged = True
+            self.markWindowTitle(self.isChanged)
             self._updateEditActions()
         elif mime.hasUrls():
             url = mime.urls()[0]
@@ -1179,6 +1187,7 @@ class ImageEditorDialog(QDialog):
             self.pushUndo(pixmap)
             self.setImage(image)
             self.isChanged = True
+            self.markWindowTitle(self.isChanged)
             self._updateEditActions()
 
     def zoomIn(self):
@@ -1255,6 +1264,7 @@ class ImageEditorDialog(QDialog):
         self.setImage(pixmap)
 
         self.isChanged = True
+        self.markWindowTitle(self.isChanged)
         self._updateEditActions()
 
     def rotateRight(self):
@@ -1266,6 +1276,7 @@ class ImageEditorDialog(QDialog):
         self.setImage(pixmap)
 
         self.isChanged = True
+        self.markWindowTitle(self.isChanged)
         self._updateEditActions()
 
     def _updateGrid(self):
@@ -1337,6 +1348,7 @@ class ImageEditorDialog(QDialog):
 
         if result:
             self.isChanged = True
+            self.markWindowTitle(self.isChanged)
             self.pushUndo(self._startPixmap)
         else:
             self.setImage(self._startPixmap)
@@ -1549,6 +1561,7 @@ class ImageEditorDialog(QDialog):
 
                     self.isChanged = True
 
+        self.markWindowTitle(self.isChanged)
         self.cropAct.setChecked(False)
         self._updateEditActions()
 
@@ -1572,6 +1585,7 @@ class ImageEditorDialog(QDialog):
         self.setImage(pixmap)
 
         self.isChanged = True
+        self.markWindowTitle(self.isChanged)
 
     def _updateEditActions(self):
         inCrop = self.cropAct.isChecked()
@@ -1613,6 +1627,7 @@ class ImageEditorDialog(QDialog):
             self.imageSaved.emit(self.getImage())
 
         self.isChanged = False
+        self.markWindowTitle(self.isChanged)
         self._updateEditActions()
 
     def pushUndo(self, pixmap):
@@ -1635,6 +1650,7 @@ class ImageEditorDialog(QDialog):
         self.setImage(pixmap)
 
         self.isChanged = True
+        self.markWindowTitle(self.isChanged)
         self._updateEditActions()
 
     def redo(self):
@@ -1648,6 +1664,7 @@ class ImageEditorDialog(QDialog):
         self.setImage(pixmap)
 
         self.isChanged = True
+        self.markWindowTitle(self.isChanged)
         self._updateEditActions()
 
     # Based on https://stackoverflow.com/questions/38285229/calculating-aspect-ratio-of-perspective-transform-destination-image
