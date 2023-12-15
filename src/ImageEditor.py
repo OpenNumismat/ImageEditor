@@ -968,6 +968,16 @@ class ImageEditorDialog(QDialog):
         self.toolBar.addAction(self.rotateRightAct)
         self.toolBar.addAction(self.cropAct)
 
+    def setWindowTitle(self, title_parts=None):
+        competed_title_parts = [self.tr("Image editor"), ]
+        if title_parts is None:
+            pass
+        elif isinstance(title_parts, str):
+            competed_title_parts.insert(0, title_parts)
+        else:
+            competed_title_parts = [*title_parts, *competed_title_parts]
+        super().setWindowTitle(' - '.join(competed_title_parts))
+
     def showToolBar(self, status):
         settings = QSettings()
         settings.setValue('image_viewer/tool_bar', status)

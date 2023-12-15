@@ -12,7 +12,7 @@ class ImageEditorWindow(ImageEditorDialog):
 
         self.latestDir = QStandardPaths.standardLocations(QStandardPaths.PicturesLocation)[0]
 
-        self.setWindowTitle('ImageEditor')
+        self.setWindowTitle()
         self.setWindowIcon(QIcon(':/slide.png'))
         
         self.imageSaved.connect(self.saveImage)
@@ -45,15 +45,17 @@ class ImageEditorWindow(ImageEditorDialog):
         caption = QApplication.translate('ImageEdit', "Open File")
         filter_ = QApplication.translate('ImageEdit',
                             "Images (%s);;All files (*.*)" % formats)
-        fileName, _selectedFilter = QFileDialog.getOpenFileName(self,
+        file_name, _ = QFileDialog.getOpenFileName(self,
                 caption, self.latestDir, filter_)
-        if fileName:
-            file_info = QFileInfo(fileName)
+        if file_name:
+            file_info = QFileInfo(file_name)
             self.latestDir = file_info.absolutePath()
 
-            self.loadFromFile(fileName)
+            self.loadFromFile(file_name)
+            file_title = file_info.fileName()
+            self.setWindowTitle(file_title)
 
-            self.origFileName = fileName
+            self.origFileName = file_name
 
     def loadFromFile(self, fileName):
         image = QImage(fileName)
