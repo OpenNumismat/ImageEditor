@@ -48,18 +48,19 @@ class ImageEditorWindow(ImageEditorDialog):
         file_name, _ = QFileDialog.getOpenFileName(self,
                 caption, self.latestDir, filter_)
         if file_name:
-            file_info = QFileInfo(file_name)
-            self.latestDir = file_info.absolutePath()
-
             self.loadFromFile(file_name)
-            file_title = file_info.fileName()
-            self.setWindowTitle(file_title)
-
-            self.origFileName = file_name
 
     def loadFromFile(self, fileName):
         image = QImage(fileName)
         self.setImage(image)
+
+        file_info = QFileInfo(fileName)
+        self.latestDir = file_info.absolutePath()
+
+        file_title = file_info.fileName()
+        self.setWindowTitle(file_title)
+
+        self.origFileName = fileName
 
     def saveImage(self, image):
         image.save(self.origFileName)

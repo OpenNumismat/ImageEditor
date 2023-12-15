@@ -792,6 +792,23 @@ class GraphicsGridItem(QObject):
         return self.v_lines + self.h_lines
 
 
+class GraphicsScene(QGraphicsScene):
+
+    def dragEnterEvent(self, event):
+        if event.mimeData().hasUrls():
+            event.acceptProposedAction()
+
+    def dragMoveEvent(self, event):
+        if event.mimeData().hasUrls():
+            event.acceptProposedAction()
+
+    def dropEvent(self, event):
+        mime = event.mimeData()
+        if mime.hasUrls():
+            url = mime.urls()[0]
+            self.parent().loadFromFile(url.toLocalFile())
+
+
 class GraphicsView(QGraphicsView):
 
     def __init__(self, scene, parent):
@@ -828,7 +845,7 @@ class ImageEditorDialog(QDialog):
 
         settings = QSettings()
 
-        self.scene = QGraphicsScene()
+        self.scene = GraphicsScene(self)
         self.viewer = GraphicsView(self.scene, self)
 
         self.viewer.setHorizontalScrollBarPolicy(Qt.ScrollBarAlwaysOff)
@@ -1149,16 +1166,20 @@ class ImageEditorDialog(QDialog):
             self.pushUndo(pixmap)
             self.setImage(mime.imageData())
             self.isChanged = True
+            self._updateEditActions()
         elif mime.hasUrls():
             url = mime.urls()[0]
-            image = QImage()
-            result = image.load(url.toLocalFile())
-            if result:
-                pixmap = self._pixmapHandle.pixmap()
-                self.pushUndo(pixmap)
-                self.setImage(image)
-                self.isChanged = True
-        self._updateEditActions()
+            self.loadFromFile(url.toLocalFile())
+
+    def loadFromFile(self, fileName):
+        image = QImage()
+        result = image.load(fileName)
+        if result:
+            pixmap = self._pixmapHandle.pixmap()
+            self.pushUndo(pixmap)
+            self.setImage(image)
+            self.isChanged = True
+            self._updateEditActions()
 
     def zoomIn(self):
         self.zoom(ZOOM_IN_FACTOR)
