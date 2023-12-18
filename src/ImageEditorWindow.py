@@ -54,7 +54,7 @@ class ImageEditorWindow(ImageEditorDialog):
                 self.tr("Image was changed. Save changes?"),
                 QMessageBox.Save | QMessageBox.No | QMessageBox.Cancel, QMessageBox.Cancel)
             if result == QMessageBox.Save:
-                self.save()
+                self.save(confirm_save=False)
             elif result == QMessageBox.Cancel:
                 return
 
@@ -78,4 +78,4 @@ class ImageEditorWindow(ImageEditorDialog):
         self._updateEditActions()
 
     def saveImage(self, image):
-        image.save(self.origFileName, confirm_save==False)
+        image.save(self.origFileName)
