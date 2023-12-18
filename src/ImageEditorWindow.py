@@ -10,8 +10,6 @@ class ImageEditorWindow(ImageEditorDialog):
     def __init__(self, parent=None):
         super().__init__(parent)
 
-        self.latestDir = QStandardPaths.standardLocations(QStandardPaths.PicturesLocation)[0]
-
         self.setWindowTitle()
         self.setWindowIcon(QIcon(':/slide.png'))
         
@@ -69,6 +67,7 @@ class ImageEditorWindow(ImageEditorDialog):
 
         file_title = file_info.fileName()
         self.setWindowTitle(file_title)
+        self.name = file_title
 
         self.origFileName = fileName
 

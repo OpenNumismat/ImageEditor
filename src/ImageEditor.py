@@ -845,6 +845,8 @@ class ImageEditorDialog(QDialog):
 
         settings = QSettings()
 
+        self.latestDir = IMAGE_PATH
+
         self.scene = GraphicsScene(self)
         self.viewer = GraphicsView(self.scene, self)
 
@@ -1093,9 +1095,12 @@ class ImageEditorDialog(QDialog):
         filters = (self.tr("Images (*.jpg *.jpeg *.bmp *.png *.tiff *.gif)"),
                    self.tr("All files (*.*)"))
         fileName, _selectedFilter = getSaveFileName(
-            self, 'save_image', self.name, IMAGE_PATH, filters)
+            self, 'save_image', self.name, self.latestDir, filters)
         if fileName:
             self._pixmapHandle.pixmap().save(fileName)
+
+            file_info = QFileInfo(fileName)
+            self.latestDir = file_info.absolutePath()
 
     def done(self, r):
         if self.cropDlg and self.cropDlg.isVisible():
