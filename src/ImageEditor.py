@@ -1604,23 +1604,24 @@ class ImageEditorDialog(QDialog):
         else:
             self.saveAct.setEnabled(self.isChanged)
 
-    def save(self):
-        settings = QSettings()
-        show = settings.value('image_viewer/confirm_save', True, type=bool)
-        if show:
-            msg_box = QMessageBox(QMessageBox.Warning, self.tr("Save"),
-                                  self.tr("Save changes to current image?"),
-                                  QMessageBox.Save | QMessageBox.No,
-                                  self)
-            msg_box.setDefaultButton(QMessageBox.No)
-            cb = QCheckBox(self.tr("Don't show this again"))
-            msg_box.setCheckBox(cb)
-            result = msg_box.exec_()
-            if result != QMessageBox.Save:
-                return
-            else:
-                if cb.isChecked():
-                    settings.setValue('image_viewer/confirm_save', False)
+    def save(self, confirm_save=True):
+        if confirm_save:
+            settings = QSettings()
+            show = settings.value('image_viewer/confirm_save', True, type=bool)
+            if show:
+                msg_box = QMessageBox(QMessageBox.Warning, self.tr("Save"),
+                                      self.tr("Save changes to current image?"),
+                                      QMessageBox.Save | QMessageBox.No,
+                                      self)
+                msg_box.setDefaultButton(QMessageBox.No)
+                cb = QCheckBox(self.tr("Don't show this again"))
+                msg_box.setCheckBox(cb)
+                result = msg_box.exec_()
+                if result != QMessageBox.Save:
+                    return
+                else:
+                    if cb.isChecked():
+                        settings.setValue('image_viewer/confirm_save', False)
 
         if self.isChanged:
             self._origPixmap = self._pixmapHandle.pixmap()

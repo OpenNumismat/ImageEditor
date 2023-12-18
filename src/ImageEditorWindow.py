@@ -1,6 +1,6 @@
 from PySide6.QtCore import QStandardPaths, QFileInfo
 from PySide6.QtGui import QIcon, QAction, QKeySequence, QImageReader, QImage
-from PySide6.QtWidgets import QApplication, QStyle, QFileDialog
+from PySide6.QtWidgets import QApplication, QStyle, QFileDialog, QMessageBox
 
 from ImageEditor import ImageEditorDialog
 
@@ -51,6 +51,16 @@ class ImageEditorWindow(ImageEditorDialog):
             self.loadFromFile(file_name)
 
     def loadFromFile(self, fileName):
+        if self.isChanged:
+            result = QMessageBox.warning(
+                self, self.tr("Save"),
+                self.tr("Image was changed. Save changes?"),
+                QMessageBox.Save | QMessageBox.No | QMessageBox.Cancel, QMessageBox.Cancel)
+            if result == QMessageBox.Save:
+                self.save()
+            elif result == QMessageBox.Cancel:
+                return
+
         image = QImage(fileName)
         self.setImage(image)
 
@@ -62,5 +72,13 @@ class ImageEditorWindow(ImageEditorDialog):
 
         self.origFileName = fileName
 
+        self.undo_stack = []
+        self.undoAct.setDisabled(True)
+        self.redo_stack = []
+        self.redoAct.setDisabled(True)
+        self.isChanged = False
+        # self.markWindowTitle(self.isChanged)
+        self._updateEditActions()
+
     def saveImage(self, image):
-        image.save(self.origFileName)
+        image.save(self.origFileName, confirm_save==False)
