@@ -844,7 +844,7 @@ class ImageEditorDialog(QDialog):
         super().__init__(parent, Qt.WindowSystemMenuHint |
                          Qt.WindowMinMaxButtonsHint | Qt.WindowCloseButtonHint)
 
-        self.setWindowTitle()
+        self.setTitle()
 
         settings = QSettings()
 
@@ -879,13 +879,13 @@ class ImageEditorDialog(QDialog):
         layout.setSpacing(0)
         self.setLayout(layout)
 
+        self.name = ''
         self.isChanged = False
         self.cropDlg = None
         self.rotateDlg = None
         self.grid = None
         self.bounding = None
         self.isFullScreen = False
-        self.name = 'photo'
         self._pixmapHandle = None
         self._origPixmap = None
         self._startPixmap = None
@@ -988,14 +988,15 @@ class ImageEditorDialog(QDialog):
         self.toolBar.addAction(self.rotateRightAct)
         self.toolBar.addAction(self.cropAct)
 
-    def setWindowTitle(self, title_parts=None):
-        competed_title_parts = [self.tr("Image editor"), ]
-        if title_parts is None:
-            pass
-        elif isinstance(title_parts, str):
-            competed_title_parts.insert(0, title_parts)
-        else:
-            competed_title_parts = [*title_parts, *competed_title_parts]
+    def setTitle(self, title=None, subtitle=None):
+        competed_title_parts = []
+        if subtitle:
+            competed_title_parts.append(subtitle)
+        if title:
+            competed_title_parts.append(title)
+        self.name = '_'.join(competed_title_parts)
+        competed_title_parts.append(self.tr("Image editor"))
+
         super().setWindowTitle(' - '.join(competed_title_parts))
 
     def markWindowTitle(self, is_changed):

@@ -65,8 +65,7 @@ class ImageEditorWindow(ImageEditorDialog):
         self.latestDir = file_info.absolutePath()
 
         file_title = file_info.fileName()
-        self.setWindowTitle(file_title)
-        self.name = file_title
+        self.setTitle(file_title)
 
         self.origFileName = fileName
 
