@@ -844,6 +844,8 @@ class ImageEditorDialog(QDialog):
         super().__init__(parent, Qt.WindowSystemMenuHint |
                          Qt.WindowMinMaxButtonsHint | Qt.WindowCloseButtonHint)
 
+        self.setWindowTitle()
+
         settings = QSettings()
 
         self.scene = GraphicsScene(self)

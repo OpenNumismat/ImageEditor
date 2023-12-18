@@ -10,7 +10,6 @@ class ImageEditorWindow(ImageEditorDialog):
     def __init__(self, parent=None):
         super().__init__(parent)
 
-        self.setWindowTitle()
         self.setWindowIcon(QIcon(':/slide.png'))
         
         self.imageSaved.connect(self.saveImage)
