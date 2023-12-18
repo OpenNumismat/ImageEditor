@@ -837,6 +837,7 @@ class GraphicsView(QGraphicsView):
 
 @storeDlgSizeDecorator
 class ImageEditorDialog(QDialog):
+    latestDir = IMAGE_PATH
     imageSaved = pyqtSignal(QImage)
 
     def __init__(self, parent=None):
@@ -844,8 +845,6 @@ class ImageEditorDialog(QDialog):
                          Qt.WindowMinMaxButtonsHint | Qt.WindowCloseButtonHint)
 
         settings = QSettings()
-
-        self.latestDir = IMAGE_PATH
 
         self.scene = GraphicsScene(self)
         self.viewer = GraphicsView(self.scene, self)
