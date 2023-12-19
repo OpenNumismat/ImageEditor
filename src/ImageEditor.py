@@ -379,6 +379,38 @@ class BoundingLineItem(QGraphicsLineItem):
         super().hoverEnterEvent(event)
 
 
+class MaskPolygonItem(QGraphicsPixmapItem):
+
+    def __init__(self, width, height):
+        super().__init__()
+
+        self.setOpacity(0.2)
+
+        self.width = width
+        self.height = height
+
+        self.setPolygon(0, 0, self.width, 0, self.width, self.height, 0, self.height)
+
+    def setPolygon(self, x1, y1, x2, y2, x3, y3, x4, y4):
+        image = QImage(self.width, self.height, QImage.Format_ARGB32)
+        image.fill(Qt.black)
+
+        brush = QBrush(Qt.white)
+        painter = QPainter(image)
+        painter.setBrush(brush)
+        painter.setPen(Qt.NoPen)
+        painter.setRenderHint(QPainter.Antialiasing, True)  # Use AA
+        points = [QPoint(x1, y1), QPoint(x2, y2), QPoint(x3, y3), QPoint(x4, y4)]
+        painter.drawPolygon(points)
+        painter.end()
+
+        mask = image.createMaskFromColor(QColor(Qt.white).rgb())
+        bitmap = QBitmap.fromImage(mask)
+        pixmap = QPixmap.fromImage(image)
+        pixmap.setMask(bitmap)
+        self.setPixmap(pixmap)
+
+
 class GraphicsBoundingItem(QObject):
     rectChanged = pyqtSignal()
 
@@ -407,6 +439,8 @@ class GraphicsBoundingItem(QObject):
         line4 = BoundingLineItem(self, self.fixed)
 
         self.lines = [line1, line2, line3, line4]
+
+        self.mask = MaskPolygonItem(self.width, self.height)
 
         self.updateRect()
 
@@ -567,6 +601,8 @@ class GraphicsBoundingItem(QObject):
 
             pos = newPos
 
+        self.mask.setPolygon(p1.x(), p1.y(), p2.x(), p2.y(), p3.x(), p3.y(), p4.x(), p4.y())
+
         for item in self.items():
             item.setFlag(QGraphicsItem.ItemSendsGeometryChanges)
 
@@ -596,13 +632,15 @@ class GraphicsBoundingItem(QObject):
                               (p1.x() - self.lines[3].pos().x()) * self.scale,
                               p1.y() * self.scale)
 
+        self.mask.setPolygon(p1.x(), p1.y(), p2.x(), p2.y(), p3.x(), p3.y(), p4.x(), p4.y())
+
     def setScale(self, scale):
         self.scale = scale
 
         self.updateRect()
 
     def items(self):
-        return self.lines + self.points
+        return [self.mask, ] + self.lines + self.points
 
     def cropPoints(self):
         return [p.pos() for p in self.points]
@@ -617,6 +655,37 @@ class BoundingCircleItem(QGraphicsEllipseItem):
 
         self.setPen(QPen(Qt.DashLine))
         self.setFlag(QGraphicsItem.ItemIgnoresTransformations)
+
+
+class MaskCircleItem(QGraphicsPixmapItem):
+
+    def __init__(self, width, height):
+        super().__init__()
+
+        self.setOpacity(0.2)
+
+        self.width = width
+        self.height = height
+
+        self.setRect(0, 0, self.width, self.height)
+
+    def setRect(self, x, y, w, h):
+        image = QImage(self.width, self.height, QImage.Format_ARGB32)
+        image.fill(Qt.black)
+
+        brush = QBrush(Qt.white)
+        painter = QPainter(image)
+        painter.setBrush(brush)
+        painter.setPen(Qt.NoPen)
+        painter.setRenderHint(QPainter.Antialiasing, True)  # Use AA
+        painter.drawEllipse(x, y, w, h)
+        painter.end()
+
+        mask = image.createMaskFromColor(QColor(Qt.white).rgb())
+        bitmap = QBitmap.fromImage(mask)
+        pixmap = QPixmap.fromImage(image)
+        pixmap.setMask(bitmap)
+        self.setPixmap(pixmap)
 
 
 class GraphicsCircleBoundingItem(QObject):
@@ -641,6 +710,7 @@ class GraphicsCircleBoundingItem(QObject):
         self.points = [point1, point2, point3, point4]
 
         self.circle = BoundingCircleItem(self)
+        self.mask = MaskCircleItem(self.width, self.height)
 
         self.updateRect()
 
@@ -744,6 +814,7 @@ class GraphicsCircleBoundingItem(QObject):
         p3 = self.points[2]
         p4 = self.points[3]
 
+        self.mask.setRect(p4.x(), p1.y(), p2.x() - p4.x(), p3.y() - p1.y())
         self.circle.setRect(p4.x() * self.scale, p1.y() * self.scale,
                             (p2.x() - p4.x()) * self.scale, (p3.y() - p1.y()) * self.scale)
 
@@ -753,7 +824,7 @@ class GraphicsCircleBoundingItem(QObject):
         self.updateRect()
 
     def items(self):
-        return [self.circle] + self.points
+        return [self.mask, self.circle] + self.points
 
     def cropPoints(self):
         return [p.pos() for p in self.points]
