@@ -1,6 +1,6 @@
-from PySide6.QtCore import QStandardPaths, QFileInfo
-from PySide6.QtGui import QIcon, QAction, QKeySequence, QImageReader, QImage
-from PySide6.QtWidgets import QApplication, QStyle, QFileDialog, QMessageBox
+from PySide6.QtCore import QSettings, QFileInfo, Qt
+from PySide6.QtGui import QIcon, QAction, QKeySequence, QImageReader, QImage, QColor
+from PySide6.QtWidgets import QApplication, QStyle, QFileDialog, QMessageBox, QColorDialog, QDialog
 
 from ImageEditor import ImageEditorDialog
 
@@ -20,11 +20,13 @@ class ImageEditorWindow(ImageEditorDialog):
         style = QApplication.style()
         icon = style.standardIcon(QStyle.SP_DialogOpenButton)
         self.openFileAct = QAction(icon, self.tr("&Open..."), self, shortcut=QKeySequence.Open, triggered=self.openFile)
+        self.transparentColorAct = QAction(self.tr("Background color"), self, triggered=self.selectTransparentColor)
 
     def createMenus(self):
         super().createMenus()
 
         self.fileMenu.insertAction(self.openAct, self.openFileAct)
+        self.settingsMenu.addAction(self.transparentColorAct)
 
     def createToolBar(self):
         super().createToolBar()
@@ -79,3 +81,12 @@ class ImageEditorWindow(ImageEditorDialog):
 
     def saveImage(self, image):
         image.save(self.origFileName)
+
+    def selectTransparentColor(self):
+        settings = QSettings()
+        color = settings.value('image_viewer/transparent_color', QColor(Qt.white), type=QColor)
+
+        dlg = QColorDialog(color, self)
+        if dlg.exec_() == QDialog.Accepted:
+            color = dlg.currentColor()
+            settings.setValue('image_viewer/transparent_color', color)
