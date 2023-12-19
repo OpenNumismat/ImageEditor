@@ -997,6 +997,8 @@ class ImageEditorDialog(QDialog):
         self.redoAct = QAction(QIcon(':/redo.png'), self.tr("Redo"), self, shortcut=QKeySequence.Redo, triggered=self.redo)
         self.redoAct.setDisabled(True)
         self.windowColorAct = QAction(self.tr("Window color"), self, triggered=self.selectWindowColor)
+        self.cutLeftAct = QAction(self.tr("Cut left half"), self, triggered=self.cutLeft)
+        self.cutRightAct = QAction(self.tr("Cut right half"), self, triggered=self.cutRight)
 
         settings = QSettings()
         toolBarShown = settings.value('image_viewer/tool_bar', True, type=bool)
@@ -1021,6 +1023,8 @@ class ImageEditorDialog(QDialog):
         self.editMenu.addSeparator()
         self.editMenu.addAction(self.copyAct)
         self.editMenu.addAction(self.pasteAct)
+        self.editMenu.addAction(self.cutLeftAct)
+        self.editMenu.addAction(self.cutRightAct)
         self.editMenu.addSeparator()
         self.editMenu.addAction(self.rotateLeftAct)
         self.editMenu.addAction(self.rotateRightAct)
@@ -1258,6 +1262,46 @@ class ImageEditorDialog(QDialog):
         elif mime.hasUrls():
             url = mime.urls()[0]
             self.loadFromFile(url.toLocalFile())
+
+    def cutLeft(self):
+        pixmap = self._pixmapHandle.pixmap()
+        left_half = pixmap.copy(0, 0,
+                                pixmap.width() // 2, pixmap.height())
+        right_half = pixmap.copy(pixmap.width() // 2, 0,
+                                 pixmap.width() - pixmap.width() // 2, pixmap.height())
+
+        image = left_half.toImage()
+        mime = QMimeData()
+        mime.setImageData(image)
+
+        clipboard = QApplication.clipboard()
+        clipboard.setMimeData(mime)
+
+        self.pushUndo(pixmap)
+        self.setImage(right_half)
+        self.isChanged = True
+        self.markWindowTitle(self.isChanged)
+        self._updateEditActions()
+
+    def cutRight(self):
+        pixmap = self._pixmapHandle.pixmap()
+        left_half = pixmap.copy(0, 0,
+                                pixmap.width() // 2, pixmap.height())
+        right_half = pixmap.copy(pixmap.width() // 2, 0,
+                                 pixmap.width() - pixmap.width() // 2, pixmap.height())
+
+        image = right_half.toImage()
+        mime = QMimeData()
+        mime.setImageData(image)
+
+        clipboard = QApplication.clipboard()
+        clipboard.setMimeData(mime)
+
+        self.pushUndo(pixmap)
+        self.setImage(left_half)
+        self.isChanged = True
+        self.markWindowTitle(self.isChanged)
+        self._updateEditActions()
 
     def loadFromFile(self, fileName):
         image = QImage()
