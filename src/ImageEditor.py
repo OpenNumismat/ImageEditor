@@ -1053,7 +1053,7 @@ class ImageEditorDialog(QDialog):
         if image.hasAlphaChannel():
             # Fill transparent color if present
             settings = QSettings()
-            color = settings.value('image_viewer/transparent_color', QColor(Qt.white), type=QColor)
+            color = settings.value('mainwindow/transparent_color', QColor(Qt.white), type=QColor)
             fixed_image = QImage(image.size(), QImage.Format_RGB32)
             fixed_image.fill(color)
             painter = QPainter(fixed_image)
