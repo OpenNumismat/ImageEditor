@@ -1067,9 +1067,15 @@ class ImageEditorDialog(QDialog):
         self.menuBar.addMenu(self.settingsMenu)
 
     def createToolBar(self):
+        self.zoomSpin = QSpinBox(self)
+        self.zoomSpin.setRange(self.minScale * 100, ZOOM_MAX * 100)
+        self.zoomSpin.setSuffix("%")
+        self.zoomSpin.valueChanged.connect(self.zoomChanged)
+
         self.toolBar.addAction(self.saveAct)
         self.toolBar.addSeparator()
         self.toolBar.addAction(self.zoomInAct)
+        self.toolBar.addWidget(self.zoomSpin)
         self.toolBar.addAction(self.zoomOutAct)
         self.toolBar.addAction(self.normalSizeAct)
         self.toolBar.addAction(self.fitToWindowAct)
@@ -1344,13 +1350,16 @@ class ImageEditorDialog(QDialog):
         self.zoom(new_scale)
 
     def zoomOut(self):
-        new_scale = ZOOM_LIST[-1]
+        new_scale = self.minScale
         for scale in ZOOM_LIST:
             if scale < self.scale:
                 new_scale = scale
                 break
 
         self.zoom(new_scale)
+
+    def zoomChanged(self, zoom):
+        self.zoom(zoom / 100)
 
     def zoom(self, scale):
         if scale < self.minScale:
@@ -1407,7 +1416,9 @@ class ImageEditorDialog(QDialog):
         self.fitToWindowAct.setDisabled(self.isFitToWindow)
         self.normalSizeAct.setDisabled(self.scale == 1)
 
-        self.zoomLabel.setText("%d%%" % (self.scale * 100 + 0.5))
+        zoom = self.scale * 100 + 0.5
+        self.zoomSpin.setValue(zoom)
+        self.zoomLabel.setText("%d%%" % zoom)
 
     def rotateLeft(self):
         transform = QTransform()
