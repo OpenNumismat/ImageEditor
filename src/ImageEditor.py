@@ -19,8 +19,8 @@ except ModuleNotFoundError:
 
 
 UNDO_STACK_SIZE = 5
-ZOOM_LIST = (6., 4.8, 3.85, 3.1, 2.5, 2., 1.58, 1.25, 1.,
-             0.8, 0.64, 0.5, 0.4, 0.32, 0.26, 0.2, 0.16,)
+ZOOM_LIST = (600, 480, 385, 310, 250, 200, 158, 125,
+             100, 80, 64, 50, 40, 32, 26, 20, 16,)
 ZOOM_MAX = ZOOM_LIST[0]
 
 
@@ -976,7 +976,7 @@ class ImageEditorDialog(QDialog):
         self._origPixmap = None
         self._startPixmap = None
         self.scale = 1
-        self.minScale = ZOOM_LIST[-1]
+        self.minScale = ZOOM_LIST[-1] / 100
         self.isFitToWindow = True
 
         self.createActions()
@@ -1068,9 +1068,9 @@ class ImageEditorDialog(QDialog):
 
     def createToolBar(self):
         self.zoomSpin = QSpinBox(self)
-        self.zoomSpin.setRange(self.minScale * 100, ZOOM_MAX * 100)
+        self.zoomSpin.setRange(self.minScale * 100, ZOOM_MAX)
         self.zoomSpin.setSuffix("%")
-        self.zoomSpin.valueChanged.connect(self.zoomChanged)
+        self.zoomSpin.valueChanged.connect(self.zoom)
 
         self.toolBar.addAction(self.saveAct)
         self.toolBar.addSeparator()
@@ -1248,7 +1248,7 @@ class ImageEditorDialog(QDialog):
     def normalSize(self):
         self.viewer.setTransformationAnchor(QGraphicsView.AnchorViewCenter)
 
-        self.zoom(1)
+        self.zoom(100)
 
     def fitToWindow(self):
         self.isFitToWindow = True
@@ -1342,30 +1342,28 @@ class ImageEditorDialog(QDialog):
             self._updateEditActions()
 
     def zoomIn(self):
-        new_scale = ZOOM_LIST[0]
-        for scale in ZOOM_LIST:
-            if scale > self.scale:
-                new_scale = scale
+        new_zoom = ZOOM_LIST[0]
+        for zoom in ZOOM_LIST:
+            if zoom > self.scale * 100:
+                new_zoom = zoom
 
-        self.zoom(new_scale)
+        self.zoom(new_zoom)
 
     def zoomOut(self):
-        new_scale = self.minScale
-        for scale in ZOOM_LIST:
-            if scale < self.scale:
-                new_scale = scale
+        new_zoom = self.minScale
+        for zoom in ZOOM_LIST:
+            if zoom < self.scale * 100:
+                new_zoom = zoom
                 break
 
-        self.zoom(new_scale)
+        self.zoom(new_zoom)
 
-    def zoomChanged(self, zoom):
-        self.zoom(zoom / 100)
-
-    def zoom(self, scale):
+    def zoom(self, zoom):
+        scale = zoom / 100
         if scale < self.minScale:
             scale = self.minScale
-        if scale > ZOOM_MAX:
-            scale = ZOOM_MAX
+        if scale > ZOOM_MAX / 100:
+            scale = ZOOM_MAX / 100
         need_scale = scale / self.scale
 
         if scale > self.minScale:
@@ -1411,7 +1409,7 @@ class ImageEditorDialog(QDialog):
         else:
             self.viewer.setDragMode(QGraphicsView.ScrollHandDrag)
 
-        self.zoomInAct.setDisabled(self.scale >= ZOOM_MAX)
+        self.zoomInAct.setDisabled(self.scale >= ZOOM_MAX / 100)
         self.zoomOutAct.setDisabled(self.scale <= self.minScale)
         self.fitToWindowAct.setDisabled(self.isFitToWindow)
         self.normalSizeAct.setDisabled(self.scale == 1)
