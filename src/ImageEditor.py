@@ -905,6 +905,21 @@ class GraphicsView(QGraphicsView):
         delta = newPos - oldPos
         self.translate(delta.x(), delta.y())
 
+    def mouseDoubleClickEvent(self, event):
+        self.setTransformationAnchor(QGraphicsView.NoAnchor)
+        # self.setTransformationAnchor(QGraphicsView.AnchorUnderMouse)
+
+        oldPos = self.mapToScene(event.position().toPoint())
+
+        self.parent().zoomIn()
+
+        # Get the new position
+        newPos = self.mapToScene(event.position().toPoint())
+
+        # Move scene to old position
+        delta = newPos - oldPos
+        self.translate(delta.x(), delta.y())
+
 
 @storeDlgSizeDecorator
 class ImageEditorDialog(QDialog):
@@ -924,7 +939,6 @@ class ImageEditorDialog(QDialog):
 
         self.viewer.setHorizontalScrollBarPolicy(Qt.ScrollBarAlwaysOff)
         self.viewer.setVerticalScrollBarPolicy(Qt.ScrollBarAlwaysOff)
-        self.viewer.installEventFilter(self)
         self.viewer.setResizeAnchor(QGraphicsView.AnchorViewCenter)
         color = settings.value('image_viewer/window_color', QColor(Qt.white), type=QColor)
         self.viewer.setBackgroundBrush(QBrush(color))
