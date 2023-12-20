@@ -199,24 +199,12 @@
         <translation>Не показвай това съобщение отново</translation>
     </message>
     <message>
+        <source>Background color</source>
+        <translation>Цвят на фона</translation>
+    </message>
+    <message>
         <source>Settings</source>
         <translation>Настройки</translation>
-    </message>
-    <message>
-        <source>Window color</source>
-        <translation>Цвят на прозореца</translation>
-    </message>
-    <message>
-        <source>Cut left half</source>
-        <translation>Отрязване на лявата половина</translation>
-    </message>
-    <message>
-        <source>Cut right half</source>
-        <translation>Отрязване на дясната половина</translation>
-    </message>
-    <message>
-        <source>Image editor</source>
-        <translation>Редактор на изображения</translation>
     </message>
 </context>
 <context>
@@ -224,18 +212,6 @@
     <message>
         <source>&amp;Open...</source>
         <translation>&amp;Отваряне...</translation>
-    </message>
-    <message>
-        <source>Background color</source>
-        <translation>Цвят на фона</translation>
-    </message>
-    <message>
-        <source>Save</source>
-        <translation>Записване</translation>
-    </message>
-    <message>
-        <source>Image was changed. Save changes?</source>
-        <translation>Изображението е променено. Да се запазят ли промените?</translation>
     </message>
 </context>
 <context>
