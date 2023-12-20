@@ -1185,7 +1185,7 @@ class ImageEditorDialog(QDialog):
         return fileName
 
     def saveAs(self):
-        filters = (self.tr("Images (*.jpg *.jpeg *.bmp *.png *.tiff *.gif)"),
+        filters = (self.tr("Images (*.jpg *.jpeg *.bmp *.png *.tiff)"),
                    self.tr("All files (*.*)"))
         fileName, _selectedFilter = getSaveFileName(
             self, 'save_image', self.name, self.latestDir, filters)
