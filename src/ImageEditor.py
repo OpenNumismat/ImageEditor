@@ -18,9 +18,10 @@ except ModuleNotFoundError:
     IMAGE_PATH = QStandardPaths.standardLocations(QStandardPaths.PicturesLocation)[0]
 
 
-ZOOM_IN_FACTOR = 1.25
-ZOOM_MAX = 5
 UNDO_STACK_SIZE = 5
+ZOOM_LIST = (6., 4.8, 3.85, 3.1, 2.5, 2., 1.58, 1.25, 1.,
+             0.8, 0.64, 0.5, 0.4, 0.32, 0.26, 0.2, 0.16,)
+ZOOM_MAX = ZOOM_LIST[0]
 
 
 @storeDlgPositionDecorator
@@ -975,7 +976,7 @@ class ImageEditorDialog(QDialog):
         self._origPixmap = None
         self._startPixmap = None
         self.scale = 1
-        self.minScale = 0.2
+        self.minScale = ZOOM_LIST[-1]
         self.isFitToWindow = True
 
         self.createActions()
@@ -1241,8 +1242,7 @@ class ImageEditorDialog(QDialog):
     def normalSize(self):
         self.viewer.setTransformationAnchor(QGraphicsView.AnchorViewCenter)
 
-        self.zoom(1 / self.scale)
-        self.scale = 1
+        self.zoom(1)
 
     def fitToWindow(self):
         self.isFitToWindow = True
@@ -1336,28 +1336,37 @@ class ImageEditorDialog(QDialog):
             self._updateEditActions()
 
     def zoomIn(self):
-        self.zoom(ZOOM_IN_FACTOR)
+        new_scale = ZOOM_LIST[0]
+        for scale in ZOOM_LIST:
+            if scale > self.scale:
+                new_scale = scale
+
+        self.zoom(new_scale)
 
     def zoomOut(self):
-        self.zoom(1 / ZOOM_IN_FACTOR)
+        new_scale = ZOOM_LIST[-1]
+        for scale in ZOOM_LIST:
+            if scale < self.scale:
+                new_scale = scale
+                break
+
+        self.zoom(new_scale)
 
     def zoom(self, scale):
-        need_scale = self.scale * scale
-        if need_scale < self.minScale:
-            need_scale = self.minScale
-            scale = need_scale / self.scale
-        if need_scale > ZOOM_MAX:
-            need_scale = ZOOM_MAX
-            scale = need_scale / self.scale
+        if scale < self.minScale:
+            scale = self.minScale
+        if scale > ZOOM_MAX:
+            scale = ZOOM_MAX
+        need_scale = scale / self.scale
 
-        if need_scale > self.minScale:
+        if scale > self.minScale:
             self.isFitToWindow = False
         else:
             self.isFitToWindow = True
 
-        if need_scale != self.scale:
-            self.scale = need_scale
-            self.viewer.scale(scale, scale)
+        if scale != self.scale:
+            self.scale = scale
+            self.viewer.scale(need_scale, need_scale)
 
             self._updateGrid()
             if self.bounding:
