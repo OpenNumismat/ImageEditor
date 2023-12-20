@@ -201,11 +201,23 @@
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <source>Background color</source>
+        <source>Settings</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <source>Settings</source>
+        <source>Window color</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Cut left half</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Cut right half</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Image editor</source>
         <translation type="unfinished"></translation>
     </message>
 </context>
@@ -213,6 +225,18 @@
     <name>ImageEditorWindow</name>
     <message>
         <source>&amp;Open...</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Background color</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Save</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Image was changed. Save changes?</source>
         <translation type="unfinished"></translation>
     </message>
 </context>
