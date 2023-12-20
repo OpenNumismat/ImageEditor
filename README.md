@@ -19,6 +19,7 @@ ImageEditor is a part of [OpenNumismat](http://opennumismat.github.io/) project,
 * Single click to switch between best fit and actual size mode
 * Mouse wheel zoom
 * Portable version - can be run from a removable storage device
+* Multilanguage: Bulgarian, English, German, Russian, Portuguese, Spanish, Ukrainian
 
 #### Download
 [Latest version for Windows 10 and later](https://github.com/OpenNumismat/ImageEditor/releases/latest)
