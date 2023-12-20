@@ -78,13 +78,6 @@
     </message>
 </context>
 <context>
-    <name>ImageEdit</name>
-    <message>
-        <source>Open File</source>
-        <translation>Отваряне на файл</translation>
-    </message>
-</context>
-<context>
     <name>ImageEditorDialog</name>
     <message>
         <source>Browse in viewer</source>
@@ -179,10 +172,6 @@
         <translation>&amp;Изглед</translation>
     </message>
     <message>
-        <source>Images (*.jpg *.jpeg *.bmp *.png *.tiff *.gif)</source>
-        <translation>Изображения (*.jpg *.jpeg *.bmp *.png *.tiff *.gif)</translation>
-    </message>
-    <message>
         <source>All files (*.*)</source>
         <translation>Всички файлове (*.*)</translation>
     </message>
@@ -199,12 +188,28 @@
         <translation>Не показвай това съобщение отново</translation>
     </message>
     <message>
-        <source>Background color</source>
-        <translation>Цвят на фона</translation>
-    </message>
-    <message>
         <source>Settings</source>
         <translation>Настройки</translation>
+    </message>
+    <message>
+        <source>Window color</source>
+        <translation>Цвят на прозореца</translation>
+    </message>
+    <message>
+        <source>Cut left half</source>
+        <translation>Отрязване на лявата половина</translation>
+    </message>
+    <message>
+        <source>Cut right half</source>
+        <translation>Отрязване на дясната половина</translation>
+    </message>
+    <message>
+        <source>Image editor</source>
+        <translation>Редактор на изображения</translation>
+    </message>
+    <message>
+        <source>Images (%s)</source>
+        <translation>Изображения (%s)</translation>
     </message>
 </context>
 <context>
@@ -212,6 +217,30 @@
     <message>
         <source>&amp;Open...</source>
         <translation>&amp;Отваряне...</translation>
+    </message>
+    <message>
+        <source>Background color</source>
+        <translation>Цвят на фона</translation>
+    </message>
+    <message>
+        <source>Save</source>
+        <translation>Записване</translation>
+    </message>
+    <message>
+        <source>Image was changed. Save changes?</source>
+        <translation>Изображението е променено. Да се запазят ли промените?</translation>
+    </message>
+    <message>
+        <source>Open File</source>
+        <translation>Отваряне на файл</translation>
+    </message>
+    <message>
+        <source>Images (%s)</source>
+        <translation>Изображения (%s)</translation>
+    </message>
+    <message>
+        <source>All files (*.*)</source>
+        <translation>Всички файлове (*.*)</translation>
     </message>
 </context>
 <context>
