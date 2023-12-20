@@ -41,11 +41,11 @@ class ImageEditorWindow(ImageEditorDialog):
         if b'jp2' in supported_formats:
             formats += " *.jp2"
 
-        caption = QApplication.translate('ImageEdit', "Open File")
-        filter_ = QApplication.translate('ImageEdit',
-                            "Images (%s);;All files (*.*)" % formats)
+        caption = self.tr("Open File")
+        filters = (self.tr("Images (%s)") % formats,
+                   self.tr("All files (*.*)"))
         file_name, _ = QFileDialog.getOpenFileName(self,
-                caption, self.latestDir, filter_)
+                caption, self.latestDir, ';;'.join(filters))
         if file_name:
             self.loadFromFile(file_name)
 

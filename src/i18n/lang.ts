@@ -80,13 +80,6 @@
     </message>
 </context>
 <context>
-    <name>ImageEdit</name>
-    <message>
-        <source>Open File</source>
-        <translation type="unfinished"></translation>
-    </message>
-</context>
-<context>
     <name>ImageEditorDialog</name>
     <message>
         <source>Browse in viewer</source>
@@ -181,10 +174,6 @@
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <source>Images (*.jpg *.jpeg *.bmp *.png *.tiff *.gif)</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
         <source>All files (*.*)</source>
         <translation type="unfinished"></translation>
     </message>
@@ -220,6 +209,10 @@
         <source>Image editor</source>
         <translation type="unfinished"></translation>
     </message>
+    <message>
+        <source>Images (%s)</source>
+        <translation type="unfinished"></translation>
+    </message>
 </context>
 <context>
     <name>ImageEditorWindow</name>
@@ -237,6 +230,18 @@
     </message>
     <message>
         <source>Image was changed. Save changes?</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Open File</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Images (%s)</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>All files (*.*)</source>
         <translation type="unfinished"></translation>
     </message>
 </context>
