@@ -78,13 +78,6 @@
     </message>
 </context>
 <context>
-    <name>ImageEdit</name>
-    <message>
-        <source>Open File</source>
-        <translation>Открыть файл</translation>
-    </message>
-</context>
-<context>
     <name>ImageEditorDialog</name>
     <message>
         <source>Browse in viewer</source>
@@ -179,10 +172,6 @@
         <translation>&amp;Вид</translation>
     </message>
     <message>
-        <source>Images (*.jpg *.jpeg *.bmp *.png *.tiff *.gif)</source>
-        <translation>Изображения (*.jpg *.jpeg *.bmp *.png *.tiff *.gif)</translation>
-    </message>
-    <message>
         <source>All files (*.*)</source>
         <translation>Все файлы (*.*)</translation>
     </message>
@@ -190,12 +179,68 @@
         <source>Image was changed. Save changes?</source>
         <translation>Изображение изменено. Сохранить изменения?</translation>
     </message>
+    <message>
+        <source>Save changes to current image?</source>
+        <translation>Сохранить изменения в этом изображении?</translation>
+    </message>
+    <message>
+        <source>Don&apos;t show this again</source>
+        <translation>Больше не показывать</translation>
+    </message>
+    <message>
+        <source>Settings</source>
+        <translation>Настройки</translation>
+    </message>
+    <message>
+        <source>Window color</source>
+        <translation>Цвет окна</translation>
+    </message>
+    <message>
+        <source>Cut left half</source>
+        <translation>Вырезать левую половину</translation>
+    </message>
+    <message>
+        <source>Cut right half</source>
+        <translation>Вырезать правую половину</translation>
+    </message>
+    <message>
+        <source>Image editor</source>
+        <translation>Редактор изображений</translation>
+    </message>
+    <message>
+        <source>Images (%s)</source>
+        <translation>Изображения (%s)</translation>
+    </message>
 </context>
 <context>
     <name>ImageEditorWindow</name>
     <message>
         <source>&amp;Open...</source>
         <translation>&amp;Открыть...</translation>
+    </message>
+    <message>
+        <source>Background color</source>
+        <translation>Цвет фона</translation>
+    </message>
+    <message>
+        <source>Save</source>
+        <translation>Сохранить</translation>
+    </message>
+    <message>
+        <source>Image was changed. Save changes?</source>
+        <translation>Изображение изменено. Сохранить изменения?</translation>
+    </message>
+    <message>
+        <source>Open File</source>
+        <translation>Открыть файл</translation>
+    </message>
+    <message>
+        <source>Images (%s)</source>
+        <translation>Изображения (%s)</translation>
+    </message>
+    <message>
+        <source>All files (*.*)</source>
+        <translation>Все файлы (*.*)</translation>
     </message>
 </context>
 <context>
