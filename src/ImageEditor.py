@@ -554,6 +554,9 @@ class GraphicsBoundingItem(QObject):
                 if self.fixed:
                     self.points[point.BOTTOM_LEFT].setX(newPos.x())
                     self.points[point.TOP_RIGHT].setY(newPos.y())
+                else:
+                    if not self.is_convex(newPos.x(), newPos.y(), p2.x(), p2.y(), p3.x(), p3.y(), p4.x(), p4.y()):
+                        newPos = self.points[point.TOP_LEFT].pos()
             elif point.corner == point.TOP_RIGHT:
                 if newPos.x() > self.width:
                     newPos.setX(self.width)
@@ -570,6 +573,9 @@ class GraphicsBoundingItem(QObject):
                 if self.fixed:
                     self.points[point.BOTTOM_RIGHT].setX(newPos.x())
                     self.points[point.TOP_LEFT].setY(newPos.y())
+                else:
+                    if not self.is_convex(p1.x(), p1.y(), newPos.x(), newPos.y(), p3.x(), p3.y(), p4.x(), p4.y()):
+                        newPos = self.points[point.TOP_RIGHT].pos()
             elif point.corner == point.BOTTOM_RIGHT:
                 if newPos.x() > self.width:
                     newPos.setX(self.width)
@@ -586,6 +592,9 @@ class GraphicsBoundingItem(QObject):
                 if self.fixed:
                     self.points[point.BOTTOM_LEFT].setY(newPos.y())
                     self.points[point.TOP_RIGHT].setX(newPos.x())
+                else:
+                    if not self.is_convex(p1.x(), p1.y(), p2.x(), p2.y(), newPos.x(), newPos.y(), p4.x(), p4.y()):
+                        newPos = self.points[point.BOTTOM_RIGHT].pos()
             else:  # self.corner == self.BOTTOM_LEFT
                 if newPos.x() < 0:
                     newPos.setX(0)
@@ -602,6 +611,9 @@ class GraphicsBoundingItem(QObject):
                 if self.fixed:
                     self.points[point.BOTTOM_RIGHT].setY(newPos.y())
                     self.points[point.TOP_LEFT].setX(newPos.x())
+                else:
+                    if not self.is_convex(p1.x(), p1.y(), p2.x(), p2.y(), p3.x(), p3.y(), newPos.x(), newPos.y()):
+                        newPos = self.points[point.BOTTOM_LEFT].pos()
 
             pos = newPos
 
@@ -613,6 +625,13 @@ class GraphicsBoundingItem(QObject):
         self.rectChanged.emit()
 
         return pos
+    
+    def is_convex(self, xa, ya, xb, yb, xc,yc,xd,yd):
+        t1 = ((xd - xa)*(yb-ya)-(yd-ya)*(xb-xa))
+        t2 = ((xd - xb)*(yc-yb)-(yd-yb)*(xc-xb))
+        t3 = ((xd - xc)*(ya-yc)-(yd-yc)*(xa-xc))
+        t4 =((xa - xc)*(yb-yc)-(ya-yc)*(xb-xc))
+        return t1 * t2 * t3 * t4 > 0
 
     def updateRect(self):
         p1 = self.points[BoundingPointItem.TOP_LEFT]
