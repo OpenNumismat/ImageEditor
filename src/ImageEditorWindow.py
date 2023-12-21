@@ -13,6 +13,7 @@ class ImageEditorWindow(ImageEditorDialog):
         self.setWindowIcon(QIcon(':/slide.png'))
         
         self.imageSaved.connect(self.saveImage)
+        self.viewer.doubleClicked.connect(self.viewerDoubleClicked)
 
     def createActions(self):
         super().createActions()
@@ -32,6 +33,10 @@ class ImageEditorWindow(ImageEditorDialog):
         super().createToolBar()
 
         self.toolBar.insertAction(self.saveAct, self.openFileAct)
+
+    def viewerDoubleClicked(self):
+        if not self.hasImage():
+            self.openFile()
 
     def openFile(self):
         supported_formats = QImageReader.supportedImageFormats()

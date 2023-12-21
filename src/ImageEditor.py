@@ -885,6 +885,7 @@ class GraphicsScene(QGraphicsScene):
 
 
 class GraphicsView(QGraphicsView):
+    doubleClicked = pyqtSignal()
 
     def __init__(self, scene, parent):
         super().__init__(scene, parent)
@@ -923,6 +924,8 @@ class GraphicsView(QGraphicsView):
         # Move scene to old position
         delta = newPos - oldPos
         self.translate(delta.x(), delta.y())
+
+        self.doubleClicked.emit()
 
 
 @storeDlgSizeDecorator
