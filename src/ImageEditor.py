@@ -22,6 +22,7 @@ UNDO_STACK_SIZE = 5
 ZOOM_LIST = (600, 480, 385, 310, 250, 200, 158, 125,
              100, 80, 64, 50, 40, 32, 26, 20, 16,)
 ZOOM_MAX = ZOOM_LIST[0]
+ZOOM_MIN = ZOOM_LIST[-1]
 
 
 @storeDlgPositionDecorator
@@ -976,15 +977,16 @@ class ImageEditorDialog(QDialog):
         self._origPixmap = None
         self._startPixmap = None
         self.scale = 1
-        self.minScale = ZOOM_LIST[-1] / 100
+        self.minScale = ZOOM_MIN / 100
         self.isFitToWindow = True
+        self.undo_stack = []
+        self.redo_stack = []
 
         self.createActions()
         self.createMenus()
         self.createToolBar()
-        
-        self.undo_stack = []
-        self.redo_stack = []
+
+        self._updateActions()
 
     def createActions(self):
         self.openAct = QAction(self.tr("Browse in viewer"), self, triggered=self.open)
@@ -1070,6 +1072,7 @@ class ImageEditorDialog(QDialog):
         self.zoomSpin = QSpinBox(self)
         self.zoomSpin.setRange(self.minScale * 100, ZOOM_MAX)
         self.zoomSpin.setSuffix("%")
+        self.zoomSpin.setValue(self.scale * 100)
         self.zoomSpin.valueChanged.connect(self.zoom)
 
         self.toolBar.addAction(self.saveAct)
@@ -1168,6 +1171,8 @@ class ImageEditorDialog(QDialog):
 
         self.viewer.setSceneRect(QRectF(pixmap.rect()))
         self.updateViewer()
+
+        self._updateActions()
 
         self.sizeLabel.setText("%dx%d" % (image.width(), image.height()))
 
@@ -1359,6 +1364,9 @@ class ImageEditorDialog(QDialog):
         self.zoom(new_zoom)
 
     def zoom(self, zoom):
+        if not self.hasImage():
+            return
+
         scale = zoom / 100
         if scale < self.minScale:
             scale = self.minScale
@@ -1388,7 +1396,7 @@ class ImageEditorDialog(QDialog):
         sceneRect = self.viewer.sceneRect()
         minHeightScale = (self.viewer.height() - 4) / sceneRect.height()
         minWidthScale = (self.viewer.width() - 4) / sceneRect.width()
-        self.minScale = min(minHeightScale, minWidthScale)
+        self.minScale = max(min(minHeightScale, minWidthScale), ZOOM_MIN / 100)
         if self.minScale > 1:
             self.minScale = 1
 
@@ -1415,7 +1423,11 @@ class ImageEditorDialog(QDialog):
         self.normalSizeAct.setDisabled(self.scale == 1)
 
         zoom = self.scale * 100 + 0.5
+
+        self.zoomSpin.blockSignals(True)
         self.zoomSpin.setValue(zoom)
+        self.zoomSpin.blockSignals(False)
+
         self.zoomLabel.setText("%d%%" % zoom)
 
     def rotateLeft(self):
@@ -1749,6 +1761,26 @@ class ImageEditorDialog(QDialog):
 
         self.isChanged = True
         self.markWindowTitle(self.isChanged)
+
+    def _updateActions(self):
+        enabled = self.hasImage()
+
+        self.zoomSpin.setEnabled(enabled)
+        self.openAct.setEnabled(enabled)
+        self.saveAsAct.setEnabled(enabled)
+        self.zoomInAct.setEnabled(enabled)
+        self.zoomOutAct.setEnabled(enabled)
+        self.normalSizeAct.setEnabled(enabled)
+        self.fitToWindowAct.setEnabled(enabled)
+        self.rotateLeftAct.setEnabled(enabled)
+        self.rotateRightAct.setEnabled(enabled)
+        self.rotateAct.setEnabled(enabled)
+        self.cropAct.setEnabled(enabled)
+        self.autocropAct.setEnabled(enabled)
+        self.saveAct.setEnabled(enabled)
+        self.copyAct.setEnabled(enabled)
+        self.cutLeftAct.setEnabled(enabled)
+        self.cutRightAct.setEnabled(enabled)
 
     def _updateEditActions(self):
         inCrop = self.cropAct.isChecked()
