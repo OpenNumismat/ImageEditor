@@ -10,10 +10,12 @@ try:
     from OpenNumismat.Tools import TemporaryDir
     from OpenNumismat.Tools.DialogDecorators import storeDlgSizeDecorator, storeDlgPositionDecorator
     from OpenNumismat.Tools.Gui import getSaveFileName
+    from .UndoStack import UndoStack
 except ModuleNotFoundError:
     from Tools import TemporaryDir
     from Tools.DialogDecorators import storeDlgSizeDecorator, storeDlgPositionDecorator
     from Tools.Gui import getSaveFileName
+    from UndoStack import UndoStack
 
     IMAGE_PATH = QStandardPaths.standardLocations(QStandardPaths.PicturesLocation)[0]
 
@@ -979,8 +981,7 @@ class ImageEditorDialog(QDialog):
         self.scale = 1
         self.minScale = ZOOM_MIN / 100
         self.isFitToWindow = True
-        self.undo_stack = []
-        self.redo_stack = []
+        self.undo_stack = UndoStack()
 
         self.createActions()
         self.createMenus()
@@ -1777,7 +1778,6 @@ class ImageEditorDialog(QDialog):
         self.rotateAct.setEnabled(enabled)
         self.cropAct.setEnabled(enabled)
         self.autocropAct.setEnabled(enabled)
-        self.saveAct.setEnabled(enabled)
         self.copyAct.setEnabled(enabled)
         self.cutLeftAct.setEnabled(enabled)
         self.cutRightAct.setEnabled(enabled)
@@ -1798,6 +1798,10 @@ class ImageEditorDialog(QDialog):
             self.saveAct.setDisabled(True)
         else:
             self.saveAct.setEnabled(self.isChanged)
+
+    def _updateUndoActions(self):
+        self.undoAct.setEnabled(self.undo_stack.can_undo())
+        self.redoAct.setEnabled(self.undo_stack.can_redo())
 
     def save(self, confirm_save=True):
         if confirm_save:
@@ -1823,43 +1827,44 @@ class ImageEditorDialog(QDialog):
             self.imageSaved.emit(self.getImage())
 
         self.isChanged = False
+        self.undo_stack.store_pos()
         self.markWindowTitle(self.isChanged)
         self._updateEditActions()
 
     def pushUndo(self, pixmap):
-        self.undo_stack.append(pixmap)
-        if len(self.undo_stack) > UNDO_STACK_SIZE:
-            self.undo_stack.pop(0)
-        self.redo_stack.clear()
+        self.undo_stack.push(pixmap)
 
-        self.undoAct.setDisabled(False)
-        self.redoAct.setDisabled(True)
+        self._updateUndoActions()
 
     def undo(self):
-        pixmap = self.undo_stack.pop()
-        self.redo_stack.append(self._pixmapHandle.pixmap())
+        pixmap = self.undo_stack.undo()
+        self.undo_stack.push_redo(self._pixmapHandle.pixmap())
 
-        if not self.undo_stack:
-            self.undoAct.setDisabled(True)
-        self.redoAct.setDisabled(False)
+        self._updateUndoActions()
 
         self.setImage(pixmap)
 
-        self.isChanged = True
+        if self.isChanged:
+            if not self.undo_stack.is_pos_changed():
+                self.isChanged = False
+        else:
+            self.isChanged = True
         self.markWindowTitle(self.isChanged)
         self._updateEditActions()
 
     def redo(self):
-        pixmap = self.redo_stack.pop()
-        self.undo_stack.append(self._pixmapHandle.pixmap())
+        pixmap = self.undo_stack.redo()
+        self.undo_stack.push_undo(self._pixmapHandle.pixmap())
 
-        if not self.redo_stack:
-            self.redoAct.setDisabled(True)
-        self.undoAct.setDisabled(False)
+        self._updateUndoActions()
 
         self.setImage(pixmap)
 
-        self.isChanged = True
+        if self.isChanged:
+            if not self.undo_stack.is_pos_changed():
+                self.isChanged = False
+        else:
+            self.isChanged = True
         self.markWindowTitle(self.isChanged)
         self._updateEditActions()
 

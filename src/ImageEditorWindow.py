@@ -71,9 +71,8 @@ class ImageEditorWindow(ImageEditorDialog):
 
         self.origFileName = fileName
 
-        self.undo_stack = []
+        self.undo_stack.clear()
         self.undoAct.setDisabled(True)
-        self.redo_stack = []
         self.redoAct.setDisabled(True)
         self.isChanged = False
         # self.markWindowTitle(self.isChanged)
