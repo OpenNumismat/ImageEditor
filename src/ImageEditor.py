@@ -11,11 +11,13 @@ try:
     from OpenNumismat.Tools.DialogDecorators import storeDlgSizeDecorator, storeDlgPositionDecorator
     from OpenNumismat.Tools.Gui import getSaveFileName
     from .UndoStack import UndoStack
+    from .image_tools import *
 except ModuleNotFoundError:
     from Tools import TemporaryDir
     from Tools.DialogDecorators import storeDlgSizeDecorator, storeDlgPositionDecorator
     from Tools.Gui import getSaveFileName
     from UndoStack import UndoStack
+    from image_tools import *
 
     IMAGE_PATH = QStandardPaths.standardLocations(QStandardPaths.PicturesLocation)[0]
 
@@ -1558,32 +1560,6 @@ class ImageEditorDialog(QDialog):
         self.rotateAct.setChecked(False)
         self._updateEditActions()
     
-    COLOR_THRESHOLD = 20
-    
-    def __findBorderH(self, image, range_v, range_h):
-        c = image.pixel(range_h[0], range_v[0])
-        start_r, start_g, start_b, _ = QColor(c).getRgb()
-        for i in range_v:
-            for j in range_h:
-                c = image.pixel(j, i)
-                r, g, b, _ = QColor(c).getRgb()
-                if abs(r - start_r) > self.COLOR_THRESHOLD or \
-                        abs(g - start_g) > self.COLOR_THRESHOLD or \
-                        abs(b - start_b) > self.COLOR_THRESHOLD:
-                    return i
-
-    def __findBorderV(self, image, range_h, range_v):
-        c = image.pixel(range_h[0], range_v[0])
-        start_r, start_g, start_b, _ = QColor(c).getRgb()
-        for i in range_h:
-            for j in range_v:
-                c = image.pixel(i, j)
-                r, g, b, _ = QColor(c).getRgb()
-                if abs(r - start_r) > self.COLOR_THRESHOLD or \
-                        abs(g - start_g) > self.COLOR_THRESHOLD or \
-                        abs(b - start_b) > self.COLOR_THRESHOLD:
-                    return i
-
     def crop(self):
         if self.cropAct.isChecked():
             sceneRect = self.viewer.sceneRect()
@@ -1591,12 +1567,9 @@ class ImageEditorDialog(QDialog):
             h = int(sceneRect.height())
 
             image = self._pixmapHandle.pixmap().toImage()
-            x1 = self.__findBorderV(image, range(w//2), range(h))
-            x2 = self.__findBorderV(image, range(w-1, w//2, -1), range(h)) + 1
-            y1 = self.__findBorderH(image, range(h//2), range(w))
-            y2 = self.__findBorderH(image, range(h-1, h//2, -1), range(w)) + 1
+            auto_rect = findBorders(image)
 
-            self.cropDlg = CropDialog(w, h, (x1, y1, x2-x1, y2-y1), self)
+            self.cropDlg = CropDialog(w, h, auto_rect, self)
             self.cropDlg.finished.connect(self.cropClose)
             self.cropDlg.currentToolChanged.connect(self.cropToolChanged)
             self.cropDlg.cropChanged.connect(self.cropDlgChanged)
@@ -1708,54 +1681,14 @@ class ImageEditorDialog(QDialog):
 
                 self.isChanged = True
             elif self.cropDlg.currentTool() == 1:
-                rect = QRectF(points[3].x(), points[0].y(),
-                              points[1].x() - points[3].x(),
-                              points[2].y() - points[0].y()).toRect()
+                pixmap = cropCircle(pixmap, points)
+                if pixmap:
+                    self.setImage(pixmap)
 
-                pixmap = pixmap.copy(rect)
-                # Create the output image with the same dimensions and an alpha channel
-                # and make it completely transparent:
-                out_img = QImage(pixmap.width(), pixmap.height(), QImage.Format_ARGB32)
-                out_img.fill(Qt.transparent)
-
-                # Create a texture brush and paint a circle with the original image onto
-                # the output image:
-                brush = QBrush(pixmap)       # Create texture brush
-                painter = QPainter(out_img)  # Paint the output image
-                painter.setBrush(brush)      # Use the image texture brush
-                painter.setPen(Qt.NoPen)     # Don't draw an outline
-                painter.setRenderHint(QPainter.Antialiasing, True)  # Use AA
-                painter.drawEllipse(pixmap.rect())  # Actually draw the circle
-                painter.end()                # We are done
-
-                self.setImage(out_img)
-
-                self.isChanged = True
+                    self.isChanged = True
             else:
-                orig_rect = pixmap.rect()
-
-                width, height = self._perspectiveTransformation(points, orig_rect)
-
-                poly1 = QPolygonF(points)
-
-                poly2 = QPolygonF()
-                poly2.append(QPointF(0, 0))
-                poly2.append(QPointF(width, 0))
-                poly2.append(QPointF(width, height))
-                poly2.append(QPointF(0, height))
-
-                transform = QTransform()
-                res = QTransform.quadToQuad(poly1, poly2, transform)
-                if res:
-                    tl = transform.map(QPoint(0, 0))
-                    bl = transform.map(QPoint(0, orig_rect.height()))
-                    tr = transform.map(QPoint(orig_rect.width(), 0))
-
-                    x = max(-tl.x(), -bl.x())
-                    y = max(-tr.y(), -tl.y())
-
-                    pixmap = pixmap.transformed(transform, Qt.SmoothTransformation)
-                    pixmap = pixmap.copy(x, y, width, height)
+                pixmap = perspectiveTransformation(pixmap, points)
+                if pixmap:
                     self.setImage(pixmap)
 
                     self.isChanged = True
@@ -1890,37 +1823,3 @@ class ImageEditorDialog(QDialog):
             self.isChanged = True
         self.markWindowTitle(self.isChanged)
         self._updateEditActions()
-
-    # Based on https://stackoverflow.com/questions/38285229/calculating-aspect-ratio-of-perspective-transform-destination-image
-    def _perspectiveTransformation(self, points, rect):
-        u0 = rect.width()/2
-        v0 = rect.height()/2
-        m1x = points[0].x() - u0
-        m1y = points[0].y() - v0
-        m2x = points[1].x() - u0
-        m2y = points[1].y() - v0
-        m3x = points[3].x() - u0
-        m3y = points[3].y() - v0
-        m4x = points[2].x() - u0
-        m4y = points[2].y() - v0
-
-        k2 = ((m1y - m4y)*m3x - (m1x - m4x)*m3y + m1x*m4y - m1y*m4x) / ((m2y - m4y)*m3x - (m2x - m4x)*m3y + m2x*m4y - m2y*m4x)
-
-        k3 = ((m1y - m4y)*m2x - (m1x - m4x)*m2y + m1x*m4y - m1y*m4x) / ((m3y - m4y)*m2x - (m3x - m4x)*m2y + m3x*m4y - m3y*m4x)
-
-        if k2 == 1 or k3 == 1:
-            whRatio = math.sqrt( (pow((m2y-m1y),2) + pow((m2x-m1x),2)) / (pow((m3y-m1y),2) + pow((m3x-m1x),2)))
-        else:
-            f_squared = -((k3*m3y - m1y)*(k2*m2y - m1y) + (k3*m3x - m1x)*(k2*m2x - m1x)) / ((k3 - 1)*(k2 - 1))
-            whRatio = math.sqrt((pow((k2 - 1),2) + pow((k2*m2y - m1y),2)/f_squared + pow((k2*m2x - m1x),2)/f_squared) / (pow((k3 - 1),2) + pow((k3*m3y - m1y),2)/f_squared + pow((k3*m3x - m1x),2)/f_squared) )
-
-        leftLine = QLineF(points[1], points[2])
-        rightLine = QLineF(points[3], points[0])
-        h1 = leftLine.length()
-        h2 = rightLine.length()
-        h = max(h1,h2)
-
-        height = int(h)
-        width = int(whRatio * height)
-
-        return (width, height)
