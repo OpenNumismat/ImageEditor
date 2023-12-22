@@ -385,18 +385,14 @@ class BoundingLineItem(QGraphicsLineItem):
 
 class MaskPolygonItem(QGraphicsPixmapItem):
 
-    def __init__(self, width, height):
+    def __init__(self):
         super().__init__()
 
         self.setOpacity(0.2)
+        self.setFlag(QGraphicsItem.ItemIgnoresTransformations)
 
-        self.width = width
-        self.height = height
-
-        self.setPolygon(0, 0, self.width, 0, self.width, self.height, 0, self.height)
-
-    def setPolygon(self, x1, y1, x2, y2, x3, y3, x4, y4):
-        image = QImage(self.width, self.height, QImage.Format_ARGB32)
+    def setPolygon(self, width, height, x1, y1, x2, y2, x3, y3, x4, y4):
+        image = QImage(width, height, QImage.Format_ARGB32)
         image.fill(Qt.black)
 
         brush = QBrush(Qt.white)
@@ -444,7 +440,7 @@ class GraphicsBoundingItem(QObject):
 
         self.lines = [line1, line2, line3, line4]
 
-        self.mask = MaskPolygonItem(self.width, self.height)
+        self.mask = MaskPolygonItem()
 
         self.updateRect()
 
@@ -617,7 +613,11 @@ class GraphicsBoundingItem(QObject):
 
             pos = newPos
 
-        self.mask.setPolygon(p1.x(), p1.y(), p2.x(), p2.y(), p3.x(), p3.y(), p4.x(), p4.y())
+        self.mask.setPolygon(self.width * self.scale, self.height * self.scale,
+                             p1.x() * self.scale, p1.y() * self.scale,
+                             p2.x() * self.scale, p2.y() * self.scale,
+                             p3.x() * self.scale, p3.y() * self.scale,
+                             p4.x() * self.scale, p4.y() * self.scale)
 
         for item in self.items():
             item.setFlag(QGraphicsItem.ItemSendsGeometryChanges)
@@ -626,11 +626,11 @@ class GraphicsBoundingItem(QObject):
 
         return pos
     
-    def is_convex(self, xa, ya, xb, yb, xc,yc,xd,yd):
-        t1 = ((xd - xa)*(yb-ya)-(yd-ya)*(xb-xa))
-        t2 = ((xd - xb)*(yc-yb)-(yd-yb)*(xc-xb))
-        t3 = ((xd - xc)*(ya-yc)-(yd-yc)*(xa-xc))
-        t4 =((xa - xc)*(yb-yc)-(ya-yc)*(xb-xc))
+    def is_convex(self, xa, ya, xb, yb, xc, yc, xd, yd):
+        t1 = ((xd - xa) * (yb - ya) - (yd - ya) * (xb - xa))
+        t2 = ((xd - xb) * (yc - yb) - (yd - yb) * (xc - xb))
+        t3 = ((xd - xc) * (ya - yc) - (yd - yc) * (xa - xc))
+        t4 = ((xa - xc) * (yb - yc) - (ya - yc) * (xb - xc))
         return t1 * t2 * t3 * t4 > 0
 
     def updateRect(self):
@@ -638,6 +638,7 @@ class GraphicsBoundingItem(QObject):
         p2 = self.points[BoundingPointItem.TOP_RIGHT]
         p3 = self.points[BoundingPointItem.BOTTOM_RIGHT]
         p4 = self.points[BoundingPointItem.BOTTOM_LEFT]
+
         self.lines[0].setLine(p1.x() * self.scale,
                               (p1.y() - self.lines[0].pos().y()) * self.scale,
                               p2.x() * self.scale,
@@ -655,7 +656,11 @@ class GraphicsBoundingItem(QObject):
                               (p1.x() - self.lines[3].pos().x()) * self.scale,
                               p1.y() * self.scale)
 
-        self.mask.setPolygon(p1.x(), p1.y(), p2.x(), p2.y(), p3.x(), p3.y(), p4.x(), p4.y())
+        self.mask.setPolygon(self.width * self.scale, self.height * self.scale,
+                             p1.x() * self.scale, p1.y() * self.scale,
+                             p2.x() * self.scale, p2.y() * self.scale,
+                             p3.x() * self.scale, p3.y() * self.scale,
+                             p4.x() * self.scale, p4.y() * self.scale)
 
     def setScale(self, scale):
         self.scale = scale
@@ -671,9 +676,7 @@ class GraphicsBoundingItem(QObject):
 
 class BoundingCircleItem(QGraphicsEllipseItem):
 
-    def __init__(self, bounding):
-        self.bounding = bounding
-
+    def __init__(self):
         super().__init__()
 
         self.setPen(QPen(Qt.DashLine))
@@ -682,18 +685,14 @@ class BoundingCircleItem(QGraphicsEllipseItem):
 
 class MaskCircleItem(QGraphicsPixmapItem):
 
-    def __init__(self, width, height):
+    def __init__(self):
         super().__init__()
 
         self.setOpacity(0.2)
+        self.setFlag(QGraphicsItem.ItemIgnoresTransformations)
 
-        self.width = width
-        self.height = height
-
-        self.setRect(0, 0, self.width, self.height)
-
-    def setRect(self, x, y, w, h):
-        image = QImage(self.width, self.height, QImage.Format_ARGB32)
+    def setRect(self, width, height, x, y, w, h):
+        image = QImage(width, height, QImage.Format_ARGB32)
         image.fill(Qt.black)
 
         brush = QBrush(Qt.white)
@@ -732,8 +731,8 @@ class GraphicsCircleBoundingItem(QObject):
 
         self.points = [point1, point2, point3, point4]
 
-        self.circle = BoundingCircleItem(self)
-        self.mask = MaskCircleItem(self.width, self.height)
+        self.circle = BoundingCircleItem()
+        self.mask = MaskCircleItem()
 
         self.updateRect()
 
@@ -837,7 +836,9 @@ class GraphicsCircleBoundingItem(QObject):
         p3 = self.points[2]
         p4 = self.points[3]
 
-        self.mask.setRect(p4.x(), p1.y(), p2.x() - p4.x(), p3.y() - p1.y())
+        self.mask.setRect(self.width * self.scale, self.height * self.scale,
+                          p4.x() * self.scale, p1.y() * self.scale,
+                          (p2.x() - p4.x()) * self.scale, (p3.y() - p1.y()) * self.scale)
         self.circle.setRect(p4.x() * self.scale, p1.y() * self.scale,
                             (p2.x() - p4.x()) * self.scale, (p3.y() - p1.y()) * self.scale)
 
