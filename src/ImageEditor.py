@@ -1759,7 +1759,7 @@ class ImageEditorDialog(QDialog):
         self.undoAct.setEnabled(self.undo_stack.can_undo())
         self.redoAct.setEnabled(self.undo_stack.can_redo())
 
-    def save(self, confirm_save=True):
+    def save(self, checked=False, confirm_save=True):
         if confirm_save:
             settings = QSettings()
             show = settings.value('image_viewer/confirm_save', True, type=bool)
