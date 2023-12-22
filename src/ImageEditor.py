@@ -1263,7 +1263,7 @@ class ImageEditorDialog(QDialog):
                     self.tr("Image was changed. Save changes?"),
                     QMessageBox.Save | QMessageBox.No, QMessageBox.No)
                 if result == QMessageBox.Save:
-                    self.save()
+                    self.save(confirm_save=False)
 
             super().done(r)
 
