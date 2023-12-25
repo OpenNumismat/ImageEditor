@@ -1700,17 +1700,10 @@ class ImageEditorDialog(QDialog):
         pixmap = self._pixmapHandle.pixmap()
         self.pushUndo(pixmap)
 
-        sceneRect = self.viewer.sceneRect()
-        w = int(sceneRect.width())
-        h = int(sceneRect.height())
-
         image = pixmap.toImage()
-        x1 = self.__findBorderV(image, range(w//2), range(h))
-        x2 = self.__findBorderV(image, range(w-1, w//2, -1), range(h)) + 1
-        y1 = self.__findBorderH(image, range(h//2), range(w))
-        y2 = self.__findBorderH(image, range(h-1, h//2, -1), range(w)) + 1
 
-        rect = QRect(x1, y1, x2-x1, y2-y1)
+        auto_rect = findBorders(image)
+        rect = QRect(*auto_rect)
 
         pixmap = pixmap.copy(rect)
         self.setImage(pixmap)
