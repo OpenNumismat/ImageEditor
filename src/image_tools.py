@@ -77,7 +77,7 @@ def perspectiveTransformation(pixmap, points):
     orig_rect = pixmap.rect()
 
     if NUMPY_SCIPY_AVAILABLE:
-        width, height = _perspectiveTransformation1(points, orig_rect)
+        width, height = _perspectiveTransformation2(points, orig_rect)
     else:
         width, height = _perspectiveTransformation1(points, orig_rect)
 
