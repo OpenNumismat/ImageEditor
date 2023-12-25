@@ -7,11 +7,36 @@ try:
     NUMPY_SCIPY_AVAILABLE = True
 except ModuleNotFoundError:
     NUMPY_SCIPY_AVAILABLE = False
+try:
+    from PIL import Image, ImageChops, ImageQt
+    PIL_AVAILABLE = True
+except ModuleNotFoundError:
+    PIL_AVAILABLE = False
 
 COLOR_THRESHOLD = 20
 
 
 def findBorders(image):
+    if PIL_AVAILABLE:
+        return _findBorders1(image)
+    else:
+        return _findBorders2(image)
+
+
+def _findBorders1(image):
+    im = ImageQt.fromqimage(image)
+
+    bg = Image.new(im.mode, im.size, im.getpixel((0, 0)))
+    diff = ImageChops.difference(im, bg)
+    diff = ImageChops.add(diff, diff, 2.0, -100)
+    bbox = diff.getbbox()
+    if bbox:
+        return (bbox[0], bbox[1], bbox[2] - bbox[0], bbox[3] - bbox[1])
+
+    return (0, 0, image.width(), image.height())
+
+
+def _findBorders2(image):
     w = image.width()
     h = image.height()
 
