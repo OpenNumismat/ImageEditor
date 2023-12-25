@@ -1,28 +1,27 @@
-import math
-
 from PySide6.QtCore import *
 from PySide6.QtGui import *
 from PySide6.QtWidgets import *
 from PySide6.QtCore import Signal as pyqtSignal
 
 try:
+    from .UndoStack import UndoStack
+    from .image_tools import *
+except ImportError:
+    from UndoStack import UndoStack
+    from image_tools import *
+try:
     from OpenNumismat import IMAGE_PATH
     from OpenNumismat.Tools import TemporaryDir
     from OpenNumismat.Tools.DialogDecorators import storeDlgSizeDecorator, storeDlgPositionDecorator
     from OpenNumismat.Tools.Gui import getSaveFileName
-    from .UndoStack import UndoStack
-    from .image_tools import *
 except ModuleNotFoundError:
     from Tools import TemporaryDir
     from Tools.DialogDecorators import storeDlgSizeDecorator, storeDlgPositionDecorator
     from Tools.Gui import getSaveFileName
-    from UndoStack import UndoStack
-    from image_tools import *
 
     IMAGE_PATH = QStandardPaths.standardLocations(QStandardPaths.PicturesLocation)[0]
 
 
-UNDO_STACK_SIZE = 5
 ZOOM_LIST = (600, 480, 385, 310, 250, 200, 158, 125,
              100, 80, 64, 50, 40, 32, 26, 20, 16,)
 ZOOM_MAX = ZOOM_LIST[0]
