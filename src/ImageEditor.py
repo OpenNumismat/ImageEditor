@@ -1023,6 +1023,12 @@ class ImageEditorDialog(QDialog):
         self.zoomOutAct = QAction(QIcon(':/zoom_out.png'), self.tr("Zoom &Out (25%)"), self, shortcut=Qt.Key_Minus, triggered=self.zoomOut)
         self.normalSizeAct = QAction(QIcon(':/arrow_out.png'), self.tr("&Normal Size"), self, shortcut=Qt.Key_A, triggered=self.normalSize)
         self.fitToWindowAct = QAction(QIcon(':/arrow_in.png'), self.tr("&Fit to Window"), self, shortcut=Qt.Key_0, triggered=self.fitToWindow)
+        self.zoom100Act = QShortcut(Qt.Key_1, self, self.zoom100)
+        self.zoom200Act = QShortcut(Qt.Key_2, self, self.zoom200)
+        self.zoom300Act = QShortcut(Qt.Key_3, self, self.zoom300)
+        self.zoom400Act = QShortcut(Qt.Key_4, self, self.zoom400)
+        self.zoom500Act = QShortcut(Qt.Key_5, self, self.zoom500)
+        self.zoom600Act = QShortcut(Qt.Key_6, self, self.zoom600)
         self.showToolBarAct = QAction(self.tr("Show Tool Bar"), self, checkable=True, triggered=self.showToolBar)
         self.showStatusBarAct = QAction(self.tr("Show Status Bar"), self, checkable=True, triggered=self.showStatusBar)
         self.rotateLeftAct = QAction(QIcon(':/arrow_rotate_anticlockwise.png'), self.tr("Rotate to Left"), self, shortcut=QKeySequence.MoveToPreviousWord, triggered=self.rotateLeft)
@@ -1275,30 +1281,6 @@ class ImageEditorDialog(QDialog):
 
         self.showFullScreen()
 
-    def normalSize(self):
-        self.viewer.setTransformationAnchor(QGraphicsView.AnchorViewCenter)
-
-        self.zoom(100)
-
-    def fitToWindow(self):
-        self.isFitToWindow = True
-
-        sceneRect = self.viewer.sceneRect()
-        scaleH = (self.viewer.height() - 4) / sceneRect.height()
-        scaleW = (self.viewer.width() - 4) / sceneRect.width()
-        if scaleH < 1 or scaleW < 1:
-            self.viewer.fitInView(sceneRect, Qt.KeepAspectRatio)
-            self.scale = min(scaleH, scaleW)
-        else:
-            self.viewer.resetTransform()
-            self.scale = 1
-
-        self._updateGrid()
-        if self.bounding:
-            self.bounding.setScale(self.scale)
-
-        self._updateZoomActions()
-
     def copy(self):
         image = self._pixmapHandle.pixmap().toImage()
         mime = QMimeData()
@@ -1371,6 +1353,46 @@ class ImageEditorDialog(QDialog):
             self.markWindowTitle(self.isChanged)
             self._updateEditActions()
 
+    def normalSize(self):
+        self.zoom(100)
+
+    def fitToWindow(self):
+        self.isFitToWindow = True
+
+        sceneRect = self.viewer.sceneRect()
+        scaleH = (self.viewer.height() - 4) / sceneRect.height()
+        scaleW = (self.viewer.width() - 4) / sceneRect.width()
+        if scaleH < 1 or scaleW < 1:
+            self.viewer.fitInView(sceneRect, Qt.KeepAspectRatio)
+            self.scale = min(scaleH, scaleW)
+        else:
+            self.viewer.resetTransform()
+            self.scale = 1
+
+        self._updateGrid()
+        if self.bounding:
+            self.bounding.setScale(self.scale)
+
+        self._updateZoomActions()
+
+    def zoom100(self):
+        self.zoom(100)
+
+    def zoom200(self):
+        self.zoom(200)
+
+    def zoom300(self):
+        self.zoom(300)
+
+    def zoom400(self):
+        self.zoom(400)
+
+    def zoom500(self):
+        self.zoom(500)
+
+    def zoom600(self):
+        self.zoom(600)
+
     def zoomIn(self):
         new_zoom = ZOOM_LIST[0]
         for zoom in ZOOM_LIST:
@@ -1405,6 +1427,8 @@ class ImageEditorDialog(QDialog):
             self.isFitToWindow = True
 
         if scale != self.scale:
+            self.viewer.setTransformationAnchor(QGraphicsView.AnchorViewCenter)
+
             self.scale = scale
             self.viewer.scale(need_scale, need_scale)
 
