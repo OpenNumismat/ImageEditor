@@ -951,7 +951,6 @@ class GraphicsView(QGraphicsView):
 
 @storeDlgSizeDecorator
 class ImageEditorDialog(QDialog):
-    latestDir = IMAGE_PATH
     imageSaved = pyqtSignal(QImage)
 
     def __init__(self, parent=None):
@@ -1240,12 +1239,9 @@ class ImageEditorDialog(QDialog):
         filters = (self.tr("Images (%s)") % formats,
                    self.tr("All files (*.*)"))
         fileName, _selectedFilter = getSaveFileName(
-            self, 'save_image', self.name, self.latestDir, filters)
+            self, 'images', self.name, IMAGE_PATH, filters)
         if fileName:
             self._pixmapHandle.pixmap().save(fileName)
-
-            file_info = QFileInfo(fileName)
-            self.latestDir = file_info.absolutePath()
 
     def done(self, r):
         if self.cropDlg and self.cropDlg.isVisible():

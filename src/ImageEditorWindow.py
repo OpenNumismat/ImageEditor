@@ -1,8 +1,10 @@
-from PySide6.QtCore import QSettings, QFileInfo, Qt
+from PySide6.QtCore import QSettings, QFileInfo, Qt, QStandardPaths
 from PySide6.QtGui import QIcon, QAction, QKeySequence, QImageReader, QImage, QColor
 from PySide6.QtWidgets import QApplication, QStyle, QFileDialog, QMessageBox, QColorDialog, QDialog
 
 from ImageEditor import ImageEditorDialog
+
+IMAGE_PATH = QStandardPaths.standardLocations(QStandardPaths.PicturesLocation)[0]
 
 
 class ImageEditorWindow(ImageEditorDialog):
@@ -46,11 +48,14 @@ class ImageEditorWindow(ImageEditorDialog):
         if b'jp2' in supported_formats:
             formats += " *.jp2"
 
+        settings = QSettings()
+        last_dir = settings.value('images/last_dir', IMAGE_PATH)
+
         caption = self.tr("Open File")
         filters = (self.tr("Images (%s)") % formats,
                    self.tr("All files (*.*)"))
         file_name, _ = QFileDialog.getOpenFileName(self,
-                caption, self.latestDir, ';;'.join(filters))
+                caption, last_dir, ';;'.join(filters))
         if file_name:
             self.loadFromFile(file_name)
 
@@ -69,9 +74,8 @@ class ImageEditorWindow(ImageEditorDialog):
         self.setImage(image)
 
         file_info = QFileInfo(fileName)
-        self.latestDir = file_info.absolutePath()
         settings = QSettings()
-        settings.setValue('save_image/last_dir', self.latestDir)
+        settings.setValue('images/last_dir', file_info.absolutePath())
 
         file_title = file_info.fileName()
         self.setTitle(file_title)
