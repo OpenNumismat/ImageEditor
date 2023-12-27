@@ -70,6 +70,8 @@ class ImageEditorWindow(ImageEditorDialog):
 
         file_info = QFileInfo(fileName)
         self.latestDir = file_info.absolutePath()
+        settings = QSettings()
+        settings.setValue('save_image/last_dir', self.latestDir)
 
         file_title = file_info.fileName()
         self.setTitle(file_title)
