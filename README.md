@@ -23,27 +23,27 @@ ImageEditor is a part of [OpenNumismat](http://opennumismat.github.io/) project,
 
 ##### Keyboard Shortcuts
 
-`Ctrl`+`O` - Open file
-`Ctrl`+`S` - Save
-`Ctrl`+`C`, `Ctrl`+`Insert` - Copy
-`Ctrl`+`V`, `Shift`+`Insert` - Paste
-`Ctrl`+`Z` - Undo
-`Ctrl`+`Y` - Redo
-`Ctrl`+`Right` - Rotate to right
-`Ctrl`+`Left` - Rotate to left
-`C` - Open crop tool
-`R` - Open rotate tool
-`+` - Zoom in
-`-` - Zoom out
-`0` - Fit to window
-`1`, `A` - Scale 100%
-`2` - Scale 200%
-`3` - Scale 300%
-`4` - Scale 400%
-`5` - Scale 500%
-`6` - Scale 600%
-`F11` - Full screen
-`Esc` - Quit
+`Ctrl`+`O` - Open file  
+`Ctrl`+`S` - Save  
+`Ctrl`+`C`, `Ctrl`+`Insert` - Copy  
+`Ctrl`+`V`, `Shift`+`Insert` - Paste  
+`Ctrl`+`Z` - Undo  
+`Ctrl`+`Y` - Redo  
+`Ctrl`+`Right` - Rotate to right  
+`Ctrl`+`Left` - Rotate to left  
+`C` - Open crop tool  
+`R` - Open rotate tool  
+`+` - Zoom in  
+`-` - Zoom out  
+`0` - Fit to window  
+`1`, `A` - Scale 100%  
+`2` - Scale 200%  
+`3` - Scale 300%  
+`4` - Scale 400%  
+`5` - Scale 500%  
+`6` - Scale 600%  
+`F11` - Full screen  
+`Esc` - Quit  
 
 #### Download
 [Latest version for Windows 10 and later](https://github.com/OpenNumismat/ImageEditor/releases/latest)
