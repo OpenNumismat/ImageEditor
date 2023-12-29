@@ -18,6 +18,7 @@ jobs:
     outputs:
       APPNAME: ${{ steps.get_appname.outputs.APPNAME }}
       VERSION: ${{ steps.get_version.outputs.VERSION }}
+      REVISION: ${{ steps.get_revision.outputs.REVISION }}
     steps:
     - uses: actions/checkout@v3
     - name: get-appname
@@ -25,14 +26,17 @@ jobs:
       run: echo "APPNAME=${APPLICATION_NAME}" >> "$GITHUB_OUTPUT"
     - name: get-version
       id: get_version
-      run: echo "VERSION=$(git rev-parse --short HEAD)" >> "$GITHUB_OUTPUT"
+      run: python "VERSION=$(from src import __version__; print(__version__))" >> "$GITHUB_OUTPUT"
+    - name: get-revision
+      id: get_revision
+      run: echo "REVISION=$(git rev-parse --short HEAD)" >> "$GITHUB_OUTPUT"
 
 
   windows:
     needs: [setup]
     runs-on: windows-latest
     env:
-      PACKAGENAME: ${{ needs.setup.outputs.APPNAME }}-${{ needs.setup.outputs.VERSION }}
+      PACKAGENAME: ${{ needs.setup.outputs.APPNAME }}-${{ needs.setup.outputs.VERSION }}-${{ needs.setup.outputs.REVISION }}
     steps:
     - uses: actions/checkout@v3
       with:
@@ -58,5 +62,5 @@ jobs:
     - name: upload
       uses: actions/upload-artifact@v3
       with:
-        name: ${{ env.PACKAGENAME }}
+        name: ${{ env.PACKAGENAME }}.zip
         path: ${{ env.PACKAGENAME }}.zip
