@@ -26,7 +26,7 @@ jobs:
       run: echo "APPNAME=${APPLICATION_NAME}" >> "$GITHUB_OUTPUT"
     - name: get-version
       id: get_version
-      run: python "VERSION=$(from src import __version__; print(__version__))" >> "$GITHUB_OUTPUT"
+      run: echo "VERSION=$(python -c 'from src import __version__; print(__version__)')" >> "$GITHUB_OUTPUT"
     - name: get-revision
       id: get_revision
       run: echo "REVISION=$(git rev-parse --short HEAD)" >> "$GITHUB_OUTPUT"
