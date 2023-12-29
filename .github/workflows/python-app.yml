@@ -31,7 +31,6 @@ jobs:
       id: get_revision
       run: echo "REVISION=$(git rev-parse --short HEAD)" >> "$GITHUB_OUTPUT"
 
-
   windows:
     needs: [setup]
     runs-on: windows-latest
@@ -60,10 +59,11 @@ jobs:
         move ${{ env.PACKAGENAME }}.zip ..
         cd ..
     - name: upload
-      uses: actions/upload-artifact@v3
+      uses: actions/upload-artifact@v4
       with:
-        name: ${{ env.PACKAGENAME }}.zip
+        name: ${{ env.PACKAGENAME }}
         path: ${{ env.PACKAGENAME }}.zip
+        if-no-files-found: error
 
   prerelease:
     name: Create pre-release
@@ -71,6 +71,7 @@ jobs:
     runs-on: ubuntu-latest
     env:
       PACKAGENAME: ${{ needs.setup.outputs.APPNAME }}-${{ needs.setup.outputs.VERSION }}-${{ needs.setup.outputs.REVISION }}
+      GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
     steps:
     - name: Download artifacts
       uses: actions/download-artifact@v3
@@ -86,10 +87,8 @@ jobs:
         title: "Development Build"
     - name: upload
       uses: actions/upload-release-asset@v1
-      env:
-        GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
       with:
         upload_url: ${{ steps.release.outputs.upload_url }}
-        asset_path: artifacts/${{ env.PACKAGENAME }}.zip/${{ env.PACKAGENAME }}.zip
+        asset_path: artifacts/${{ env.PACKAGENAME }}/${{ env.PACKAGENAME }}.zip
         asset_name: ${{ env.PACKAGENAME }}.zip
         asset_content_type: application/zip
