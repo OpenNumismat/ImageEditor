@@ -65,14 +65,21 @@ jobs:
         name: ${{ env.PACKAGENAME }}.zip
         path: ${{ env.PACKAGENAME }}.zip
 
-
   prerelease:
-    needs: [setup, windows]
     name: Create pre-release
+    needs: [setup, windows]
     runs-on: ubuntu-latest
+    env:
+      PACKAGENAME: ${{ needs.setup.outputs.APPNAME }}-${{ needs.setup.outputs.VERSION }}-${{ needs.setup.outputs.REVISION }}
     steps:
+    - name: Download artifacts
+      uses: actions/download-artifact@v3
+      with:
+        name: ${{ env.PACKAGENAME }}.zip
     - name: release
       uses: actions/create-release@v1
+      env:
+        GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
       with:
         #artifacts: ${{ env.PACKAGENAME }}.zip
         #tag_name: latest
