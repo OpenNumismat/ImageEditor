@@ -24,7 +24,7 @@ jobs:
       run: echo ::set-output name=APPNAME::${APPLICATION_NAME}
     - name: get-version
       id: get_version
-      run: echo ::set-output name=VERSION::${GITHUB_REF/refs\/tags\//}
+      run: echo "VERSION=$(git rev-parse --short HEAD)" >> "$GITHUB_OUTPUT"
 
 
   windows:
