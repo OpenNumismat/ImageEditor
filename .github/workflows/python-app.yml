@@ -83,8 +83,8 @@ jobs:
         GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
       with:
         #artifacts: ${{ env.PACKAGENAME }}.zip
-        tag_name: latest
-        #commit: "main"
+        #tag_name: ${{ github.ref }}
+        commit: "main"
         release_name: Development Build
         draft: false
         prerelease: true
