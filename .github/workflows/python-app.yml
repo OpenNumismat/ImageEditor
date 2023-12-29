@@ -19,14 +19,13 @@ jobs:
       APPNAME: ${{ steps.get_appname.outputs.APPNAME }}
       VERSION: ${{ steps.get_version.outputs.VERSION }}
     steps:
+    - uses: actions/checkout@v3
     - name: get-appname
       id: get_appname
       run: echo ::set-output name=APPNAME::${APPLICATION_NAME}
     - name: get-version
       id: get_version
-      run: |
-        echo "$(git rev-parse --short HEAD)"
-        echo "VERSION=$(git rev-parse --short HEAD)" >> "$GITHUB_OUTPUT"
+      run: echo "APPNAME=${APPLICATION_NAME}" >> "$GITHUB_OUTPUT"
 
 
   windows:
