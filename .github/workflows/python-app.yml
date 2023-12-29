@@ -64,3 +64,19 @@ jobs:
       with:
         name: ${{ env.PACKAGENAME }}.zip
         path: ${{ env.PACKAGENAME }}.zip
+
+
+  prerelease:
+    needs: [setup, windows]
+    name: Create pre-release
+    runs-on: ubuntu-latest
+    steps:
+    - name: release
+      uses: actions/create-release@v1
+      with:
+        #artifacts: ${{ env.PACKAGENAME }}.zip
+        #tag_name: latest
+        #commit: "main"
+        release_name: Development Build
+        draft: false
+        prerelease: true
