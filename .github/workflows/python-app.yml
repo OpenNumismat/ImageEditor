@@ -22,10 +22,10 @@ jobs:
     - uses: actions/checkout@v3
     - name: get-appname
       id: get_appname
-      run: echo ::set-output name=APPNAME::${APPLICATION_NAME}
+      run: echo "APPNAME=${APPLICATION_NAME}" >> "$GITHUB_OUTPUT"
     - name: get-version
       id: get_version
-      run: echo "APPNAME=${APPLICATION_NAME}" >> "$GITHUB_OUTPUT"
+      run: echo "VERSION=$(git rev-parse --short HEAD)" >> "$GITHUB_OUTPUT"
 
 
   windows:
