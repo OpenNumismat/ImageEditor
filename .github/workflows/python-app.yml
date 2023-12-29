@@ -75,15 +75,25 @@ jobs:
     - name: Download artifacts
       uses: actions/download-artifact@v3
       with:
-        name: ${{ env.PACKAGENAME }}.zip
+        path: artifacts
     - name: release
+      id: release
       uses: actions/create-release@v1
       env:
         GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
       with:
         #artifacts: ${{ env.PACKAGENAME }}.zip
-        #tag_name: latest
+        tag_name: ${{ github.ref }}
         #commit: "main"
         release_name: Development Build
         draft: false
         prerelease: true
+    - name: upload
+      uses: actions/upload-release-asset@v1
+      env:
+        GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+      with:
+        upload_url: ${{ steps.release.outputs.upload_url }}
+        asset_path: artifacts/${{ env.PACKAGENAME }}/${{ env.PACKAGENAME }}.zip
+        asset_name: ${{ env.PACKAGENAME }}.zip
+        asset_content_type: application/zip
