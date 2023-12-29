@@ -54,8 +54,3 @@ coll = COLLECT(
     upx_exclude=[],
     name=ImageEditor.__name__,
 )
-
-
-import shutil
-
-shutil.make_archive(f'{ImageEditor.__name__}-{ImageEditor.__version__}', 'zip', 'dist')
