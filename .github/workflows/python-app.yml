@@ -59,7 +59,7 @@ jobs:
         create-version-file metadata.yml --outfile versionfile.txt --version ${{ needs.setup.outputs.VERSION }}
     - name: build
       run: |
-        pyinstaller --version-file versionfile.txt image-editor.spec
+        pyinstaller image-editor.spec
     - name: package
       run: |
         cd dist
