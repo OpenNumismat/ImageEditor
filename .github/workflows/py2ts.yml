@@ -7,13 +7,13 @@ on:
     paths:
       - 'src/**.py'
       - '!src/resources.py'
-  pull_request:
-    branches:
-      - main
-    types: [closed]
-    paths:
-      - 'src/**.py'
-      - '!src/resources.py'
+#  pull_request:
+#    branches:
+#      - main
+#    types: [closed]
+#    paths:
+#      - 'src/**.py'
+#      - '!src/resources.py'
 
 jobs:
   resources:
