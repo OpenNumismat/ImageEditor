@@ -52,9 +52,14 @@ jobs:
         python -m pip install --upgrade pip
         python -m pip install -r requirements.txt
         python -m pip install -r requirements-dev.txt
+    - name: Create versionfile
+      run: |
+        echo "FileDescription: ${{ needs.setup.outputs.APPNAME }}" > metadata.yml
+        echo "InternalName: ${{ needs.setup.outputs.APPNAME }}" >> metadata.yml
+        create-version-file metadata.yml --outfile versionfile.txt --version ${{ needs.setup.outputs.VERSION }}
     - name: build
       run: |
-        pyinstaller image-editor.spec
+        pyinstaller --version-file versionfile.txt image-editor.spec
     - name: package
       run: |
         cd dist
