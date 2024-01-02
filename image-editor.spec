@@ -14,6 +14,8 @@ a = Analysis(
 )
 pyz = PYZ(a.pure)
 
+import ImageEditor
+
 exe = EXE(
     pyz,
     a.scripts,
