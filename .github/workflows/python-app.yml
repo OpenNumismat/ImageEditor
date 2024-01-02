@@ -3,6 +3,10 @@ name: "Snapshot"
 on:
   push:
     branches: [ "main" ]
+    paths:
+      - '!src/i18n/*'
+      - '!src/icons/*'
+      - '!src/resources.qrc'
   pull_request:
     branches: [ "main" ]
 
