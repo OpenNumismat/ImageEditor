@@ -2,7 +2,8 @@ name: "Build resources"
 
 on:
   push:
-    branches: [ "main" ]
+    branches:
+      - main
     paths:
       - 'src/i18n/lang_*.ts'
       - 'src/icons/*'
