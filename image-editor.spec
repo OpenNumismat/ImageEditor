@@ -14,18 +14,6 @@ a = Analysis(
 )
 pyz = PYZ(a.pure)
 
-
-import pyinstaller_versionfile
-import ImageEditor
-
-pyinstaller_versionfile.create_versionfile(
-    output_file="versionfile.txt",
-    version=ImageEditor.__version__,
-    file_description=ImageEditor.__name__,
-    internal_name=ImageEditor.__name__,
-)
-
-
 exe = EXE(
     pyz,
     a.scripts,
