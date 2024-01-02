@@ -3,10 +3,18 @@ name: "Build resources"
 on:
   push:
     branches: [ "main" ]
+    paths:
+      - 'src/i18n/lang_*.js'
+      - 'src/icons/*'
+      - 'src/resources.qrc'
   pull_request:
     branches:
       - main
     types: [closed]
+    paths:
+      - 'src/i18n/lang_*.js'
+      - 'src/icons/*'
+      - 'src/resources.qrc'
 
 jobs:
   resources:
@@ -28,4 +36,7 @@ jobs:
     - name: qrc2py
       run: |
         python misc/qrc2py.py
-        git diff
+    - name: Commit & Push changes
+      uses: actions-js/push@master
+      with:
+        github_token: ${{ secrets.GITHUB_TOKEN }}
