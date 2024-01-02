@@ -8,14 +8,14 @@ on:
       - 'src/i18n/lang_*.ts'
       - 'src/icons/*'
       - 'src/resources.qrc'
-  pull_request:
-    branches:
-      - main
-    types: [closed]
-    paths:
-      - 'src/i18n/lang_*.ts'
-      - 'src/icons/*'
-      - 'src/resources.qrc'
+#  pull_request:
+#    branches:
+#      - main
+#    types: [closed]
+#    paths:
+#      - 'src/i18n/lang_*.ts'
+#      - 'src/icons/*'
+#      - 'src/resources.qrc'
 
 jobs:
   resources:
