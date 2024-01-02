@@ -7,8 +7,8 @@ on:
       - '!src/i18n/*'
       - '!src/icons/*'
       - '!src/resources.qrc'
-  pull_request:
-    branches: [ "main" ]
+#  pull_request:
+#    branches: [ "main" ]
 
 #permissions:
 #  contents: read
