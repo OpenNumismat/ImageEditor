@@ -2,7 +2,8 @@
 [![GitHub release (latest by date)](https://img.shields.io/github/downloads/opennumismat/ImageEditor/latest/total.svg)](https://hanadigital.github.io/grev/?user=OpenNumismat&repo=ImageEditor)
 [![GitHub all releases](https://img.shields.io/github/downloads/opennumismat/ImageEditor/total.svg)](https://hanadigital.github.io/grev/?user=OpenNumismat&repo=ImageEditor)
 [![GitHub license](https://img.shields.io/github/license/opennumismat/ImageEditor.svg)](https://github.com/opennumismat/ImageEditor/blob/master/LICENSE)
- 
+[![Latest build](https://github.com/OpenNumismat/ImageEditor/actions/workflows/snapshot.yml/badge.svg)](https://github.com/OpenNumismat/ImageEditor/actions/workflows/snapshot.yml)
+
 # ImageEditor
 
 ImageEditor is a part of [OpenNumismat](http://opennumismat.github.io/) project, so it aims to edit coins images.
@@ -20,6 +21,7 @@ ImageEditor is a part of [OpenNumismat](http://opennumismat.github.io/) project,
 * Mouse wheel zoom
 * Portable version - can be run from a removable storage device
 * Multilanguage: Bulgarian, English, German, Russian, Portuguese, Spanish, Ukrainian
+* Crossplatform
 
 ##### Keyboard Shortcuts
 
