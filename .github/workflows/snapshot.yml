@@ -59,6 +59,7 @@ jobs:
         create-version-file metadata.yml --outfile versionfile.txt --version ${{ needs.setup.outputs.VERSION }}.0.${{ needs.setup.outputs.REVISION }}
     - name: build
       run: |
+        SET PYTHONOPTIMIZE=1
         pyinstaller image-editor.spec
     - name: package
       run: |
