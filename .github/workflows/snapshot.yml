@@ -33,7 +33,7 @@ jobs:
       run: echo "VERSION=$(python -c 'from src import __version__; print(__version__)')" >> "$GITHUB_OUTPUT"
     - name: get-revision
       id: get_revision
-      run: echo "REVISION=$(git rev-parse --short HEAD)" >> "$GITHUB_OUTPUT"
+      run: echo "REVISION=${{ github.run_number }}" >> "$GITHUB_OUTPUT"
 
   windows:
     needs: [setup]
@@ -56,7 +56,7 @@ jobs:
       run: |
         echo "FileDescription: ${{ needs.setup.outputs.APPNAME }}" > metadata.yml
         echo "InternalName: ${{ needs.setup.outputs.APPNAME }}" >> metadata.yml
-        create-version-file metadata.yml --outfile versionfile.txt --version ${{ needs.setup.outputs.VERSION }}
+        create-version-file metadata.yml --outfile versionfile.txt --version ${{ needs.setup.outputs.VERSION }}.0.${{ needs.setup.outputs.REVISION }}
     - name: build
       run: |
         pyinstaller image-editor.spec
