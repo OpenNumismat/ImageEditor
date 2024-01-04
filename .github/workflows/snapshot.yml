@@ -48,7 +48,7 @@ jobs:
       run: |
         python -m pip install --upgrade pip
         python -m pip install -r requirements.txt
-        python -m pip install -r pyinstaller pyinstaller-versionfile
+        python -m pip install pyinstaller pyinstaller-versionfile
     - name: Create versionfile
       run: |
         echo "FileDescription: ${{ needs.setup.outputs.APPNAME }}" > metadata.yml
