@@ -13,9 +13,6 @@ on:
 #permissions:
 #  contents: read
 
-env:
-  APPLICATION_NAME: ImageEditor
-
 jobs:
   setup:
     runs-on: ubuntu-latest
@@ -27,7 +24,7 @@ jobs:
     - uses: actions/checkout@v3
     - name: get-appname
       id: get_appname
-      run: echo "APPNAME=${APPLICATION_NAME}" >> "$GITHUB_OUTPUT"
+      run: echo "APPNAME=${{ github.event.repository.name }}" >> "$GITHUB_OUTPUT"
     - name: get-version
       id: get_version
       run: echo "VERSION=$(python -c 'from src import __version__; print(__version__)')" >> "$GITHUB_OUTPUT"
@@ -64,8 +61,8 @@ jobs:
     - name: package
       run: |
         cd dist
-        dir ImageEditor
-        7z a -r ${{ env.PACKAGENAME }}.zip ImageEditor
+        dir ${{ needs.setup.outputs.APPNAME }}
+        7z a -r ${{ env.PACKAGENAME }}.zip ${{ needs.setup.outputs.APPNAME }}
         move ${{ env.PACKAGENAME }}.zip ..
         cd ..
     - name: upload
