@@ -9,8 +9,6 @@ on:
         value: ${{ jobs.version.outputs.TAG_OFFSET }}
       APPNAME:
         value: ${{ jobs.version.outputs.APP_NAME }}
-      PACKAGENAME:
-        value: ${{ jobs.version.outputs.APP_NAME }}-${{ jobs.version.outputs.VERSION }}.${{ jobs.version.outputs.TAG_OFFSET }}
 
 jobs:
   version:

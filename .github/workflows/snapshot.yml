@@ -23,8 +23,8 @@ jobs:
     name: Title
     runs-on: ubuntu-latest
     outputs:
-      PACKAGENAME: ${{ needs.version.outputs.app_name }}-${{ needs.version.outputs.version }}.${{ needs.version.outputs.revision }}
-      APPNAME: ${{ needs.version.outputs.app_name }}
+      PACKAGENAME: ${{ needs.version.outputs.APPNAME }}-${{ needs.version.outputs.VERSION }}.${{ needs.version.outputs.REVISION }}
+      APPNAME: ${{ needs.version.outputs.APPNAME }}
     steps:
       - run: "true"
 
@@ -47,7 +47,7 @@ jobs:
       run: |
         echo "FileDescription: ${{ needs.title.outputs.APPNAME }}" > metadata.yml
         echo "InternalName: ${{ needs.title.outputs.APPNAME }}" >> metadata.yml
-        create-version-file metadata.yml --outfile versionfile.txt --version ${{ needs.title.outputs.VERSION }}.0.${{ needs.title.outputs.REVISION }}
+        create-version-file metadata.yml --outfile versionfile.txt --version ${{ needs.version.outputs.VERSION }}.0.${{ needs.version.outputs.REVISION }}
     - name: build
       run: |
         SET PYTHONOPTIMIZE=1
