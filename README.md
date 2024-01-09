@@ -2,7 +2,7 @@
 [![GitHub release (latest by date)](https://img.shields.io/github/downloads/opennumismat/ImageEditor/latest/total.svg)](https://hanadigital.github.io/grev/?user=OpenNumismat&repo=ImageEditor)
 [![GitHub all releases](https://img.shields.io/github/downloads/opennumismat/ImageEditor/total.svg)](https://hanadigital.github.io/grev/?user=OpenNumismat&repo=ImageEditor)
 [![GitHub license](https://img.shields.io/github/license/opennumismat/ImageEditor.svg)](https://github.com/opennumismat/ImageEditor/blob/master/LICENSE)
-[![Latest build](https://github.com/OpenNumismat/ImageEditor/actions/workflows/snapshot.yml/badge.svg)](https://github.com/OpenNumismat/ImageEditor/actions/workflows/snapshot.yml)
+[![Latest build](https://github.com/OpenNumismat/ImageEditor/actions/workflows/snapshot.yml/badge.svg)](https://github.com/OpenNumismat/ImageEditor/releases/tag/latest)
 
 # ImageEditor
 
