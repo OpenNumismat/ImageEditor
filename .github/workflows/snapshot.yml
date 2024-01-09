@@ -16,7 +16,7 @@ on:
 jobs:
   version:
     name: Version
-    uses: .github/workflows/job_version.yml
+    uses: ./.github/workflows/job_version.yml
 
   title:
     needs: version
