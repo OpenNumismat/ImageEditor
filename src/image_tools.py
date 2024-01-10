@@ -1,29 +1,11 @@
 from PySide6.QtCore import Qt, QPointF, QPoint, QRectF
 from PySide6.QtGui import QTransform, QPolygonF, QImage, QPainter, QBrush, QColor
+from PIL import Image, ImageChops, ImageQt
+import numpy as np
 import math
-try:
-    import numpy as np
-    # import scipy.spatial.distance
-    NUMPY_SCIPY_AVAILABLE = True
-except ModuleNotFoundError:
-    NUMPY_SCIPY_AVAILABLE = False
-try:
-    from PIL import Image, ImageChops, ImageQt
-    PIL_AVAILABLE = True
-except ModuleNotFoundError:
-    PIL_AVAILABLE = False
-
-COLOR_THRESHOLD = 20
 
 
 def findBorders(image):
-    if PIL_AVAILABLE:
-        return _findBorders1(image)
-    else:
-        return _findBorders2(image)
-
-
-def _findBorders1(image):
     im = ImageQt.fromqimage(image)
 
     bg = Image.new(im.mode, im.size, im.getpixel((0, 0)))
@@ -34,44 +16,6 @@ def _findBorders1(image):
         return (bbox[0], bbox[1], bbox[2] - bbox[0], bbox[3] - bbox[1])
 
     return (0, 0, image.width(), image.height())
-
-
-def _findBorders2(image):
-    w = image.width()
-    h = image.height()
-
-    x1 = _findBorderV(image, range(w // 2), range(h))
-    x2 = _findBorderV(image, range(w - 1, w // 2, -1), range(h)) + 1
-    y1 = _findBorderH(image, range(h // 2), range(w))
-    y2 = _findBorderH(image, range(h - 1, h // 2, -1), range(w)) + 1
-
-    return (x1, y1, x2 - x1, y2 - y1)
-
-
-def _findBorderH(image, range_v, range_h):
-    c = image.pixel(range_h[0], range_v[0])
-    start_r, start_g, start_b, _ = QColor(c).getRgb()
-    for i in range_v:
-        for j in range_h:
-            c = image.pixel(j, i)
-            r, g, b, _ = QColor(c).getRgb()
-            if abs(r - start_r) > COLOR_THRESHOLD or \
-                    abs(g - start_g) > COLOR_THRESHOLD or \
-                    abs(b - start_b) > COLOR_THRESHOLD:
-                return i
-
-
-def _findBorderV(image, range_h, range_v):
-    c = image.pixel(range_h[0], range_v[0])
-    start_r, start_g, start_b, _ = QColor(c).getRgb()
-    for i in range_h:
-        for j in range_v:
-            c = image.pixel(i, j)
-            r, g, b, _ = QColor(c).getRgb()
-            if abs(r - start_r) > COLOR_THRESHOLD or \
-                    abs(g - start_g) > COLOR_THRESHOLD or \
-                    abs(b - start_b) > COLOR_THRESHOLD:
-                return i
 
 
 def cropCircle(pixmap, points):
@@ -101,10 +45,7 @@ def cropCircle(pixmap, points):
 def perspectiveTransformation(pixmap, points):
     orig_rect = pixmap.rect()
 
-    if NUMPY_SCIPY_AVAILABLE:
-        width, height = _perspectiveTransformation2(points, orig_rect)
-    else:
-        width, height = _perspectiveTransformation1(points, orig_rect)
+    width, height = _perspectiveTransformation(points, orig_rect)
 
     poly1 = QPolygonF(points)
 
@@ -132,40 +73,7 @@ def perspectiveTransformation(pixmap, points):
     return None
 
 
-def _perspectiveTransformation1(points, rect):
-# Based on https://stackoverflow.com/questions/38285229/calculating-aspect-ratio-of-perspective-transform-destination-image
-    u0 = rect.width() / 2
-    v0 = rect.height() / 2
-    m1x = points[0].x() - u0
-    m1y = points[0].y() - v0
-    m2x = points[1].x() - u0
-    m2y = points[1].y() - v0
-    m3x = points[3].x() - u0
-    m3y = points[3].y() - v0
-    m4x = points[2].x() - u0
-    m4y = points[2].y() - v0
-
-    k2 = ((m1y - m4y) * m3x - (m1x - m4x) * m3y + m1x * m4y - m1y * m4x) / ((m2y - m4y) * m3x - (m2x - m4x) * m3y + m2x * m4y - m2y * m4x)
-
-    k3 = ((m1y - m4y) * m2x - (m1x - m4x) * m2y + m1x * m4y - m1y * m4x) / ((m3y - m4y) * m2x - (m3x - m4x) * m2y + m3x * m4y - m3y * m4x)
-
-    if k2 == 1 or k3 == 1:
-        whRatio = math.sqrt((pow((m2y - m1y), 2) + pow((m2x - m1x), 2)) / (pow((m3y - m1y), 2) + pow((m3x - m1x), 2)))
-    else:
-        f_squared = -((k3 * m3y - m1y) * (k2 * m2y - m1y) + (k3 * m3x - m1x) * (k2 * m2x - m1x)) / ((k3 - 1) * (k2 - 1))
-        whRatio = math.sqrt((pow((k2 - 1), 2) + pow((k2 * m2y - m1y), 2) / f_squared + pow((k2 * m2x - m1x), 2) / f_squared) / (pow((k3 - 1), 2) + pow((k3 * m3y - m1y), 2) / f_squared + pow((k3 * m3x - m1x), 2) / f_squared))
-
-    h1 = math.sqrt(pow((points[2].x() - points[1].x()), 2) + pow((points[2].y() - points[1].y()), 2))
-    h2 = math.sqrt(pow((points[3].x() - points[0].x()), 2) + pow((points[3].y() - points[0].y()), 2))
-    h = max(h1, h2)
-
-    height = int(h)
-    width = int(whRatio * height)
-
-    return (width, height)
-
-
-def _perspectiveTransformation2(points, rect):
+def _perspectiveTransformation(points, rect):
 # Based on https://stackoverflow.com/questions/38285229/calculating-aspect-ratio-of-perspective-transform-destination-image
     rows = rect.height()
     cols = rect.width()
