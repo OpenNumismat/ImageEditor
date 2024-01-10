@@ -21,7 +21,7 @@ jobs:
   resources:
     runs-on: windows-latest
     steps:
-    - uses: actions/checkout@v3
+    - uses: actions/checkout@v4
       with:
         submodules: 'recursive'
     - uses: actions/setup-python@v3
