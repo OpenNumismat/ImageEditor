@@ -938,7 +938,10 @@ class GraphicsView(QGraphicsView):
 
         oldPos = self.mapToScene(event.position().toPoint())
 
-        self.parent().zoomIn()
+        if event.button() == Qt.RightButton:
+            self.parent().zoomOut()
+        else:
+            self.parent().zoomIn()
 
         # Get the new position
         newPos = self.mapToScene(event.position().toPoint())
