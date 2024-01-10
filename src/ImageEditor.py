@@ -915,42 +915,35 @@ class GraphicsView(QGraphicsView):
         self.setStyleSheet("border: 0px;")
 
     def wheelEvent(self, event):
-        self.setTransformationAnchor(QGraphicsView.NoAnchor)
-        # self.setTransformationAnchor(QGraphicsView.AnchorUnderMouse)
-
-        oldPos = self.mapToScene(event.position().toPoint())
-
         if event.angleDelta().y() > 0:
-            self.parent().zoomIn()
+            self._zoom(1, event.position())
         else:
-            self.parent().zoomOut()
-
-        # Get the new position
-        newPos = self.mapToScene(event.position().toPoint())
-
-        # Move scene to old position
-        delta = newPos - oldPos
-        self.translate(delta.x(), delta.y())
+            self._zoom(-1, event.position())
 
     def mouseDoubleClickEvent(self, event):
-        self.setTransformationAnchor(QGraphicsView.NoAnchor)
-        # self.setTransformationAnchor(QGraphicsView.AnchorUnderMouse)
+        if event.button() == Qt.LeftButton:
+            self._zoom(1, event.position())
+        elif event.button() == Qt.RightButton:
+            self._zoom(-1, event.position())
 
-        oldPos = self.mapToScene(event.position().toPoint())
+        if event.button() == Qt.LeftButton:
+            self.doubleClicked.emit()
 
-        if event.button() == Qt.RightButton:
-            self.parent().zoomOut()
-        else:
+    def _zoom(self, direction, position):
+        oldPos = self.mapToScene(position.toPoint())
+
+        if direction > 0:
             self.parent().zoomIn()
+        else:
+            self.parent().zoomOut()
 
         # Get the new position
-        newPos = self.mapToScene(event.position().toPoint())
+        newPos = self.mapToScene(position.toPoint())
 
         # Move scene to old position
         delta = newPos - oldPos
+        self.setTransformationAnchor(QGraphicsView.NoAnchor)
         self.translate(delta.x(), delta.y())
-
-        self.doubleClicked.emit()
 
 
 @storeDlgSizeDecorator
