@@ -385,11 +385,12 @@ class BoundingLineItem(QGraphicsLineItem):
 
 
 class MaskPolygonItem(QGraphicsPixmapItem):
+    MASK_OPACITY = 0.3
 
     def __init__(self):
         super().__init__()
 
-        self.setOpacity(0.2)
+        self.setOpacity(self.MASK_OPACITY)
         self.setFlag(QGraphicsItem.ItemIgnoresTransformations)
 
     def setPolygon(self, width, height, x1, y1, x2, y2, x3, y3, x4, y4):
