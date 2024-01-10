@@ -914,6 +914,42 @@ class GraphicsView(QGraphicsView):
 
         self.setStyleSheet("border: 0px;")
 
+        self.timer = QTimer()
+        self.timer.setSingleShot(True)
+        self.timer.timeout.connect(self._smooth_zoom_in)
+
+    def mousePressEvent(self, event):
+        if event.button() == Qt.MiddleButton:
+            self._smooth_zoom_in()
+
+        return super().mousePressEvent(event)
+
+    def mouseReleaseEvent(self, event):
+        if event.button() == Qt.MiddleButton:
+            self.timer.stop()
+
+        return super().mouseReleaseEvent(event)
+
+    def _start_timer(self):
+        # self.timer.start(60 - self.parent().scale * self.parent().scale)
+        self.timer.start(60 / self.parent().scale)
+
+    def _smooth_zoom_in(self):
+        self._start_timer()
+
+        position = self.mapFromGlobal(QCursor.pos())
+        oldPos = self.mapToScene(position)
+
+        self.parent().zoom(self.parent().scale * 100 + 1)
+
+        # Get the new position
+        newPos = self.mapToScene(position)
+
+        # Move scene to old position
+        delta = newPos - oldPos
+        self.setTransformationAnchor(QGraphicsView.NoAnchor)
+        self.translate(delta.x(), delta.y())
+
     def wheelEvent(self, event):
         if event.angleDelta().y() > 0:
             self._zoom(1, event.position())
