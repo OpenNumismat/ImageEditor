@@ -172,10 +172,6 @@
         <translation>&amp;Изглед</translation>
     </message>
     <message>
-        <source>All files (*.*)</source>
-        <translation>Всички файлове (*.*)</translation>
-    </message>
-    <message>
         <source>Image was changed. Save changes?</source>
         <translation>Изображението е променено. Да се запазят ли промените?</translation>
     </message>
@@ -207,10 +203,6 @@
         <source>Image editor</source>
         <translation>Редактор на изображения</translation>
     </message>
-    <message>
-        <source>Images (%s)</source>
-        <translation>Изображения (%s)</translation>
-    </message>
 </context>
 <context>
     <name>ImageEditorWindow</name>
@@ -234,14 +226,6 @@
         <source>Open File</source>
         <translation>Отваряне на файл</translation>
     </message>
-    <message>
-        <source>Images (%s)</source>
-        <translation>Изображения (%s)</translation>
-    </message>
-    <message>
-        <source>All files (*.*)</source>
-        <translation>Всички файлове (*.*)</translation>
-    </message>
 </context>
 <context>
     <name>RotateDialog</name>
@@ -260,6 +244,24 @@
     <message>
         <source>Show grid</source>
         <translation>Показване на мрежа</translation>
+    </message>
+</context>
+<context>
+    <name>readImageFilters</name>
+    <message>
+        <source>Images (%s)</source>
+        <translation>Изображения (%s)</translation>
+    </message>
+    <message>
+        <source>All files (*.*)</source>
+        <translation>Всички файлове (*.*)</translation>
+    </message>
+</context>
+<context>
+    <name>saveImageFilters</name>
+    <message>
+        <source>All files (*.*)</source>
+        <translation>Всички файлове (*.*)</translation>
     </message>
 </context>
 </TS>
