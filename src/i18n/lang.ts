@@ -174,10 +174,6 @@
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <source>All files (*.*)</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
         <source>Image was changed. Save changes?</source>
         <translation type="unfinished"></translation>
     </message>
@@ -209,10 +205,6 @@
         <source>Image editor</source>
         <translation type="unfinished"></translation>
     </message>
-    <message>
-        <source>Images (%s)</source>
-        <translation type="unfinished"></translation>
-    </message>
 </context>
 <context>
     <name>ImageEditorWindow</name>
@@ -236,14 +228,6 @@
         <source>Open File</source>
         <translation type="unfinished"></translation>
     </message>
-    <message>
-        <source>Images (%s)</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <source>All files (*.*)</source>
-        <translation type="unfinished"></translation>
-    </message>
 </context>
 <context>
     <name>RotateDialog</name>
@@ -261,6 +245,24 @@
     </message>
     <message>
         <source>Show grid</source>
+        <translation type="unfinished"></translation>
+    </message>
+</context>
+<context>
+    <name>readImageFilters</name>
+    <message>
+        <source>Images (%s)</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>All files (*.*)</source>
+        <translation type="unfinished"></translation>
+    </message>
+</context>
+<context>
+    <name>saveImageFilters</name>
+    <message>
+        <source>All files (*.*)</source>
         <translation type="unfinished"></translation>
     </message>
 </context>
