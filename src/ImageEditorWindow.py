@@ -1,9 +1,10 @@
 from PySide6.QtCore import QSettings, QFileInfo, Qt, QStandardPaths
-from PySide6.QtGui import QIcon, QAction, QKeySequence, QImageReader, QImage, QColor
+from PySide6.QtGui import QIcon, QAction, QKeySequence, QImage, QColor
 from PySide6.QtWidgets import QApplication, QStyle, QFileDialog, QMessageBox, QColorDialog, QDialog
 
 from ImageEditor import ImageEditorDialog
-from Tools.misc import readImageFilters
+from Tools.Gui import getSaveFileName
+from Tools.misc import readImageFilters, saveImageFilters
 
 IMAGE_PATH = QStandardPaths.standardLocations(QStandardPaths.PicturesLocation)[0]
 
@@ -83,6 +84,23 @@ class ImageEditorWindow(ImageEditorDialog):
 
     def saveImage(self, image):
         image.save(self.origFileName)
+
+    def saveAs(self):
+        fileName, _selectedFilter = getSaveFileName(
+            self, 'images', self.name, IMAGE_PATH, saveImageFilters())
+        if fileName:
+            self._pixmapHandle.pixmap().save(fileName)
+
+            file_info = QFileInfo(fileName)
+            settings = QSettings()
+            settings.setValue('images/last_dir', file_info.absolutePath())
+
+            file_title = file_info.fileName()
+            self.setTitle(file_title)
+
+            self.origFileName = fileName
+
+            self.isChanged = False
 
     def selectTransparentColor(self):
         settings = QSettings()
