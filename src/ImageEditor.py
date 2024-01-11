@@ -14,10 +14,12 @@ try:
     from OpenNumismat.Tools import TemporaryDir
     from OpenNumismat.Tools.DialogDecorators import storeDlgSizeDecorator, storeDlgPositionDecorator
     from OpenNumismat.Tools.Gui import getSaveFileName
+    from OpenNumismat.Tools.misc import saveImageFilters
 except ModuleNotFoundError:
     from Tools import TemporaryDir
     from Tools.DialogDecorators import storeDlgSizeDecorator, storeDlgPositionDecorator
     from Tools.Gui import getSaveFileName
+    from Tools.misc import saveImageFilters
 
     IMAGE_PATH = QStandardPaths.standardLocations(QStandardPaths.PicturesLocation)[0]
 
@@ -1262,17 +1264,8 @@ class ImageEditorDialog(QDialog):
         return fileName
 
     def saveAs(self):
-        supported_formats = QImageReader.supportedImageFormats()
-        formats = "*.jpg *.jpeg *.png *.bmp *.tiff"
-        if b'webp' in supported_formats:
-            formats += " *.webp"
-        if b'jp2' in supported_formats:
-            formats += " *.jp2"
-
-        filters = (self.tr("Images (%s)") % formats,
-                   self.tr("All files (*.*)"))
         fileName, _selectedFilter = getSaveFileName(
-            self, 'images', self.name, IMAGE_PATH, filters)
+            self, 'images', self.name, IMAGE_PATH, saveImageFilters())
         if fileName:
             self._pixmapHandle.pixmap().save(fileName)
 

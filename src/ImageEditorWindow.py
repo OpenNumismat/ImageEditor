@@ -3,6 +3,7 @@ from PySide6.QtGui import QIcon, QAction, QKeySequence, QImageReader, QImage, QC
 from PySide6.QtWidgets import QApplication, QStyle, QFileDialog, QMessageBox, QColorDialog, QDialog
 
 from ImageEditor import ImageEditorDialog
+from Tools.misc import readImageFilters
 
 IMAGE_PATH = QStandardPaths.standardLocations(QStandardPaths.PicturesLocation)[0]
 
@@ -41,21 +42,12 @@ class ImageEditorWindow(ImageEditorDialog):
             self.openFile()
 
     def openFile(self):
-        supported_formats = QImageReader.supportedImageFormats()
-        formats = "*.jpg *.jpeg *.bmp *.png *.tif *.tiff *.gif"
-        if b'webp' in supported_formats:
-            formats += " *.webp"
-        if b'jp2' in supported_formats:
-            formats += " *.jp2"
-
         settings = QSettings()
         last_dir = settings.value('images/last_dir', IMAGE_PATH)
 
         caption = self.tr("Open File")
-        filters = (self.tr("Images (%s)") % formats,
-                   self.tr("All files (*.*)"))
         file_name, _ = QFileDialog.getOpenFileName(self,
-                caption, last_dir, ';;'.join(filters))
+                caption, last_dir, ';;'.join(readImageFilters()))
         if file_name:
             self.loadFromFile(file_name)
 
