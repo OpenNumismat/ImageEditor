@@ -172,10 +172,6 @@
         <translation>&amp;Ver</translation>
     </message>
     <message>
-        <source>All files (*.*)</source>
-        <translation>Todos os ficheiros (*.*)</translation>
-    </message>
-    <message>
         <source>Image was changed. Save changes?</source>
         <translation>A imagem foi alterada. Gravar alterações?</translation>
     </message>
@@ -207,10 +203,6 @@
         <source>Image editor</source>
         <translation>Editor de imagem</translation>
     </message>
-    <message>
-        <source>Images (%s)</source>
-        <translation>Imagens (%s)</translation>
-    </message>
 </context>
 <context>
     <name>ImageEditorWindow</name>
@@ -234,14 +226,6 @@
         <source>Open File</source>
         <translation>Abrir ficheiro</translation>
     </message>
-    <message>
-        <source>Images (%s)</source>
-        <translation>Imagens (%s)</translation>
-    </message>
-    <message>
-        <source>All files (*.*)</source>
-        <translation>Todos os ficheiros (*.*)</translation>
-    </message>
 </context>
 <context>
     <name>RotateDialog</name>
@@ -260,6 +244,24 @@
     <message>
         <source>Show grid</source>
         <translation>Mostrar grelha</translation>
+    </message>
+</context>
+<context>
+    <name>readImageFilters</name>
+    <message>
+        <source>Images (%s)</source>
+        <translation>Imagens (%s)</translation>
+    </message>
+    <message>
+        <source>All files (*.*)</source>
+        <translation>Todos os ficheiros (*.*)</translation>
+    </message>
+</context>
+<context>
+    <name>saveImageFilters</name>
+    <message>
+        <source>All files (*.*)</source>
+        <translation>Todos os ficheiros (*.*)</translation>
     </message>
 </context>
 </TS>
