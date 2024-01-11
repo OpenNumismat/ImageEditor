@@ -45,7 +45,8 @@ jobs:
         python -m pip install pyinstaller pyinstaller-versionfile
     - name: Create versionfile
       run: |
-        echo "FileDescription: ${{ needs.title.outputs.APPNAME }}" > metadata.yml
+        touch metadata.yml
+        echo "FileDescription: ${{ needs.title.outputs.APPNAME }}" >> metadata.yml
         echo "InternalName: ${{ needs.title.outputs.APPNAME }}" >> metadata.yml
         create-version-file metadata.yml --outfile versionfile.txt --version ${{ needs.version.outputs.VERSION }}.0.${{ needs.version.outputs.REVISION }}
     - name: build

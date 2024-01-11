@@ -21,7 +21,7 @@ jobs:
       - run: "true"
 
   windows:
-    needs: [title]
+    needs: [version, title]
     runs-on: windows-latest
     steps:
     - uses: actions/checkout@v4
@@ -37,9 +37,10 @@ jobs:
         python -m pip install pyinstaller pyinstaller-versionfile
     - name: Create versionfile
       run: |
-        echo "FileDescription: ${{ needs.title.outputs.APPNAME }}" > metadata.yml
+        touch metadata.yml
+        echo "FileDescription: ${{ needs.title.outputs.APPNAME }}" >> metadata.yml
         echo "InternalName: ${{ needs.title.outputs.APPNAME }}" >> metadata.yml
-        create-version-file metadata.yml --outfile versionfile.txt --version ${{ needs.title.outputs.VERSION }}
+        create-version-file metadata.yml --outfile versionfile.txt --version ${{ needs.version.outputs.VERSION }}
     - name: build
       run: |
         SET PYTHONOPTIMIZE=1
