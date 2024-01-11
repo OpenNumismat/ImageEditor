@@ -1,5 +1,5 @@
 from PySide6.QtCore import Qt, QPointF, QPoint, QRectF
-from PySide6.QtGui import QTransform, QPolygonF, QImage, QPainter, QBrush, QColor
+from PySide6.QtGui import QTransform, QPolygonF, QImage, QPainter, QBrush
 from PIL import Image, ImageChops, ImageQt
 import numpy as np
 import math
