@@ -15,8 +15,8 @@ jobs:
     name: Title
     runs-on: ubuntu-latest
     outputs:
-      PACKAGENAME: ${{ needs.version.outputs.app_name }}-${{ needs.version.outputs.version }}
-      APPNAME: ${{ needs.version.outputs.app_name }}
+      PACKAGENAME: ${{ needs.version.outputs.APPNAME }}-${{ needs.version.outputs.VERSION }}
+      APPNAME: ${{ needs.version.outputs.APPNAME }}
     steps:
       - run: "true"
 
