@@ -212,7 +212,7 @@
     </message>
     <message>
         <source>Background color</source>
-        <translation>Цвят на фона</translation>
+        <translation>Фонов цвят на изображението</translation>
     </message>
     <message>
         <source>Save</source>
