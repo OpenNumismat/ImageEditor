@@ -55,7 +55,7 @@
     </message>
     <message>
         <source>Y4</source>
-        <translation>Y4</translation>
+        <translation>Y4 </translation>
     </message>
     <message>
         <source>Rect</source>
