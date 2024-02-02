@@ -988,7 +988,7 @@ class GraphicsView(QGraphicsView):
 class ImageEditorDialog(QDialog):
     imageSaved = pyqtSignal(QImage)
 
-    def __init__(self, parent=None):
+    def __init__(self, parent=None, readonly=False):
         super().__init__(parent, Qt.WindowSystemMenuHint |
                          Qt.WindowMinMaxButtonsHint | Qt.WindowCloseButtonHint)
 
@@ -1026,6 +1026,7 @@ class ImageEditorDialog(QDialog):
         layout.setSpacing(0)
         self.setLayout(layout)
 
+        self.readonly = readonly
         self.name = ''
         self.isChanged = False
         self.cropDlg = None
@@ -1769,14 +1770,14 @@ class ImageEditorDialog(QDialog):
         self.zoomOutAct.setEnabled(enabled)
         self.normalSizeAct.setEnabled(enabled)
         self.fitToWindowAct.setEnabled(enabled)
-        self.rotateLeftAct.setEnabled(enabled)
-        self.rotateRightAct.setEnabled(enabled)
-        self.rotateAct.setEnabled(enabled)
-        self.cropAct.setEnabled(enabled)
-        self.autocropAct.setEnabled(enabled)
         self.copyAct.setEnabled(enabled)
-        self.cutLeftAct.setEnabled(enabled)
-        self.cutRightAct.setEnabled(enabled)
+        self.rotateLeftAct.setEnabled(enabled and not self.readonly)
+        self.rotateRightAct.setEnabled(enabled and not self.readonly)
+        self.rotateAct.setEnabled(enabled and not self.readonly)
+        self.cropAct.setEnabled(enabled and not self.readonly)
+        self.autocropAct.setEnabled(enabled and not self.readonly)
+        self.cutLeftAct.setEnabled(enabled and not self.readonly)
+        self.cutRightAct.setEnabled(enabled and not self.readonly)
 
     def _updateEditActions(self):
         inCrop = self.cropAct.isChecked()
