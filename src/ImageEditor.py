@@ -4,9 +4,11 @@ from PySide6.QtWidgets import *
 from PySide6.QtCore import Signal as pyqtSignal
 
 try:
+    from .CameraDialog import CameraDialog
     from .UndoStack import UndoStack
     from .image_tools import *
 except ImportError:
+    from CameraDialog import CameraDialog
     from UndoStack import UndoStack
     from image_tools import *
 try:
@@ -15,13 +17,11 @@ try:
     from OpenNumismat.Tools.DialogDecorators import storeDlgSizeDecorator, storeDlgPositionDecorator
     from OpenNumismat.Tools.Gui import getSaveFileName
     from OpenNumismat.Tools.misc import saveImageFilters
-    from OpenNumismat.ImageEditor.src.CameraDialog import CameraDialog
 except ModuleNotFoundError:
     from Tools import TemporaryDir
     from Tools.DialogDecorators import storeDlgSizeDecorator, storeDlgPositionDecorator
     from Tools.Gui import getSaveFileName
     from Tools.misc import saveImageFilters
-    from CameraDialog import CameraDialog
 
     IMAGE_PATH = QStandardPaths.standardLocations(QStandardPaths.PicturesLocation)[0]
 
