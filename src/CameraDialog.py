@@ -59,7 +59,7 @@ class CameraDialog(QDialog):
             camera_index = self.cameraSelector.findData(defaultDevice.id())
 
         if camera_index == -1:
-            QMessageBox.warning(self.parent(), self.tr("Scan barcode"),
+            QMessageBox.warning(self.parent(), self.tr("Camera Error"),
                                 self.tr("Camera not available"))
         else:
             self.cameraSelector.setCurrentIndex(camera_index)
