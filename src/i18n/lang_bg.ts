@@ -1,5 +1,24 @@
 <?xml version="1.0" ?><!DOCTYPE TS><TS version="2.1" language="bg">
 <context>
+    <name>CameraDialog</name>
+    <message>
+        <source>Shoot</source>
+        <translation>Снимай</translation>
+    </message>
+    <message>
+        <source>Camera not available</source>
+        <translation>Камерата не е налична</translation>
+    </message>
+    <message>
+        <source>Camera not available or disabled by antivirus</source>
+        <translation>Камерата не е налична или е деактивирана от антивирусната програма</translation>
+    </message>
+    <message>
+        <source>Camera Error</source>
+        <translation>Грешка в камерата</translation>
+    </message>
+</context>
+<context>
     <name>CropDialog</name>
     <message>
         <source>Crop</source>
@@ -202,6 +221,10 @@
     <message>
         <source>Image editor</source>
         <translation>Редактор на изображения</translation>
+    </message>
+    <message>
+        <source>Camera</source>
+        <translation>Камера</translation>
     </message>
 </context>
 <context>
