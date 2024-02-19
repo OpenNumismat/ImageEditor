@@ -121,7 +121,7 @@ class CameraDialog(QDialog):
         self.accept()
 
     def firstCaptureTimeout(self):
-        QMessageBox.warning(self, self.tr("Scan barcode"),
+        QMessageBox.warning(self, self.tr("Camera Error"),
             self.tr("Camera not available or disabled by antivirus"))
 
     def displayCameraError(self):
