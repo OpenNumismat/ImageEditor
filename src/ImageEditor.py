@@ -15,11 +15,13 @@ try:
     from OpenNumismat.Tools.DialogDecorators import storeDlgSizeDecorator, storeDlgPositionDecorator
     from OpenNumismat.Tools.Gui import getSaveFileName
     from OpenNumismat.Tools.misc import saveImageFilters
+    from OpenNumismat.ImageEditor.src.CameraDialog import CameraDialog
 except ModuleNotFoundError:
     from Tools import TemporaryDir
     from Tools.DialogDecorators import storeDlgSizeDecorator, storeDlgPositionDecorator
     from Tools.Gui import getSaveFileName
     from Tools.misc import saveImageFilters
+    from CameraDialog import CameraDialog
 
     IMAGE_PATH = QStandardPaths.standardLocations(QStandardPaths.PicturesLocation)[0]
 
@@ -1084,6 +1086,7 @@ class ImageEditorDialog(QDialog):
         self.windowColorAct = QAction(self.tr("Window color"), self, triggered=self.selectWindowColor)
         self.cutLeftAct = QAction(self.tr("Cut left half"), self, triggered=self.cutLeft)
         self.cutRightAct = QAction(self.tr("Cut right half"), self, triggered=self.cutRight)
+        self.cameraAct = QAction(QIcon(':/webcam.png'), self.tr("Camera"), self, triggered=self.camera)
 
         settings = QSettings()
         toolBarShown = settings.value('image_viewer/tool_bar', True, type=bool)
@@ -1116,6 +1119,8 @@ class ImageEditorDialog(QDialog):
         self.editMenu.addAction(self.rotateAct)
         self.editMenu.addAction(self.cropAct)
         self.editMenu.addAction(self.autocropAct)
+        self.editMenu.addSeparator()
+        self.editMenu.addAction(self.cameraAct)
 
         self.viewMenu = QMenu(self.tr("&View"), self)
         self.viewMenu.addAction(self.fullScreenAct)
@@ -1154,6 +1159,8 @@ class ImageEditorDialog(QDialog):
         self.toolBar.addAction(self.rotateLeftAct)
         self.toolBar.addAction(self.rotateRightAct)
         self.toolBar.addAction(self.cropAct)
+        self.toolBar.addSeparator()
+        self.toolBar.addAction(self.cameraAct)
 
     def setTitle(self, title=None, subtitle=None):
         competed_title_parts = []
@@ -1778,6 +1785,7 @@ class ImageEditorDialog(QDialog):
         self.autocropAct.setEnabled(enabled and not self.readonly)
         self.cutLeftAct.setEnabled(enabled and not self.readonly)
         self.cutRightAct.setEnabled(enabled and not self.readonly)
+        self.cameraAct.setEnabled(enabled and not self.readonly)
 
     def _updateEditActions(self):
         inCrop = self.cropAct.isChecked()
@@ -1864,3 +1872,15 @@ class ImageEditorDialog(QDialog):
             self.isChanged = True
         self.markWindowTitle(self.isChanged)
         self._updateEditActions()
+
+    def camera(self):
+        dlg = CameraDialog(self)
+        if dlg.exec_() == QDialog.Accepted:
+            image = dlg.image
+            if image:
+                pixmap = self._pixmapHandle.pixmap()
+                self.pushUndo(pixmap)
+                self.setImage(image)
+                self.isChanged = True
+                self.markWindowTitle(self.isChanged)
+                self._updateEditActions()

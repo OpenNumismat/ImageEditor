@@ -14,6 +14,7 @@ ImageEditor is a part of [OpenNumismat](http://opennumismat.github.io/) project,
 #### Features
 
 * Support popular image formats: JPEG, PNG, BMP, TIFF, GIF, WebP
+* Takes a photo from webcam
 * Full Screen mode
 * Image editing tools: resize, rotate, crop (rectangle, ellipse, perspective transformation)
 * Up to 10 Undo/Redo actions
