@@ -2,6 +2,29 @@
 <!DOCTYPE TS>
 <TS version="2.1">
 <context>
+    <name>CameraDialog</name>
+    <message>
+        <source>Shoot</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Scan barcode</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Camera not available</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Camera not available or disabled by antivirus</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Camera Error</source>
+        <translation type="unfinished"></translation>
+    </message>
+</context>
+<context>
     <name>CropDialog</name>
     <message>
         <source>Crop</source>
@@ -203,6 +226,10 @@
     </message>
     <message>
         <source>Image editor</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Camera</source>
         <translation type="unfinished"></translation>
     </message>
 </context>
