@@ -1006,6 +1006,7 @@ class ImageEditorDialog(QDialog):
         self.viewer.setResizeAnchor(QGraphicsView.AnchorViewCenter)
         color = settings.value('image_viewer/window_color', QColor(Qt.white), type=QColor)
         self.viewer.setBackgroundBrush(QBrush(color))
+        self.use_webcam = settings.value('mainwindow/use_webcam', True, type=bool)
 
         self.menuBar = QMenuBar()
 
@@ -1086,7 +1087,8 @@ class ImageEditorDialog(QDialog):
         self.windowColorAct = QAction(self.tr("Window color"), self, triggered=self.selectWindowColor)
         self.cutLeftAct = QAction(self.tr("Cut left half"), self, triggered=self.cutLeft)
         self.cutRightAct = QAction(self.tr("Cut right half"), self, triggered=self.cutRight)
-        self.cameraAct = QAction(QIcon(':/webcam.png'), self.tr("Camera"), self, triggered=self.camera)
+        if self.use_webcam:
+            self.cameraAct = QAction(QIcon(':/webcam.png'), self.tr("Camera"), self, triggered=self.camera)
 
         settings = QSettings()
         toolBarShown = settings.value('image_viewer/tool_bar', True, type=bool)
@@ -1120,7 +1122,8 @@ class ImageEditorDialog(QDialog):
         self.editMenu.addAction(self.cropAct)
         self.editMenu.addAction(self.autocropAct)
         self.editMenu.addSeparator()
-        self.editMenu.addAction(self.cameraAct)
+        if self.use_webcam:
+            self.editMenu.addAction(self.cameraAct)
 
         self.viewMenu = QMenu(self.tr("&View"), self)
         self.viewMenu.addAction(self.fullScreenAct)
@@ -1160,7 +1163,8 @@ class ImageEditorDialog(QDialog):
         self.toolBar.addAction(self.rotateRightAct)
         self.toolBar.addAction(self.cropAct)
         self.toolBar.addSeparator()
-        self.toolBar.addAction(self.cameraAct)
+        if self.use_webcam:
+            self.toolBar.addAction(self.cameraAct)
 
     def setTitle(self, title=None, subtitle=None):
         competed_title_parts = []
@@ -1785,7 +1789,8 @@ class ImageEditorDialog(QDialog):
         self.autocropAct.setEnabled(enabled and not self.readonly)
         self.cutLeftAct.setEnabled(enabled and not self.readonly)
         self.cutRightAct.setEnabled(enabled and not self.readonly)
-        self.cameraAct.setEnabled(enabled and not self.readonly)
+        if self.use_webcam:
+            self.cameraAct.setEnabled(enabled and not self.readonly)
 
     def _updateEditActions(self):
         inCrop = self.cropAct.isChecked()
