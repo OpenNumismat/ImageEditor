@@ -8,10 +8,6 @@
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <source>Scan barcode</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
         <source>Camera not available</source>
         <translation type="unfinished"></translation>
     </message>
