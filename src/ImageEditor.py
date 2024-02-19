@@ -1803,6 +1803,8 @@ class ImageEditorDialog(QDialog):
         self.rotateRightAct.setDisabled(inCrop or inRotate)
         self.rotateAct.setDisabled(inCrop)
         self.cropAct.setDisabled(inRotate)
+        if self.use_webcam:
+            self.cameraAct.setDisabled(inCrop or inRotate)
 
         if inCrop or inRotate:
             self.saveAct.setDisabled(True)
