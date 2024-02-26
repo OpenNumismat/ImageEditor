@@ -30,6 +30,7 @@ ZOOM_LIST = (600, 480, 385, 310, 250, 200, 158, 125,
              100, 80, 64, 50, 40, 32, 26, 20, 16,)
 ZOOM_MAX = ZOOM_LIST[0]
 ZOOM_MIN = ZOOM_LIST[-1]
+MASK_OPACITY = 0.3
 
 
 @storeDlgPositionDecorator
@@ -389,12 +390,11 @@ class BoundingLineItem(QGraphicsLineItem):
 
 
 class MaskPolygonItem(QGraphicsPixmapItem):
-    MASK_OPACITY = 0.3
 
     def __init__(self):
         super().__init__()
 
-        self.setOpacity(self.MASK_OPACITY)
+        self.setOpacity(MASK_OPACITY)
         self.setFlag(QGraphicsItem.ItemIgnoresTransformations)
 
     def setPolygon(self, width, height, x1, y1, x2, y2, x3, y3, x4, y4):
@@ -694,7 +694,7 @@ class MaskCircleItem(QGraphicsPixmapItem):
     def __init__(self):
         super().__init__()
 
-        self.setOpacity(0.2)
+        self.setOpacity(MASK_OPACITY)
         self.setFlag(QGraphicsItem.ItemIgnoresTransformations)
 
     def setRect(self, width, height, x, y, w, h):
