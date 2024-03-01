@@ -1,5 +1,24 @@
 <?xml version="1.0" ?><!DOCTYPE TS><TS version="2.1" language="es">
 <context>
+    <name>CameraDialog</name>
+    <message>
+        <source>Shoot</source>
+        <translation>Disparar</translation>
+    </message>
+    <message>
+        <source>Camera not available</source>
+        <translation>Cámara no disponible</translation>
+    </message>
+    <message>
+        <source>Camera not available or disabled by antivirus</source>
+        <translation>Cámara no disponible o desactivada por antivirus</translation>
+    </message>
+    <message>
+        <source>Camera Error</source>
+        <translation>Error de cámara</translation>
+    </message>
+</context>
+<context>
     <name>CropDialog</name>
     <message>
         <source>Crop</source>
@@ -172,16 +191,63 @@
         <translation>&amp;Ver</translation>
     </message>
     <message>
-        <source>Images (*.jpg *.jpeg *.bmp *.png *.tiff *.gif)</source>
-        <translation>Imágenes (*.jpg *.jpeg *.bmp *.png *.tiff *.gif)</translation>
+        <source>Image was changed. Save changes?</source>
+        <translation>La imagen ha cambiado ¿Guardar cambios?</translation>
     </message>
     <message>
-        <source>All files (*.*)</source>
-        <translation>Todos los archivos (*.*)</translation>
+        <source>Save changes to current image?</source>
+        <translation>¿Grabar cambios a imagen actual?</translation>
+    </message>
+    <message>
+        <source>Don&apos;t show this again</source>
+        <translation>No mostrar de nuevo esto</translation>
+    </message>
+    <message>
+        <source>Settings</source>
+        <translation>Configuración</translation>
+    </message>
+    <message>
+        <source>Window color</source>
+        <translation>Color de ventana</translation>
+    </message>
+    <message>
+        <source>Cut left half</source>
+        <translation>Cortar mitad izquierda</translation>
+    </message>
+    <message>
+        <source>Cut right half</source>
+        <translation>Cortar mitad derecha</translation>
+    </message>
+    <message>
+        <source>Image editor</source>
+        <translation>Editor de imagen</translation>
+    </message>
+    <message>
+        <source>Camera</source>
+        <translation>Cámara</translation>
+    </message>
+</context>
+<context>
+    <name>ImageEditorWindow</name>
+    <message>
+        <source>&amp;Open...</source>
+        <translation>&amp;Abrir...</translation>
+    </message>
+    <message>
+        <source>Background color</source>
+        <translation>Color de fondo</translation>
+    </message>
+    <message>
+        <source>Save</source>
+        <translation>Guardar</translation>
     </message>
     <message>
         <source>Image was changed. Save changes?</source>
         <translation>La imagen ha cambiado ¿Guardar cambios?</translation>
+    </message>
+    <message>
+        <source>Open File</source>
+        <translation>Abrir archivo</translation>
     </message>
 </context>
 <context>
@@ -201,6 +267,24 @@
     <message>
         <source>Show grid</source>
         <translation>Ver parrilla</translation>
+    </message>
+</context>
+<context>
+    <name>readImageFilters</name>
+    <message>
+        <source>Images (%s)</source>
+        <translation>Imágenes (%s)</translation>
+    </message>
+    <message>
+        <source>All files (*.*)</source>
+        <translation>Todos los archivos (*.*)</translation>
+    </message>
+</context>
+<context>
+    <name>saveImageFilters</name>
+    <message>
+        <source>All files (*.*)</source>
+        <translation>Todos los archivos (*.*)</translation>
     </message>
 </context>
 </TS>
