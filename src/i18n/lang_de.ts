@@ -1,5 +1,24 @@
 <?xml version="1.0" ?><!DOCTYPE TS><TS version="2.1" language="de">
 <context>
+    <name>CameraDialog</name>
+    <message>
+        <source>Shoot</source>
+        <translation>Aufnahme</translation>
+    </message>
+    <message>
+        <source>Camera not available</source>
+        <translation>Kamera nicht verfügbar</translation>
+    </message>
+    <message>
+        <source>Camera not available or disabled by antivirus</source>
+        <translation>Kamera nicht verfügbar oder durch Antivirus gesperrt</translation>
+    </message>
+    <message>
+        <source>Camera Error</source>
+        <translation>Kamera-Fehler</translation>
+    </message>
+</context>
+<context>
     <name>CropDialog</name>
     <message>
         <source>Crop</source>
@@ -75,13 +94,6 @@
     <message>
         <source>Save as</source>
         <translation>Speichern als</translation>
-    </message>
-</context>
-<context>
-    <name>ImageEdit</name>
-    <message>
-        <source>Open File</source>
-        <translation>Datei öffnen</translation>
     </message>
 </context>
 <context>
@@ -179,14 +191,6 @@
         <translation>&amp;Ansehen</translation>
     </message>
     <message>
-        <source>Images (*.jpg *.jpeg *.bmp *.png *.tiff *.gif)</source>
-        <translation>Bilder (*.jpg *.jpeg *.bmp *.png *.tiff *.gif)</translation>
-    </message>
-    <message>
-        <source>All files (*.*)</source>
-        <translation>Alle Dateien (*.*)</translation>
-    </message>
-    <message>
         <source>Image was changed. Save changes?</source>
         <translation>Das Bild wurde geändert. Änderungen speichern?</translation>
     </message>
@@ -199,12 +203,28 @@
         <translation>Nicht mehr anzeigen</translation>
     </message>
     <message>
-        <source>Background color</source>
-        <translation>Hintergrundfarbe</translation>
-    </message>
-    <message>
         <source>Settings</source>
         <translation>Einstellungen</translation>
+    </message>
+    <message>
+        <source>Window color</source>
+        <translation>Fensterfarbe</translation>
+    </message>
+    <message>
+        <source>Cut left half</source>
+        <translation>Linke Hälfte abschneiden</translation>
+    </message>
+    <message>
+        <source>Cut right half</source>
+        <translation>Rechte Hälfte abschneiden</translation>
+    </message>
+    <message>
+        <source>Image editor</source>
+        <translation>Bildbearbeiter</translation>
+    </message>
+    <message>
+        <source>Camera</source>
+        <translation>Kamera</translation>
     </message>
 </context>
 <context>
@@ -212,6 +232,22 @@
     <message>
         <source>&amp;Open...</source>
         <translation>Ö&amp;ffnen...</translation>
+    </message>
+    <message>
+        <source>Background color</source>
+        <translation>Hintergrundfarbe</translation>
+    </message>
+    <message>
+        <source>Save</source>
+        <translation>Speichern</translation>
+    </message>
+    <message>
+        <source>Image was changed. Save changes?</source>
+        <translation>Das Bild wurde geändert. Änderungen speichern?</translation>
+    </message>
+    <message>
+        <source>Open File</source>
+        <translation>Datei öffnen</translation>
     </message>
 </context>
 <context>
@@ -231,6 +267,24 @@
     <message>
         <source>Show grid</source>
         <translation>Raster anzeigen</translation>
+    </message>
+</context>
+<context>
+    <name>readImageFilters</name>
+    <message>
+        <source>Images (%s)</source>
+        <translation>Bilder (%s)</translation>
+    </message>
+    <message>
+        <source>All files (*.*)</source>
+        <translation>Alle Dateien (*.*)</translation>
+    </message>
+</context>
+<context>
+    <name>saveImageFilters</name>
+    <message>
+        <source>All files (*.*)</source>
+        <translation>Alle Dateien (*.*)</translation>
     </message>
 </context>
 </TS>
