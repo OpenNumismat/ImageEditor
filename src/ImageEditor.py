@@ -912,15 +912,20 @@ class GraphicsScene(QGraphicsScene):
 
 class GraphicsView(QGraphicsView):
     doubleClicked = pyqtSignal()
+    resized = pyqtSignal(QResizeEvent)
 
     def __init__(self, scene, parent):
         super().__init__(scene, parent)
+        self.parent = parent
 
         self.setStyleSheet("border: 0px;")
 
         self.timer = QTimer()
         self.timer.setSingleShot(True)
         self.timer.timeout.connect(self._smooth_zoom_in)
+
+    def resizeEvent(self, event):
+        self.resized.emit(event)
 
     def mousePressEvent(self, event):
         if event.button() == Qt.MiddleButton:
@@ -936,7 +941,7 @@ class GraphicsView(QGraphicsView):
 
     def _start_timer(self):
         # self.timer.start(60 - self.parent().scale * self.parent().scale)
-        self.timer.start(60 / self.parent().scale)
+        self.timer.start(60 / self.parent.scale)
 
     def _smooth_zoom_in(self):
         self._start_timer()
@@ -944,7 +949,7 @@ class GraphicsView(QGraphicsView):
         position = self.mapFromGlobal(QCursor.pos())
         oldPos = self.mapToScene(position)
 
-        self.parent().zoom(self.parent().scale * 100 + 1)
+        self.parent.zoom(self.parent.scale * 100 + 1)
 
         # Get the new position
         newPos = self.mapToScene(position)
@@ -973,9 +978,9 @@ class GraphicsView(QGraphicsView):
         oldPos = self.mapToScene(position.toPoint())
 
         if direction > 0:
-            self.parent().zoomIn()
+            self.parent.zoomIn()
         else:
-            self.parent().zoomOut()
+            self.parent.zoomOut()
 
         # Get the new position
         newPos = self.mapToScene(position.toPoint())
@@ -986,11 +991,25 @@ class GraphicsView(QGraphicsView):
         self.translate(delta.x(), delta.y())
 
 
+class ScrollPanel(QWidget):
+
+    def __init__(self, parent=None):
+        super().__init__(parent)
+        self.setMinimumHeight(100)
+
+        self.imageLayout = QHBoxLayout()
+        self.imageLayout.setContentsMargins(QMargins())
+        self.setLayout(self.imageLayout)
+
+    def addWidget(self, w):
+        self.imageLayout.addWidget(w)
+
+
 @storeDlgSizeDecorator
 class ImageEditorDialog(QDialog):
     imageSaved = pyqtSignal(QImage)
 
-    def __init__(self, parent=None, readonly=False):
+    def __init__(self, parent=None, scrollpanel=False, readonly=False):
         super().__init__(parent, Qt.WindowSystemMenuHint |
                          Qt.WindowMinMaxButtonsHint | Qt.WindowCloseButtonHint)
 
@@ -1000,13 +1019,20 @@ class ImageEditorDialog(QDialog):
 
         self.scene = GraphicsScene(self)
         self.viewer = GraphicsView(self.scene, self)
+        self.viewer.resized.connect(self.resized)
 
         self.viewer.setHorizontalScrollBarPolicy(Qt.ScrollBarAlwaysOff)
         self.viewer.setVerticalScrollBarPolicy(Qt.ScrollBarAlwaysOff)
         self.viewer.setResizeAnchor(QGraphicsView.AnchorViewCenter)
         color = settings.value('image_viewer/window_color', QColor(Qt.white), type=QColor)
         self.viewer.setBackgroundBrush(QBrush(color))
-        self.use_webcam = settings.value('mainwindow/use_webcam', True, type=bool)
+
+        if scrollpanel:
+            self.scrollPanel = ScrollPanel()
+
+            self.splitter = QSplitter(Qt.Vertical, self)
+            self.splitter.addWidget(self.viewer)
+            self.splitter.addWidget(self.scrollPanel)
 
         self.menuBar = QMenuBar()
 
@@ -1023,7 +1049,10 @@ class ImageEditorDialog(QDialog):
         layout = QVBoxLayout()
         layout.setMenuBar(self.menuBar)
         layout.addWidget(self.toolBar)
-        layout.addWidget(self.viewer)
+        if scrollpanel:
+            layout.addWidget(self.splitter)
+        else:
+            layout.addWidget(self.viewer)
         layout.addWidget(self.statusBar)
         layout.setContentsMargins(QMargins())
         layout.setSpacing(0)
@@ -1044,6 +1073,8 @@ class ImageEditorDialog(QDialog):
         self.minScale = ZOOM_MIN / 100
         self.isFitToWindow = True
         self.undo_stack = UndoStack()
+        self.use_webcam = settings.value('mainwindow/use_webcam', True, type=bool)
+        self.proxy = None
 
         self.createActions()
         self.createMenus()
@@ -1220,9 +1251,49 @@ class ImageEditorDialog(QDialog):
     def showEvent(self, _e):
         self.updateViewer()
 
-    def resizeEvent(self, _e):
+    def resized(self, _e):
         if self.isVisible():
             self.updateViewer()
+
+    def setImageProxy(self, proxy):
+        self.proxy = proxy
+        images = self.proxy.images()
+        for image in images:
+            self.scrollPanel.addWidget(image)
+            image.imageClicked.connect(self.imageScrolled)
+
+        if images:
+            self.imageScrolled(self.proxy.currentImage())
+
+        self.imageSaved.connect(proxy.imageSaved)
+
+    def imageScrolled(self, image):
+        if self.isChanged:
+            result = QMessageBox.warning(
+                self, self.tr("Save"),
+                self.tr("Image was changed. Save changes?"),
+                QMessageBox.Save | QMessageBox.No | QMessageBox.Cancel, QMessageBox.Cancel)
+            if result == QMessageBox.Save:
+                self.save(confirm_save=False)
+            elif result == QMessageBox.Cancel:
+                return
+
+        self.setImage(image.image)
+        self.setTitle(image.title)
+
+        for _image in self.proxy.images():
+            _image.setActive(False)
+        image.setActive(True)
+        self.proxy.setCurrent(image.field)
+
+        self.undo_stack.clear()
+        self.undoAct.setDisabled(True)
+        self.redoAct.setDisabled(True)
+        self.isChanged = False
+        # self.markWindowTitle(self.isChanged)
+        self._updateEditActions()
+
+        self.fitToWindow()
 
     def setImage(self, image):
         if type(image) is QPixmap:
