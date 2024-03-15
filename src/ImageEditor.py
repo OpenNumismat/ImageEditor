@@ -1274,6 +1274,7 @@ class ImageEditorDialog(QDialog):
 
     def showEvent(self, _e):
         self.updateViewer()
+        self.scrollPanel.ensureWidgetVisible(self.proxy.currentImage())
 
     def resized(self, _e):
         if self.isVisible():
