@@ -1578,6 +1578,9 @@ class ImageEditorDialog(QDialog):
         if not self.hasImage():
             return
 
+        pixmap = self._pixmapHandle.pixmap()
+        self.viewer.setSceneRect(QRectF(pixmap.rect()))
+
         sceneRect = self.viewer.sceneRect()
         minHeightScale = (self.viewer.height() - 4) / sceneRect.height()
         minWidthScale = (self.viewer.width() - 4) / sceneRect.width()
