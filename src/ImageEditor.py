@@ -1058,6 +1058,7 @@ class ImageEditorDialog(QDialog):
         layout.setSpacing(0)
         self.setLayout(layout)
 
+        self.has_scrollpanel = scrollpanel
         self.readonly = readonly
         self.name = ''
         self.isChanged = False
@@ -1100,6 +1101,8 @@ class ImageEditorDialog(QDialog):
         self.zoom600Shortcut = QShortcut(Qt.Key_6, self, self.zoom600)
         self.showToolBarAct = QAction(self.tr("Show Tool Bar"), self, checkable=True, triggered=self.showToolBar)
         self.showStatusBarAct = QAction(self.tr("Show Status Bar"), self, checkable=True, triggered=self.showStatusBar)
+        if self.has_scrollpanel:
+            self.showScrollPanelAct = QAction(self.tr("Show Scroll Panel"), self, checkable=True, triggered=self.showScrollPanel)
         self.rotateLeftAct = QAction(QIcon(':/arrow_rotate_anticlockwise.png'), self.tr("Rotate to Left"), self, shortcut=QKeySequence.MoveToPreviousWord, triggered=self.rotateLeft)
         self.rotateRightAct = QAction(QIcon(':/arrow_rotate_clockwise.png'), self.tr("Rotate to Right"), self, shortcut=QKeySequence.MoveToNextWord, triggered=self.rotateRight)
         self.rotateAct = QAction(self.tr("Rotate..."), self, shortcut=Qt.Key_R, checkable=True, triggered=self.rotate)
@@ -1128,6 +1131,10 @@ class ImageEditorDialog(QDialog):
         statusBarShown = settings.value('image_viewer/status_bar', True, type=bool)
         self.showStatusBarAct.setChecked(statusBarShown)
         self.statusBar.setVisible(statusBarShown)
+        if self.has_scrollpanel:
+            scrollPanelShown = settings.value('image_viewer/scroll_panel', True, type=bool)
+            self.showScrollPanelAct.setChecked(scrollPanelShown)
+            self.scrollPanel.setVisible(scrollPanelShown)
 
     def createMenus(self):
         self.fileMenu = QMenu(self.tr("&File"), self)
@@ -1166,6 +1173,8 @@ class ImageEditorDialog(QDialog):
         self.viewMenu.addSeparator()
         self.viewMenu.addAction(self.showToolBarAct)
         self.viewMenu.addAction(self.showStatusBarAct)
+        if self.has_scrollpanel:
+            self.viewMenu.addAction(self.showScrollPanelAct)
 
         self.settingsMenu = QMenu(self.tr("Settings"), self)
         self.settingsMenu.addAction(self.windowColorAct)
@@ -1224,6 +1233,11 @@ class ImageEditorDialog(QDialog):
         settings = QSettings()
         settings.setValue('image_viewer/status_bar', status)
         self.statusBar.setVisible(status)
+
+    def showScrollPanel(self, status):
+        settings = QSettings()
+        settings.setValue('image_viewer/scroll_panel', status)
+        self.scrollPanel.setVisible(status)
 
     def selectWindowColor(self):
         settings = QSettings()
