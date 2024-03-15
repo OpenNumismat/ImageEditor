@@ -991,15 +991,20 @@ class GraphicsView(QGraphicsView):
         self.translate(delta.x(), delta.y())
 
 
-class ScrollPanel(QWidget):
+class ScrollPanel(QScrollArea):
 
     def __init__(self, parent=None):
         super().__init__(parent)
-        self.setMinimumHeight(100)
+
+        self.setWidgetResizable(True)
 
         self.imageLayout = QHBoxLayout()
         self.imageLayout.setContentsMargins(QMargins())
-        self.setLayout(self.imageLayout)
+
+        inner = QWidget()
+        inner.setLayout(self.imageLayout)
+
+        self.setWidget(inner)
 
     def addWidget(self, w):
         self.imageLayout.addWidget(w)
@@ -1304,6 +1309,8 @@ class ImageEditorDialog(QDialog):
             _image.setActive(False)
         image.setActive(True)
         self.proxy.setCurrent(image.field)
+
+        self.scrollPanel.ensureWidgetVisible(image)
 
         self.undo_stack.clear()
         self.undoAct.setDisabled(True)
