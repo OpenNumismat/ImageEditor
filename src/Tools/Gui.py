@@ -1,7 +1,31 @@
 import os
 
-from PySide6.QtCore import QSettings
-from PySide6.QtWidgets import QFileDialog, QApplication
+from PySide6.QtCore import Qt, QSettings
+from PySide6.QtWidgets import QFileDialog, QApplication, QSplitter
+
+
+class Splitter(QSplitter):
+
+    def __init__(self, title, orientation=Qt.Horizontal, parent=None):
+        super().__init__(orientation, parent)
+
+        self.title = title
+        self.splitterMoved.connect(self.splitterPosChanged)
+
+    def splitterPosChanged(self, _pos, _index):
+        settings = QSettings()
+        settings.setValue('pageview/splittersizes' + self.title, self.sizes())
+
+    def showEvent(self, _e):
+        settings = QSettings()
+        sizes = settings.value('pageview/splittersizes' + self.title)
+        if sizes:
+            for i, size in enumerate(sizes):
+                sizes[i] = int(size)
+
+            self.splitterMoved.disconnect(self.splitterPosChanged)
+            self.setSizes(sizes)
+            self.splitterMoved.connect(self.splitterPosChanged)
 
 
 def getSaveFileName(parent, name, filename, dir_, filters):

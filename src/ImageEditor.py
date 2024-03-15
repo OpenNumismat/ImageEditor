@@ -15,12 +15,12 @@ try:
     from OpenNumismat import IMAGE_PATH
     from OpenNumismat.Tools import TemporaryDir
     from OpenNumismat.Tools.DialogDecorators import storeDlgSizeDecorator, storeDlgPositionDecorator
-    from OpenNumismat.Tools.Gui import getSaveFileName
+    from OpenNumismat.Tools.Gui import getSaveFileName, Splitter
     from OpenNumismat.Tools.misc import saveImageFilters
 except ModuleNotFoundError:
     from Tools import TemporaryDir
     from Tools.DialogDecorators import storeDlgSizeDecorator, storeDlgPositionDecorator
-    from Tools.Gui import getSaveFileName
+    from Tools.Gui import getSaveFileName, Splitter
     from Tools.misc import saveImageFilters
 
     IMAGE_PATH = QStandardPaths.standardLocations(QStandardPaths.PicturesLocation)[0]
@@ -1030,7 +1030,7 @@ class ImageEditorDialog(QDialog):
         if scrollpanel:
             self.scrollPanel = ScrollPanel()
 
-            self.splitter = QSplitter(Qt.Vertical, self)
+            self.splitter = Splitter('ImageEditor', Qt.Vertical, self)
             self.splitter.addWidget(self.viewer)
             self.splitter.addWidget(self.scrollPanel)
 
