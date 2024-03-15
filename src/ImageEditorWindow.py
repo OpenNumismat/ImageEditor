@@ -1,10 +1,10 @@
 from PySide6.QtCore import QSettings, QFileInfo, Qt, QStandardPaths
-from PySide6.QtGui import QIcon, QAction, QKeySequence, QImage, QColor
-from PySide6.QtWidgets import QApplication, QStyle, QFileDialog, QMessageBox, QColorDialog, QDialog
+from PySide6.QtGui import QIcon, QAction, QImage, QColor
+from PySide6.QtWidgets import QMessageBox, QColorDialog, QDialog
 
 from ImageEditor import ImageEditorDialog
 from Tools.Gui import getSaveFileName
-from Tools.misc import readImageFilters, saveImageFilters
+from Tools.misc import saveImageFilters
 
 IMAGE_PATH = QStandardPaths.standardLocations(QStandardPaths.PicturesLocation)[0]
 
@@ -22,15 +22,11 @@ class ImageEditorWindow(ImageEditorDialog):
     def createActions(self):
         super().createActions()
 
-        style = QApplication.style()
-        icon = style.standardIcon(QStyle.SP_DialogOpenButton)
-        self.openFileAct = QAction(icon, self.tr("&Open..."), self, shortcut=QKeySequence.Open, triggered=self.openFile)
         self.transparentColorAct = QAction(self.tr("Background color"), self, triggered=self.selectTransparentColor)
 
     def createMenus(self):
         super().createMenus()
 
-        self.fileMenu.insertAction(self.openAct, self.openFileAct)
         self.settingsMenu.addAction(self.transparentColorAct)
 
     def createToolBar(self):
@@ -41,16 +37,6 @@ class ImageEditorWindow(ImageEditorDialog):
     def viewerDoubleClicked(self):
         if not self.hasImage():
             self.openFile()
-
-    def openFile(self):
-        settings = QSettings()
-        last_dir = settings.value('images/last_dir', IMAGE_PATH)
-
-        caption = self.tr("Open File")
-        file_name, _ = QFileDialog.getOpenFileName(self,
-                caption, last_dir, ';;'.join(readImageFilters()))
-        if file_name:
-            self.loadFromFile(file_name)
 
     def loadFromFile(self, fileName):
         if self.isChanged:

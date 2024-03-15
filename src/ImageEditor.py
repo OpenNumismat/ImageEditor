@@ -16,12 +16,12 @@ try:
     from OpenNumismat.Tools import TemporaryDir
     from OpenNumismat.Tools.DialogDecorators import storeDlgSizeDecorator, storeDlgPositionDecorator
     from OpenNumismat.Tools.Gui import getSaveFileName, Splitter
-    from OpenNumismat.Tools.misc import saveImageFilters
+    from OpenNumismat.Tools.misc import readImageFilters, saveImageFilters
 except ModuleNotFoundError:
     from Tools import TemporaryDir
     from Tools.DialogDecorators import storeDlgSizeDecorator, storeDlgPositionDecorator
     from Tools.Gui import getSaveFileName, Splitter
-    from Tools.misc import saveImageFilters
+    from Tools.misc import readImageFilters, saveImageFilters
 
     IMAGE_PATH = QStandardPaths.standardLocations(QStandardPaths.PicturesLocation)[0]
 
@@ -1084,7 +1084,11 @@ class ImageEditorDialog(QDialog):
         self._updateActions()
 
     def createActions(self):
+        style = QApplication.style()
+
         self.openAct = QAction(self.tr("Browse in viewer"), self, triggered=self.open)
+        icon = style.standardIcon(QStyle.SP_DialogOpenButton)
+        self.openFileAct = QAction(icon, self.tr("&Open..."), self, shortcut=QKeySequence.Open, triggered=self.openFile)
         self.saveAsAct = QAction(self.tr("&Save As..."), self, shortcut=QKeySequence.SaveAs, triggered=self.saveAs)
         # self.printAct = QAction(self.tr("&Print..."), self, shortcut=QKeySequence.Print, enabled=False, triggered=self.print_)
         self.exitAct = QAction(self.tr("E&xit"), self, shortcut=QKeySequence.Quit, triggered=self.close)
@@ -1139,6 +1143,7 @@ class ImageEditorDialog(QDialog):
     def createMenus(self):
         self.fileMenu = QMenu(self.tr("&File"), self)
         self.fileMenu.addAction(self.openAct)
+        self.fileMenu.addAction(self.openFileAct)
         self.fileMenu.addAction(self.saveAct)
         self.fileMenu.addAction(self.saveAsAct)
         # self.fileMenu.addAction(self.printAct)
@@ -1342,6 +1347,16 @@ class ImageEditorDialog(QDialog):
 
     def getImage(self):
         return self._pixmapHandle.pixmap().toImage()
+
+    def openFile(self):
+        settings = QSettings()
+        last_dir = settings.value('images/last_dir', IMAGE_PATH)
+
+        caption = self.tr("Open File")
+        file_name, _ = QFileDialog.getOpenFileName(self,
+                caption, last_dir, ';;'.join(readImageFilters()))
+        if file_name:
+            self.loadFromFile(file_name)
 
     def open(self):
         fileName = self._saveTmpImage()
