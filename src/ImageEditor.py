@@ -1009,6 +1009,14 @@ class ScrollPanel(QScrollArea):
     def addWidget(self, w):
         self.imageLayout.addWidget(w)
 
+    def clear(self):
+        while True:
+            w = self.imageLayout.takeAt(0)
+            if w:
+                w.widget().deleteLater()
+            else:
+                break
+
 
 @storeDlgSizeDecorator
 class ImageEditorDialog(QDialog):
@@ -1274,7 +1282,8 @@ class ImageEditorDialog(QDialog):
 
     def showEvent(self, _e):
         self.updateViewer()
-        self.scrollPanel.ensureWidgetVisible(self.proxy.currentImage())
+        if self.proxy:
+            self.scrollPanel.ensureWidgetVisible(self.proxy.currentImage())
 
     def resized(self, _e):
         if self.isVisible():
@@ -1282,6 +1291,7 @@ class ImageEditorDialog(QDialog):
 
     def setImageProxy(self, proxy):
         self.proxy = proxy
+        self.scrollPanel.clear()
         images = self.proxy.images()
         for image in images:
             self.scrollPanel.addWidget(image)
@@ -1365,6 +1375,9 @@ class ImageEditorDialog(QDialog):
                 caption, last_dir, ';;'.join(readImageFilters()))
         if file_name:
             self.loadFromFile(file_name)
+            return True
+
+        return False
 
     def open(self):
         fileName = self._saveTmpImage()
