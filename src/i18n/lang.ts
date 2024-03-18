@@ -228,13 +228,21 @@
         <source>Camera</source>
         <translation type="unfinished"></translation>
     </message>
-</context>
-<context>
-    <name>ImageEditorWindow</name>
     <message>
         <source>&amp;Open...</source>
         <translation type="unfinished"></translation>
     </message>
+    <message>
+        <source>Show Scroll Panel</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Open File</source>
+        <translation type="unfinished"></translation>
+    </message>
+</context>
+<context>
+    <name>ImageEditorWindow</name>
     <message>
         <source>Background color</source>
         <translation type="unfinished"></translation>
@@ -248,7 +256,11 @@
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <source>Open File</source>
+        <source>Open folder...</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Open image folder</source>
         <translation type="unfinished"></translation>
     </message>
 </context>
