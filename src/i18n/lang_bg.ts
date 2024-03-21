@@ -226,21 +226,13 @@
         <source>Camera</source>
         <translation>Камера</translation>
     </message>
+</context>
+<context>
+    <name>ImageEditorWindow</name>
     <message>
         <source>&amp;Open...</source>
         <translation>&amp;Отваряне...</translation>
     </message>
-    <message>
-        <source>Show Scroll Panel</source>
-        <translation>Показване на панела за превъртане</translation>
-    </message>
-    <message>
-        <source>Open File</source>
-        <translation>Отваряне на файл</translation>
-    </message>
-</context>
-<context>
-    <name>ImageEditorWindow</name>
     <message>
         <source>Background color</source>
         <translation>Фонов цвят на изображението</translation>
@@ -254,12 +246,8 @@
         <translation>Изображението е променено. Да се запазят ли промените?</translation>
     </message>
     <message>
-        <source>Open folder...</source>
-        <translation>Отваряне на папка...</translation>
-    </message>
-    <message>
-        <source>Open image folder</source>
-        <translation>Папка с изображения</translation>
+        <source>Open File</source>
+        <translation>Отваряне на файл</translation>
     </message>
 </context>
 <context>
