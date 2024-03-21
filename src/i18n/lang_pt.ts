@@ -226,21 +226,13 @@
         <source>Camera</source>
         <translation>Câmara</translation>
     </message>
+</context>
+<context>
+    <name>ImageEditorWindow</name>
     <message>
         <source>&amp;Open...</source>
         <translation>&amp;Abrir...</translation>
     </message>
-    <message>
-        <source>Show Scroll Panel</source>
-        <translation>Mostrar painel de rolamento</translation>
-    </message>
-    <message>
-        <source>Open File</source>
-        <translation>Abrir ficheiro</translation>
-    </message>
-</context>
-<context>
-    <name>ImageEditorWindow</name>
     <message>
         <source>Background color</source>
         <translation>Cor do fundo</translation>
@@ -254,12 +246,8 @@
         <translation>A imagem foi alterada. Gravar alterações?</translation>
     </message>
     <message>
-        <source>Open folder...</source>
-        <translation>Abrir pasta...</translation>
-    </message>
-    <message>
-        <source>Open image folder</source>
-        <translation>Abrir pasta da imagem</translation>
+        <source>Open File</source>
+        <translation>Abrir ficheiro</translation>
     </message>
 </context>
 <context>
