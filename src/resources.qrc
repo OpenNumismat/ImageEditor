@@ -4,6 +4,8 @@
     <file alias="arrow_out.png">icons/arrow_out.png</file>
     <file alias="arrow_rotate_anticlockwise.png">icons/arrow_rotate_anticlockwise.png</file>
     <file alias="arrow_rotate_clockwise.png">icons/arrow_rotate_clockwise.png</file>
+    <file alias="arrow_left.png">icons/arrow_left.png</file>
+    <file alias="arrow_right.png">icons/arrow_right.png</file>
     <file alias="page_copy.png">icons/page_copy.png</file>
     <file alias="page_paste.png">icons/page_paste.png</file>
     <file alias="redo.png">icons/redo.png</file>

@@ -4,37 +4,11 @@ from PySide6.QtWidgets import QApplication, QStyle, QMessageBox, QColorDialog, Q
 from PySide6.QtCore import Signal as pyqtSignal
 
 from ImageEditor import ImageEditorDialog
+from ImageProxy import ImageProxy
 from Tools.Gui import getSaveFileName
 from Tools.misc import saveImageFilters
 
 IMAGE_PATH = QStandardPaths.standardLocations(QStandardPaths.PicturesLocation)[0]
-
-
-class ImageProxy():
-
-    def __init__(self):
-        self._current = None
-        self._images = []
-
-    def images(self):
-        return self._images
-
-    def setImages(self, images):
-        self._images = images
-
-    def append(self, image):
-        self._images.append(image)
-
-    def currentImage(self):
-        for image in self._images:
-            if image.field == self._current:
-                return image
-
-    def setCurrent(self, field):
-        self._current = field
-
-    def imageSaved(self, image):
-        self.currentImage().imageSaved(image)
 
 
 class ImageScrollLabel(QLabel):
@@ -161,6 +135,7 @@ class ImageEditorWindow(ImageEditorDialog):
         if super().openFile():
             self.scrollPanel.clear()
             self.scrollPanel.hide()
+            self.navigationMenu.setEnabled(False)
 
             self.imageSaved.connect(self.saveImage)
             self.saveImageConnected = True
@@ -187,6 +162,7 @@ class ImageEditorWindow(ImageEditorDialog):
                 proxy.setCurrent(files[0].filePath())
                 self.setImageProxy(proxy)
                 self.scrollPanel.show()
+                self.navigationMenu.setEnabled(True)
 
                 if self.saveImageConnected:
                     self.imageSaved.disconnect(self.saveImage)

@@ -1120,8 +1120,8 @@ class ImageEditorDialog(QDialog):
         self.showStatusBarAct = QAction(self.tr("Show Status Bar"), self, checkable=True, triggered=self.showStatusBar)
         if self.has_scrollpanel:
             self.showScrollPanelAct = QAction(self.tr("Show Scroll Panel"), self, checkable=True, triggered=self.showScrollPanel)
-        self.rotateLeftAct = QAction(QIcon(':/arrow_rotate_anticlockwise.png'), self.tr("Rotate to Left"), self, shortcut=QKeySequence.MoveToPreviousWord, triggered=self.rotateLeft)
-        self.rotateRightAct = QAction(QIcon(':/arrow_rotate_clockwise.png'), self.tr("Rotate to Right"), self, shortcut=QKeySequence.MoveToNextWord, triggered=self.rotateRight)
+        self.rotateLeftAct = QAction(QIcon(':/arrow_rotate_anticlockwise.png'), self.tr("Rotate to Left"), self, shortcut=Qt.ALT | Qt.Key_Left, triggered=self.rotateLeft)
+        self.rotateRightAct = QAction(QIcon(':/arrow_rotate_clockwise.png'), self.tr("Rotate to Right"), self, shortcut=Qt.ALT | Qt.Key_Right, triggered=self.rotateRight)
         self.rotateAct = QAction(self.tr("Rotate..."), self, shortcut=Qt.Key_R, checkable=True, triggered=self.rotate)
         self.cropAct = QAction(QIcon(':/shape_handles.png'), self.tr("Crop..."), self, shortcut=Qt.Key_C, checkable=True, triggered=self.crop)
         self.autocropAct = QAction(self.tr("Autocrop"), self, triggered=self.autocrop)
@@ -1140,6 +1140,8 @@ class ImageEditorDialog(QDialog):
         self.cutRightAct = QAction(self.tr("Cut right half"), self, triggered=self.cutRight)
         if self.use_webcam:
             self.cameraAct = QAction(QIcon(':/webcam.png'), self.tr("Camera"), self, triggered=self.camera)
+        self.prevImageAct = QAction(QIcon(':/arrow_left.png'), self.tr("Previous image"), self, shortcut=QKeySequence.MoveToPreviousWord, triggered=self.prevImage)
+        self.nextImageAct = QAction(QIcon(':/arrow_right.png'), self.tr("Next image"), self, shortcut=QKeySequence.MoveToNextWord, triggered=self.nextImage)
 
         settings = QSettings()
         toolBarShown = settings.value('image_viewer/tool_bar', True, type=bool)
@@ -1181,6 +1183,11 @@ class ImageEditorDialog(QDialog):
         if self.use_webcam:
             self.editMenu.addAction(self.cameraAct)
 
+        self.navigationMenu = QMenu(self.tr("Navigation"), self)
+        self.navigationMenu.addAction(self.prevImageAct)
+        self.navigationMenu.addAction(self.nextImageAct)
+        self.navigationMenu.setEnabled(False)
+
         self.viewMenu = QMenu(self.tr("&View"), self)
         self.viewMenu.addAction(self.fullScreenAct)
         self.viewMenu.addSeparator()
@@ -1199,6 +1206,7 @@ class ImageEditorDialog(QDialog):
 
         self.menuBar.addMenu(self.fileMenu)
         self.menuBar.addMenu(self.editMenu)
+        self.menuBar.addMenu(self.navigationMenu)
         self.menuBar.addMenu(self.viewMenu)
         self.menuBar.addMenu(self.settingsMenu)
 
@@ -1292,6 +1300,7 @@ class ImageEditorDialog(QDialog):
     def setImageProxy(self, proxy):
         self.proxy = proxy
         self.scrollPanel.clear()
+        self.navigationMenu.setEnabled(True)
         images = self.proxy.images()
         for image in images:
             self.scrollPanel.addWidget(image)
@@ -1331,6 +1340,18 @@ class ImageEditorDialog(QDialog):
         self._updateEditActions()
 
         self.fitToWindow()
+
+    def prevImage(self):
+        if self.proxy:
+            image = self.proxy.prev()
+            if image:
+                self.imageScrolled(image)
+
+    def nextImage(self):
+        if self.proxy:
+            image = self.proxy.next()
+            if image:
+                self.imageScrolled(image)
 
     def setImage(self, image):
         if type(image) is QPixmap:
