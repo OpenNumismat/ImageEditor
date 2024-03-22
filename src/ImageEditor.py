@@ -1310,7 +1310,7 @@ class ImageEditorDialog(QDialog):
         images = self.proxy.images()
         for image in images:
             self.scrollPanel.addWidget(image)
-            image.imageClicked.connect(self.imageScrolled)
+            image.imageClicked.connect(self.imageScrollClicked)
 
         if images:
             self.imageScrolled(self.proxy.currentImage())
@@ -1319,17 +1319,13 @@ class ImageEditorDialog(QDialog):
 
         self.imageSaved.connect(proxy.imageSaved)
 
-    def imageScrolled(self, image):
-        if self.isChanged:
-            result = QMessageBox.warning(
-                self, self.tr("Save"),
-                self.tr("Image was changed. Save changes?"),
-                QMessageBox.Save | QMessageBox.No | QMessageBox.Cancel, QMessageBox.Cancel)
-            if result == QMessageBox.Save:
-                self.save(confirm_save=False)
-            elif result == QMessageBox.Cancel:
-                return
+    def imageScrollClicked(self, image):
+        if not self.confirmClosingImage():
+            return
 
+        self.imageScrolled(image)
+
+    def imageScrolled(self, image):
         self.setImage(image.image)
         self.setTitle(image.title)
 
@@ -1351,22 +1347,34 @@ class ImageEditorDialog(QDialog):
 
     def prevImage(self):
         if self.proxy:
+            if not self.confirmClosingImage():
+                return
+
             image = self.proxy.prev()
             if image:
                 self.imageScrolled(image)
 
     def nextImage(self):
         if self.proxy:
+            if not self.confirmClosingImage():
+                return
+
             image = self.proxy.next()
             if image:
                 self.imageScrolled(image)
 
     def prevRecord(self):
         if self.proxy:
+            if not self.confirmClosingImage():
+                return
+
             self.proxy.prevRecord(self)
 
     def nextRecord(self):
         if self.proxy:
+            if not self.confirmClosingImage():
+                return
+
             self.proxy.nextRecord(self)
 
     def setImage(self, image):
@@ -1456,15 +1464,8 @@ class ImageEditorDialog(QDialog):
 
             self.showNormal()
         else:
-            if self.isChanged:
-                result = QMessageBox.warning(
-                    self, self.tr("Save"),
-                    self.tr("Image was changed. Save changes?"),
-                    QMessageBox.Save | QMessageBox.No, QMessageBox.No)
-                if result == QMessageBox.Save:
-                    self.save(confirm_save=False)
-
-            super().done(r)
+            if self.confirmClosingImage():
+                super().done(r)
 
     def fullScreen(self):
         self.isFullScreen = True
@@ -1976,7 +1977,20 @@ class ImageEditorDialog(QDialog):
         self.undoAct.setEnabled(self.undo_stack.can_undo())
         self.redoAct.setEnabled(self.undo_stack.can_redo())
 
-    def save(self, checked=False, confirm_save=True):
+    def confirmClosingImage(self):
+        if self.isChanged:
+            result = QMessageBox.warning(
+                self, self.tr("Save"),
+                self.tr("Image was changed. Save changes?"),
+                QMessageBox.Save | QMessageBox.No | QMessageBox.Cancel, QMessageBox.Cancel)
+            if result == QMessageBox.Save:
+                self.save(confirm_save=False)
+            elif result == QMessageBox.No:
+                return True
+
+        return not self.isChanged
+
+    def save(self, confirm_save=True):
         if confirm_save:
             settings = QSettings()
             show = settings.value('image_viewer/confirm_save', True, type=bool)
