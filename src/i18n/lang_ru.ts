@@ -232,7 +232,7 @@
     </message>
     <message>
         <source>Show Scroll Panel</source>
-        <translation>Показывать панель прокрутки</translation>
+        <translation>Показывать панель навигации</translation>
     </message>
     <message>
         <source>Open File</source>
