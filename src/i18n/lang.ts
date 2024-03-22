@@ -252,6 +252,14 @@
         <source>Navigation</source>
         <translation type="unfinished"></translation>
     </message>
+    <message>
+        <source>Previous record</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Next record</source>
+        <translation type="unfinished"></translation>
+    </message>
 </context>
 <context>
     <name>ImageEditorWindow</name>
