@@ -226,13 +226,33 @@
         <source>Camera</source>
         <translation>Камера</translation>
     </message>
-</context>
-<context>
-    <name>ImageEditorWindow</name>
     <message>
         <source>&amp;Open...</source>
         <translation>&amp;Открыть...</translation>
     </message>
+    <message>
+        <source>Show Scroll Panel</source>
+        <translation>Показывать панель прокрутки</translation>
+    </message>
+    <message>
+        <source>Open File</source>
+        <translation>Открыть файл</translation>
+    </message>
+    <message>
+        <source>Previous image</source>
+        <translation>Предыдущее изображение</translation>
+    </message>
+    <message>
+        <source>Next image</source>
+        <translation>Следующее изображение</translation>
+    </message>
+    <message>
+        <source>Navigation</source>
+        <translation>Навигация</translation>
+    </message>
+</context>
+<context>
+    <name>ImageEditorWindow</name>
     <message>
         <source>Background color</source>
         <translation>Цвет фона</translation>
@@ -246,8 +266,12 @@
         <translation>Изображение изменено. Сохранить изменения?</translation>
     </message>
     <message>
-        <source>Open File</source>
-        <translation>Открыть файл</translation>
+        <source>Open folder...</source>
+        <translation>Открыть каталог...</translation>
+    </message>
+    <message>
+        <source>Open image folder</source>
+        <translation>Открытие каталога с изображениями</translation>
     </message>
 </context>
 <context>
