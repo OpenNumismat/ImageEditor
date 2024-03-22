@@ -240,6 +240,18 @@
         <source>Open File</source>
         <translation type="unfinished"></translation>
     </message>
+    <message>
+        <source>Previous image</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Next image</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Navigation</source>
+        <translation type="unfinished"></translation>
+    </message>
 </context>
 <context>
     <name>ImageEditorWindow</name>
