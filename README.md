@@ -32,12 +32,12 @@ ImageEditor is a part of [OpenNumismat](http://opennumismat.github.io/) project,
 `Ctrl`+`V`, `Shift`+`Insert` - Paste  
 `Ctrl`+`Z` - Undo  
 `Ctrl`+`Y` - Redo  
-`Alt`+`Right` - Rotate to right  
 `Alt`+`Left` - Rotate to left  
+`Alt`+`Right` - Rotate to right  
 `C` - Open crop tool  
 `R` - Open rotate tool  
-`Ctrl`+`Right` - Previous image  
-`Ctrl`+`Left` - Next image  
+`Ctrl`+`Left` - Previous image  
+`Ctrl`+`Right` - Next image  
 `+` - Zoom in  
 `-` - Zoom out  
 `0` - Fit to window  
