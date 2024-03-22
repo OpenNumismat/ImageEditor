@@ -1142,6 +1142,8 @@ class ImageEditorDialog(QDialog):
             self.cameraAct = QAction(QIcon(':/webcam.png'), self.tr("Camera"), self, triggered=self.camera)
         self.prevImageAct = QAction(QIcon(':/arrow_left.png'), self.tr("Previous image"), self, shortcut=QKeySequence.MoveToPreviousWord, triggered=self.prevImage)
         self.nextImageAct = QAction(QIcon(':/arrow_right.png'), self.tr("Next image"), self, shortcut=QKeySequence.MoveToNextWord, triggered=self.nextImage)
+        self.prevRecordAct = QAction(QIcon(':/arrow_up.png'), self.tr("Previous record"), self, shortcut=Qt.CTRL | Qt.Key_Up, triggered=self.prevRecord)
+        self.nextRecordAct = QAction(QIcon(':/arrow_down.png'), self.tr("Next record"), self, shortcut=Qt.CTRL | Qt.Key_Down, triggered=self.nextRecord)
 
         settings = QSettings()
         toolBarShown = settings.value('image_viewer/tool_bar', True, type=bool)
@@ -1186,6 +1188,8 @@ class ImageEditorDialog(QDialog):
         self.navigationMenu = QMenu(self.tr("Navigation"), self)
         self.navigationMenu.addAction(self.prevImageAct)
         self.navigationMenu.addAction(self.nextImageAct)
+        self.navigationMenu.addAction(self.prevRecordAct)
+        self.navigationMenu.addAction(self.nextRecordAct)
         self.navigationMenu.setEnabled(False)
 
         self.viewMenu = QMenu(self.tr("&View"), self)
@@ -1283,6 +1287,8 @@ class ImageEditorDialog(QDialog):
             self.scene.removeItem(self._pixmapHandle)
             self._pixmapHandle = None
 
+            self._updateActions()
+
     def pixmap(self):
         if self.hasImage():
             return self._pixmapHandle.pixmap()
@@ -1308,6 +1314,8 @@ class ImageEditorDialog(QDialog):
 
         if images:
             self.imageScrolled(self.proxy.currentImage())
+        else:
+            self.clearImage()
 
         self.imageSaved.connect(proxy.imageSaved)
 
@@ -1352,6 +1360,14 @@ class ImageEditorDialog(QDialog):
             image = self.proxy.next()
             if image:
                 self.imageScrolled(image)
+
+    def prevRecord(self):
+        if self.proxy:
+            self.proxy.prevRecord(self)
+
+    def nextRecord(self):
+        if self.proxy:
+            self.proxy.nextRecord(self)
 
     def setImage(self, image):
         if type(image) is QPixmap:
