@@ -8,6 +8,7 @@
 
 ImageEditor is a part of [OpenNumismat](http://opennumismat.github.io/) project, so it aims to edit coins images.
 
+![Screenshot](https://opennumismat.github.io/images/imageEdit2.png)
 ![Screenshot](https://opennumismat.github.io/images/imageEdit.png)
 ![Screenshot](https://opennumismat.github.io/images/imageEdit1.png)
 
