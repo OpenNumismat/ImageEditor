@@ -1,7 +1,6 @@
 from PySide6.QtCore import QSettings, QFileInfo, Qt, QStandardPaths, QDir
-from PySide6.QtGui import QIcon, QAction, QImage, QColor, QPixmap, QPalette
-from PySide6.QtWidgets import QApplication, QStyle, QMessageBox, QColorDialog, QDialog, QFileDialog, QLabel, QWidget, QSizePolicy
-from PySide6.QtCore import Signal as pyqtSignal
+from PySide6.QtGui import QIcon, QAction, QImage, QColor
+from PySide6.QtWidgets import QApplication, QStyle, QMessageBox, QColorDialog, QDialog, QFileDialog
 
 from ImageEditor import ImageEditorDialog
 from ImageProxy import ImageProxy

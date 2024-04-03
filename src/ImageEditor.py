@@ -1,6 +1,62 @@
-from PySide6.QtCore import *
-from PySide6.QtGui import *
-from PySide6.QtWidgets import *
+from PySide6.QtCore import (
+    QDir,
+    QFileInfo,
+    QMargins,
+    QMimeData,
+    QObject,
+    QRect,
+    QSettings,
+    QStandardPaths,
+    QTemporaryFile,
+    QTimer,
+    QUrl,
+)
+from PySide6.QtGui import (
+    QAction,
+    QBitmap,
+    QColor,
+    QCursor,
+    QDesktopServices,
+    QIcon,
+    QKeySequence,
+    QPen,
+    QPixmap,
+    QResizeEvent,
+    QShortcut,
+)
+from PySide6.QtWidgets import (
+    QApplication,
+    QCheckBox,
+    QColorDialog,
+    QDialog,
+    QDialogButtonBox,
+    QDoubleSpinBox,
+    QFileDialog,
+    QGraphicsEllipseItem,
+    QGraphicsItem,
+    QGraphicsLineItem,
+    QGraphicsPixmapItem,
+    QGraphicsRectItem,
+    QGraphicsScene,
+    QGraphicsView,
+    QGridLayout,
+    QHBoxLayout,
+    QLabel,
+    QMenu,
+    QMenuBar,
+    QMessageBox,
+    QPushButton,
+    QScrollArea,
+    QSizePolicy,
+    QSlider,
+    QSpinBox,
+    QStyle,
+    QStatusBar,
+    QTabWidget,
+    QToolBar,
+    QVBoxLayout,
+    QWidget,
+)
 from PySide6.QtCore import Signal as pyqtSignal
 
 try:
