@@ -1462,7 +1462,9 @@ class ImageEditorDialog(QDialog):
 
         self._updateActions()
 
-        self.sizeLabel.setText("%dx%d" % (image.width(), image.height()))
+        width = image.width()
+        height = image.height()
+        self.sizeLabel.setText(f"{width}x{height}")
 
     def getImage(self):
         return self._pixmapHandle.pixmap().toImage()
@@ -1731,7 +1733,7 @@ class ImageEditorDialog(QDialog):
         self.zoomSpin.setValue(zoom)
         self.zoomSpin.blockSignals(False)
 
-        self.zoomLabel.setText("%d%%" % zoom)
+        self.zoomLabel.setText(f"{zoom}%")
 
     def rotateLeft(self):
         transform = QTransform()
