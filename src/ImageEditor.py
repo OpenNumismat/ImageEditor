@@ -1727,7 +1727,7 @@ class ImageEditorDialog(QDialog):
         self.fitToWindowAct.setDisabled(self.isFitToWindow)
         self.normalSizeAct.setDisabled(self.scale == 1)
 
-        zoom = self.scale * 100 + 0.5
+        zoom = int(self.scale * 100 + 0.5)
 
         self.zoomSpin.blockSignals(True)
         self.zoomSpin.setValue(zoom)
