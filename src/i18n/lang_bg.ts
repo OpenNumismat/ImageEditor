@@ -128,7 +128,7 @@
     </message>
     <message>
         <source>&amp;Fit to Window</source>
-        <translation>&amp;Побери в прозореца</translation>
+        <translation>&amp;Побиране в прозореца</translation>
     </message>
     <message>
         <source>Show Tool Bar</source>
