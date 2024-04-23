@@ -124,11 +124,11 @@
     </message>
     <message>
         <source>&amp;Normal Size</source>
-        <translation>&amp;Нормален размер</translation>
+        <translation>&amp;Действителен размер</translation>
     </message>
     <message>
         <source>&amp;Fit to Window</source>
-        <translation>&amp;Побери в прозореца</translation>
+        <translation>&amp;Побиране в прозореца</translation>
     </message>
     <message>
         <source>Show Tool Bar</source>
