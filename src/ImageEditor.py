@@ -1698,13 +1698,6 @@ class ImageEditorDialog(QDialog):
         pixmap = self._pixmapHandle.pixmap()
         self.viewer.setSceneRect(QRectF(pixmap.rect()))
 
-        sceneRect = self.viewer.sceneRect()
-        minHeightScale = (self.viewer.height() - 4) / sceneRect.height()
-        minWidthScale = (self.viewer.width() - 4) / sceneRect.width()
-        self.minScale = max(min(minHeightScale, minWidthScale), ZOOM_MIN / 100)
-        if self.minScale > 1:
-            self.minScale = 1
-
         if self.isFitToWindow:
             self.fitToWindow()
 
