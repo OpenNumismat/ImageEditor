@@ -1376,6 +1376,11 @@ class ImageEditorDialog(QDialog):
         self.imageSaved.connect(proxy.imageSaved)
 
     def imageScrollClicked(self, image):
+        inCrop = self.cropAct.isChecked()
+        inRotate = self.rotateAct.isChecked()
+        if inCrop or inRotate:
+            return
+
         if not self.confirmClosingImage():
             return
 
@@ -1815,6 +1820,7 @@ class ImageEditorDialog(QDialog):
                                  self._startCenter.y() + yoffset)
 
         self._updateGrid()
+        self._updateEditActions()
 
     def rotateClose(self, result):
         self._updateGrid()
@@ -2008,6 +2014,7 @@ class ImageEditorDialog(QDialog):
     def _updateEditActions(self):
         inCrop = self.cropAct.isChecked()
         inRotate = self.rotateAct.isChecked()
+        self.openFileAct.setEnabled(inCrop or inRotate)
         self.exitAct.setDisabled(inCrop or inRotate)
         self.saveAsAct.setDisabled(inCrop or inRotate)
         self.copyAct.setDisabled(inCrop or inRotate)
@@ -2016,8 +2023,15 @@ class ImageEditorDialog(QDialog):
         self.rotateRightAct.setDisabled(inCrop or inRotate)
         self.rotateAct.setDisabled(inCrop)
         self.cropAct.setDisabled(inRotate)
+        self.autocropAct.setDisabled(inCrop or inRotate)
+        self.cutLeftAct.setDisabled(inCrop or inRotate)
+        self.cutRightAct.setDisabled(inCrop or inRotate)
         if self.use_webcam:
             self.cameraAct.setDisabled(inCrop or inRotate)
+        self.prevImageAct.setDisabled(inCrop or inRotate)
+        self.nextImageAct.setDisabled(inCrop or inRotate)
+        self.prevRecordAct.setDisabled(inCrop or inRotate)
+        self.nextRecordAct.setDisabled(inCrop or inRotate)
 
         if inCrop or inRotate:
             self.saveAct.setDisabled(True)
