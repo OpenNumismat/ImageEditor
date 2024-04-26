@@ -1513,11 +1513,9 @@ class ImageEditorDialog(QDialog):
     def done(self, r):
         if self.cropDlg and self.cropDlg.isVisible():
             self.cropDlg.close()
-            self.cropDlg = None
             return
         if self.rotateDlg and self.rotateDlg.isVisible():
             self.rotateDlg.close()
-            self.rotateDlg = None
             return
 
         if self.isFullScreen:
@@ -1790,7 +1788,6 @@ class ImageEditorDialog(QDialog):
             self._updateEditActions()
         else:
             self.rotateDlg.close()
-            self.rotateDlg = None
 
         self._updateGrid()
 
@@ -1829,7 +1826,6 @@ class ImageEditorDialog(QDialog):
 
         if result:
             self.isChanged = True
-            self.markWindowTitle(self.isChanged)
             self.pushUndo(self._startPixmap)
         else:
             self.setImage(self._startPixmap)
@@ -1837,9 +1833,13 @@ class ImageEditorDialog(QDialog):
 
         self._startPixmap = None
 
+        self.markWindowTitle(self.isChanged)
         self.rotateAct.setChecked(False)
         self._updateEditActions()
-    
+
+        self.rotateDlg.deleteLater()
+        self.rotateDlg = None
+
     def crop(self):
         if self.cropAct.isChecked():
             sceneRect = self.viewer.sceneRect()
@@ -1860,7 +1860,6 @@ class ImageEditorDialog(QDialog):
             self._updateEditActions()
         else:
             self.cropDlg.close()
-            self.cropDlg = None
 
     def cropToolChanged(self, _index):
         if self.bounding:
@@ -1976,6 +1975,9 @@ class ImageEditorDialog(QDialog):
         self.markWindowTitle(self.isChanged)
         self.cropAct.setChecked(False)
         self._updateEditActions()
+
+        self.cropDlg.deleteLater()
+        self.cropDlg = None
 
     def autocrop(self):
         pixmap = self._pixmapHandle.pixmap()
@@ -2133,3 +2135,4 @@ class ImageEditorDialog(QDialog):
                 self.isChanged = True
                 self.markWindowTitle(self.isChanged)
                 self._updateEditActions()
+        dlg.deleteLater()
