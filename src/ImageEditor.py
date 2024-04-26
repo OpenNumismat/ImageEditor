@@ -1513,9 +1513,11 @@ class ImageEditorDialog(QDialog):
     def done(self, r):
         if self.cropDlg and self.cropDlg.isVisible():
             self.cropDlg.close()
+            self.cropDlg = None
             return
         if self.rotateDlg and self.rotateDlg.isVisible():
             self.rotateDlg.close()
+            self.rotateDlg = None
             return
 
         if self.isFullScreen:
