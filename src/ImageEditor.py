@@ -482,15 +482,16 @@ class GraphicsBoundingItem(QObject):
         self.width = width
         self.height = height
         self.scale = scale
+        self.scale1 = 1
         self.fixed = fixed_
 
-        point1 = BoundingPointItem(self, self.width, self.height,
+        point1 = BoundingPointItem(self, self.width * self.scale, self.height * self.scale,
                                    BoundingPointItem.TOP_LEFT)
-        point2 = BoundingPointItem(self, self.width, self.height,
+        point2 = BoundingPointItem(self, self.width * self.scale, self.height * self.scale,
                                    BoundingPointItem.TOP_RIGHT)
-        point3 = BoundingPointItem(self, self.width, self.height,
+        point3 = BoundingPointItem(self, self.width * self.scale, self.height * self.scale,
                                    BoundingPointItem.BOTTOM_RIGHT)
-        point4 = BoundingPointItem(self, self.width, self.height,
+        point4 = BoundingPointItem(self, self.width * self.scale, self.height * self.scale,
                                    BoundingPointItem.BOTTOM_LEFT)
 
         self.points = [point1, point2, point3, point4]
@@ -676,10 +677,10 @@ class GraphicsBoundingItem(QObject):
             pos = newPos
 
         self.mask.setPolygon(self.width * self.scale, self.height * self.scale,
-                             p1.x() * self.scale, p1.y() * self.scale,
-                             p2.x() * self.scale, p2.y() * self.scale,
-                             p3.x() * self.scale, p3.y() * self.scale,
-                             p4.x() * self.scale, p4.y() * self.scale)
+                             p1.x(), p1.y(),
+                             p2.x(), p2.y(),
+                             p3.x(), p3.y(),
+                             p4.x(), p4.y())
 
         for item in self.items():
             item.setFlag(QGraphicsItem.ItemSendsGeometryChanges)
@@ -701,31 +702,33 @@ class GraphicsBoundingItem(QObject):
         p3 = self.points[BoundingPointItem.BOTTOM_RIGHT]
         p4 = self.points[BoundingPointItem.BOTTOM_LEFT]
 
-        self.lines[0].setLine(p1.x() * self.scale,
-                              (p1.y() - self.lines[0].pos().y()) * self.scale,
-                              p2.x() * self.scale,
-                              (p2.y() - self.lines[0].pos().y()) * self.scale)
-        self.lines[1].setLine((p2.x() - self.lines[1].pos().x()) * self.scale,
-                              p2.y() * self.scale,
-                              (p3.x() - self.lines[1].pos().x()) * self.scale,
-                              p3.y() * self.scale)
-        self.lines[2].setLine(p3.x() * self.scale,
-                              (p3.y() - self.lines[2].pos().y()) * self.scale,
-                              p4.x() * self.scale,
-                              (p4.y() - self.lines[2].pos().y()) * self.scale)
-        self.lines[3].setLine((p4.x() - self.lines[3].pos().x()) * self.scale,
-                              p4.y() * self.scale,
-                              (p1.x() - self.lines[3].pos().x()) * self.scale,
-                              p1.y() * self.scale)
+        self.lines[0].setLine(p1.x(),
+                              (p1.y() - self.lines[0].pos().y()),
+                              p2.x(),
+                              (p2.y() - self.lines[0].pos().y()))
+        self.lines[1].setLine((p2.x() - self.lines[1].pos().x()),
+                              p2.y(),
+                              (p3.x() - self.lines[1].pos().x()),
+                              p3.y())
+        self.lines[2].setLine(p3.x(),
+                              (p3.y() - self.lines[2].pos().y()),
+                              p4.x(),
+                              (p4.y() - self.lines[2].pos().y()))
+        self.lines[3].setLine((p4.x() - self.lines[3].pos().x()),
+                              p4.y(),
+                              (p1.x() - self.lines[3].pos().x()),
+                              p1.y())
 
         self.mask.setPolygon(self.width * self.scale, self.height * self.scale,
-                             p1.x() * self.scale, p1.y() * self.scale,
-                             p2.x() * self.scale, p2.y() * self.scale,
-                             p3.x() * self.scale, p3.y() * self.scale,
-                             p4.x() * self.scale, p4.y() * self.scale)
+                             p1.x(), p1.y(),
+                             p2.x(), p2.y(),
+                             p3.x(), p3.y(),
+                             p4.x(), p4.y())
 
-    def setScale(self, scale):
+    def setScale(self, scale, width, height):
         self.scale = scale
+        self.width = width
+        self.height = height
 
         self.updateRect()
 
@@ -733,7 +736,7 @@ class GraphicsBoundingItem(QObject):
         return [self.mask, ] + self.lines + self.points
 
     def cropPoints(self):
-        return [p.pos() for p in self.points]
+        return [p.pos() / self.scale1 for p in self.points]
 
 
 class BoundingCircleItem(QGraphicsEllipseItem):
@@ -999,7 +1002,7 @@ class GraphicsView(QGraphicsView):
         # self.timer.start(60 - self.parent().scale * self.parent().scale)
         self.timer.start(60 / self.parent.scale)
 
-    def _smooth_zoom_in(self):
+    def _smooth_zoom_in1(self):
         self._start_timer()
 
         position = self.mapFromGlobal(QCursor.pos())
@@ -1014,6 +1017,26 @@ class GraphicsView(QGraphicsView):
         delta = newPos - oldPos
         self.setTransformationAnchor(QGraphicsView.NoAnchor)
         self.translate(delta.x(), delta.y())
+
+    def _smooth_zoom_in(self):
+        old_scale = self.parent.scale
+
+        self._start_timer()
+
+        position = self.mapFromGlobal(QCursor.pos())
+        oldPos = self.mapToScene(position)
+
+        self.parent.zoom(self.parent.scale * 100 + 1)
+
+        scaler = (self.parent.scale - old_scale) / old_scale
+
+        center_x = self.viewport().rect().width() / 2.0
+        center_y = self.viewport().rect().height() / 2.0
+        # Get the new position
+        offset_x = (center_x - position.x()) * scaler
+        offset_y = (center_y - position.y()) * scaler
+        self.setTransformationAnchor(QGraphicsView.NoAnchor)
+        self.translate(offset_x, offset_y)
 
     def wheelEvent(self, event):
         if event.angleDelta().y() > 0:
@@ -1031,20 +1054,24 @@ class GraphicsView(QGraphicsView):
             self.doubleClicked.emit()
 
     def _zoom(self, direction, position):
-        oldPos = self.mapToScene(position.toPoint())
+        center = self.viewport().rect().center()  # TODO: remove
+        old_scale = self.parent.scale
 
         if direction > 0:
             self.parent.zoomIn()
         else:
             self.parent.zoomOut()
 
-        # Get the new position
-        newPos = self.mapToScene(position.toPoint())
+        scaler = (self.parent.scale - old_scale) / old_scale
 
-        # Move scene to old position
-        delta = newPos - oldPos
+        center_x = self.viewport().rect().width() / 2.0
+        center_y = self.viewport().rect().height() / 2.0
+        # Get the new position
+        pos = (QPointF(center) - position) * scaler  # TODO: remove
+        offset_x = (center_x - position.x()) * scaler
+        offset_y = (center_y - position.y()) * scaler
         self.setTransformationAnchor(QGraphicsView.NoAnchor)
-        self.translate(delta.x(), delta.y())
+        self.translate(offset_x, offset_y)
 
 
 class ScrollPanel(QScrollArea):
@@ -1376,11 +1403,6 @@ class ImageEditorDialog(QDialog):
         self.imageSaved.connect(proxy.imageSaved)
 
     def imageScrollClicked(self, image):
-        inCrop = self.cropAct.isChecked()
-        inRotate = self.rotateAct.isChecked()
-        if inCrop or inRotate:
-            return
-
         if not self.confirmClosingImage():
             return
 
@@ -1617,13 +1639,21 @@ class ImageEditorDialog(QDialog):
     def fitToWindow(self):
         self.isFitToWindow = True
 
-        sceneRect = self.viewer.sceneRect()
-        scaleH = (self.viewer.height() - 4) / sceneRect.height()
-        scaleW = (self.viewer.width() - 4) / sceneRect.width()
+        scaleH = (self.viewer.height() - 4) / self._origPixmap.height()
+        scaleW = (self.viewer.width() - 4) / self._origPixmap.width()
         if scaleH < 1 or scaleW < 1:
-            self.viewer.fitInView(sceneRect, Qt.KeepAspectRatio)
             self.scale = min(scaleH, scaleW)
+
+            transform = QTransform()
+            trans = transform.scale(self.scale, self.scale)
+            pixmap = self._origPixmap.transformed(trans, Qt.SmoothTransformation)
+            self._pixmapHandle.setPixmap(pixmap)
+            self.viewer.setSceneRect(QRectF(pixmap.rect()))
         else:
+            pixmap = self._pixmapHandle.pixmap()
+            self._pixmapHandle.setPixmap(self._origPixmap)
+            self.viewer.setSceneRect(QRectF(pixmap.rect()))
+
             self.viewer.resetTransform()
             self.scale = 1
 
@@ -1677,7 +1707,6 @@ class ImageEditorDialog(QDialog):
             scale = self.minScale
         if scale > ZOOM_MAX / 100:
             scale = ZOOM_MAX / 100
-        need_scale = scale / self.scale
 
         if scale > self.minScale:
             self.isFitToWindow = False
@@ -1685,14 +1714,27 @@ class ImageEditorDialog(QDialog):
             self.isFitToWindow = True
 
         if scale != self.scale:
-            self.viewer.setTransformationAnchor(QGraphicsView.AnchorViewCenter)
-
+            old_scale = self.scale
             self.scale = scale
-            self.viewer.scale(need_scale, need_scale)
+
+            center = self.viewer.viewport().rect().center()
+            startCenter = self.viewer.mapToScene(center)
+
+            transform = QTransform()
+            trans = transform.scale(self.scale, self.scale)
+            pixmap = self._origPixmap.transformed(trans, Qt.SmoothTransformation)
+            self._pixmapHandle.setPixmap(pixmap)
+            self.viewer.setSceneRect(QRectF(pixmap.rect()))
+
+            self.viewer.centerOn(startCenter.x() * scale / old_scale + 0.5,
+                                 startCenter.y() * scale / old_scale + 0.5)
 
             self._updateGrid()
             if self.bounding:
-                self.bounding.setScale(self.scale)
+                sceneRect = self.viewer.sceneRect()
+                w = int(sceneRect.width())
+                h = int(sceneRect.height())
+                self.bounding.setScale(self.scale, w, h)
 
         self._updateZoomActions()
 
@@ -1748,7 +1790,7 @@ class ImageEditorDialog(QDialog):
     def rotateRight(self):
         transform = QTransform()
         trans = transform.rotate(90)
-        pixmap = self._pixmapHandle.pixmap()
+        pixmap = self._origPixmap
         self.pushUndo(pixmap)
         pixmap = pixmap.transformed(trans)
         self.setImage(pixmap)
@@ -1788,6 +1830,7 @@ class ImageEditorDialog(QDialog):
             self._updateEditActions()
         else:
             self.rotateDlg.close()
+            self.rotateDlg = None
 
         self._updateGrid()
 
@@ -1819,13 +1862,13 @@ class ImageEditorDialog(QDialog):
                                  self._startCenter.y() + yoffset)
 
         self._updateGrid()
-        self._updateEditActions()
 
     def rotateClose(self, result):
         self._updateGrid()
 
         if result:
             self.isChanged = True
+            self.markWindowTitle(self.isChanged)
             self.pushUndo(self._startPixmap)
         else:
             self.setImage(self._startPixmap)
@@ -1833,18 +1876,17 @@ class ImageEditorDialog(QDialog):
 
         self._startPixmap = None
 
-        self.markWindowTitle(self.isChanged)
         self.rotateAct.setChecked(False)
         self._updateEditActions()
-
-        self.rotateDlg.deleteLater()
-        self.rotateDlg = None
-
+    
     def crop(self):
         if self.cropAct.isChecked():
             sceneRect = self.viewer.sceneRect()
             w = int(sceneRect.width())
             h = int(sceneRect.height())
+
+            w = self._origPixmap.width()
+            h = self._origPixmap.height()
 
             image = self._pixmapHandle.pixmap().toImage()
             auto_rect = findBorders(image)
@@ -1860,6 +1902,7 @@ class ImageEditorDialog(QDialog):
             self._updateEditActions()
         else:
             self.cropDlg.close()
+            self.cropDlg = None
 
     def cropToolChanged(self, _index):
         if self.bounding:
@@ -1870,6 +1913,8 @@ class ImageEditorDialog(QDialog):
         sceneRect = self.viewer.sceneRect()
         w = sceneRect.width()
         h = sceneRect.height()
+        w = self._origPixmap.width()
+        h = self._origPixmap.height()
 
         if self.cropDlg.currentTool() in (0, 2):
             fixed_rect = (self.cropDlg.currentTool() == 0)
@@ -1976,9 +2021,6 @@ class ImageEditorDialog(QDialog):
         self.cropAct.setChecked(False)
         self._updateEditActions()
 
-        self.cropDlg.deleteLater()
-        self.cropDlg = None
-
     def autocrop(self):
         pixmap = self._pixmapHandle.pixmap()
         self.pushUndo(pixmap)
@@ -2018,7 +2060,6 @@ class ImageEditorDialog(QDialog):
     def _updateEditActions(self):
         inCrop = self.cropAct.isChecked()
         inRotate = self.rotateAct.isChecked()
-        self.openFileAct.setEnabled(inCrop or inRotate)
         self.exitAct.setDisabled(inCrop or inRotate)
         self.saveAsAct.setDisabled(inCrop or inRotate)
         self.copyAct.setDisabled(inCrop or inRotate)
@@ -2027,15 +2068,8 @@ class ImageEditorDialog(QDialog):
         self.rotateRightAct.setDisabled(inCrop or inRotate)
         self.rotateAct.setDisabled(inCrop)
         self.cropAct.setDisabled(inRotate)
-        self.autocropAct.setDisabled(inCrop or inRotate)
-        self.cutLeftAct.setDisabled(inCrop or inRotate)
-        self.cutRightAct.setDisabled(inCrop or inRotate)
         if self.use_webcam:
             self.cameraAct.setDisabled(inCrop or inRotate)
-        self.prevImageAct.setDisabled(inCrop or inRotate)
-        self.nextImageAct.setDisabled(inCrop or inRotate)
-        self.prevRecordAct.setDisabled(inCrop or inRotate)
-        self.nextRecordAct.setDisabled(inCrop or inRotate)
 
         if inCrop or inRotate:
             self.saveAct.setDisabled(True)
@@ -2135,4 +2169,3 @@ class ImageEditorDialog(QDialog):
                 self.isChanged = True
                 self.markWindowTitle(self.isChanged)
                 self._updateEditActions()
-        dlg.deleteLater()
