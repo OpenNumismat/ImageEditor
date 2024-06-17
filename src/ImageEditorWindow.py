@@ -16,6 +16,9 @@ class ImageEditorWindow(ImageEditorDialog):
     def __init__(self, parent=None):
         super().__init__(parent, scrollpanel=True)
 
+        self.navigationMenu.removeAction(self.prevRecordAct)
+        self.navigationMenu.removeAction(self.nextRecordAct)
+
         self.setWindowIcon(QIcon(':/slide.png'))
         
         self.viewer.doubleClicked.connect(self.viewerDoubleClicked)
