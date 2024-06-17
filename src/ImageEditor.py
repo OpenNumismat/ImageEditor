@@ -1998,7 +1998,6 @@ class ImageEditorDialog(QDialog):
         enabled = self.hasImage()
 
         self.zoomSpin.setEnabled(enabled)
-        self.openFileAct.setEnabled(enabled)
         self.openAct.setEnabled(enabled)
         self.saveAsAct.setEnabled(enabled)
         self.zoomInAct.setEnabled(enabled)
