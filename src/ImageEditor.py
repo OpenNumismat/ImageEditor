@@ -1998,6 +1998,7 @@ class ImageEditorDialog(QDialog):
         enabled = self.hasImage()
 
         self.zoomSpin.setEnabled(enabled)
+        self.openFileAct.setEnabled(enabled)
         self.openAct.setEnabled(enabled)
         self.saveAsAct.setEnabled(enabled)
         self.zoomInAct.setEnabled(enabled)
@@ -2018,7 +2019,7 @@ class ImageEditorDialog(QDialog):
     def _updateEditActions(self):
         inCrop = self.cropAct.isChecked()
         inRotate = self.rotateAct.isChecked()
-        self.openFileAct.setEnabled(inCrop or inRotate)
+        self.openFileAct.setDisabled(inCrop or inRotate)
         self.exitAct.setDisabled(inCrop or inRotate)
         self.saveAsAct.setDisabled(inCrop or inRotate)
         self.copyAct.setDisabled(inCrop or inRotate)
