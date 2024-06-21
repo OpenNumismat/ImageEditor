@@ -164,7 +164,7 @@
     </message>
     <message>
         <source>Copy</source>
-        <translation>Копирай</translation>
+        <translation>Копиране</translation>
     </message>
     <message>
         <source>Paste</source>
