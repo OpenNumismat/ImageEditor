@@ -164,19 +164,19 @@
     </message>
     <message>
         <source>Copy</source>
-        <translation>Копирай</translation>
+        <translation>Копиране</translation>
     </message>
     <message>
         <source>Paste</source>
-        <translation>Постави</translation>
+        <translation>Поставяне</translation>
     </message>
     <message>
         <source>Undo</source>
-        <translation>Отмени</translation>
+        <translation>Отмяна</translation>
     </message>
     <message>
         <source>Redo</source>
-        <translation>Върни</translation>
+        <translation>Възстановяване</translation>
     </message>
     <message>
         <source>&amp;File</source>
