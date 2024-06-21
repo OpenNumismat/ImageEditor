@@ -168,7 +168,7 @@
     </message>
     <message>
         <source>Paste</source>
-        <translation>Постави</translation>
+        <translation>Поставяне</translation>
     </message>
     <message>
         <source>Undo</source>
