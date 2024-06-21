@@ -176,7 +176,7 @@
     </message>
     <message>
         <source>Redo</source>
-        <translation>Върни</translation>
+        <translation>Възстановяване</translation>
     </message>
     <message>
         <source>&amp;File</source>
