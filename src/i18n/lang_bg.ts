@@ -172,7 +172,7 @@
     </message>
     <message>
         <source>Undo</source>
-        <translation>Отмени</translation>
+        <translation>Отмяна</translation>
     </message>
     <message>
         <source>Redo</source>
