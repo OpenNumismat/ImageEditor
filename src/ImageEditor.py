@@ -293,12 +293,12 @@ class RotateDialog(QDialog):
         settings = QSettings()
         autoCropEnabled = settings.value('rotate_dialog/auto_crop', False, type=bool)
         self.autoCrop = QCheckBox(self.tr("Auto crop"))
-        self.autoCrop.stateChanged.connect(self.autoCropChanged)
+        self.autoCrop.checkStateChanged.connect(self.autoCropChanged)
         self.autoCrop.setChecked(autoCropEnabled)
 
         gridEnabled = settings.value('rotate_dialog/grid', False, type=bool)
         self.gridShown = QCheckBox(self.tr("Show grid"))
-        self.gridShown.stateChanged.connect(self.gridChanged)
+        self.gridShown.checkStateChanged.connect(self.gridChanged)
         self.gridShown.setChecked(gridEnabled)
 
         buttonBox = QDialogButtonBox(Qt.Horizontal)
