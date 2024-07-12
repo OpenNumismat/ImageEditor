@@ -148,3 +148,10 @@ class ImageEditorWindow(ImageEditorDialog):
         if dlg.exec_() == QDialog.Accepted:
             color = dlg.currentColor()
             settings.setValue('mainwindow/transparent_color', color)
+
+    def _updateEditActions(self):
+        super()._updateEditActions()
+
+        inCrop = self.cropAct.isChecked()
+        inRotate = self.rotateAct.isChecked()
+        self.openFolderAct.setDisabled(inCrop or inRotate)
