@@ -1,7 +1,7 @@
 # -*- mode: python ; coding: utf-8 -*-
 
 a = Analysis(
-    ['src/main.py'],
+    ['src/run.py'],
     pathex=['src'],
     binaries=[],
     datas=[("LICENSE", ".")],
