@@ -320,7 +320,7 @@ class RotateDialog(QDialog):
 
     def autoCropChanged(self, state):
         settings = QSettings()
-        settings.setValue('rotate_dialog/auto_crop', state)
+        settings.setValue('rotate_dialog/auto_crop', state == Qt.Checked)
 
         self.valueChanged.emit(self.angleSpin.value())
 
@@ -329,7 +329,7 @@ class RotateDialog(QDialog):
 
     def gridChanged(self, state):
         settings = QSettings()
-        settings.setValue('rotate_dialog/grid', state)
+        settings.setValue('rotate_dialog/grid', state == Qt.Checked)
 
         self.valueChanged.emit(self.angleSpin.value())
 
