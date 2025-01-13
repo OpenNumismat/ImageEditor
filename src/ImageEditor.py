@@ -1330,7 +1330,7 @@ class ImageEditorDialog(QDialog):
         color = settings.value('image_viewer/window_color', QColor(Qt.white), type=QColor)
 
         dlg = QColorDialog(color, self)
-        if dlg.exec_() == QDialog.Accepted:
+        if dlg.exec() == QDialog.Accepted:
             color = dlg.currentColor()
             settings.setValue('image_viewer/window_color', color)
             self.viewer.setBackgroundBrush(QBrush(color))
@@ -2071,7 +2071,7 @@ class ImageEditorDialog(QDialog):
                 msg_box.setDefaultButton(QMessageBox.No)
                 cb = QCheckBox(self.tr("Don't show this again"))
                 msg_box.setCheckBox(cb)
-                result = msg_box.exec_()
+                result = msg_box.exec()
                 if result != QMessageBox.Save:
                     return
                 else:
@@ -2126,7 +2126,7 @@ class ImageEditorDialog(QDialog):
 
     def camera(self):
         dlg = CameraDialog(self)
-        if dlg.exec_() == QDialog.Accepted:
+        if dlg.exec() == QDialog.Accepted:
             image = dlg.image
             if image:
                 pixmap = self._pixmapHandle.pixmap()

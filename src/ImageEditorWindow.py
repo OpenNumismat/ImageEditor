@@ -145,7 +145,7 @@ class ImageEditorWindow(ImageEditorDialog):
         color = settings.value('mainwindow/transparent_color', QColor(Qt.white), type=QColor)
 
         dlg = QColorDialog(color, self)
-        if dlg.exec_() == QDialog.Accepted:
+        if dlg.exec() == QDialog.Accepted:
             color = dlg.currentColor()
             settings.setValue('mainwindow/transparent_color', color)
 
