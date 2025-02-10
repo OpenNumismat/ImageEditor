@@ -1442,9 +1442,10 @@ class ImageEditorDialog(QDialog):
         if type(image) is QPixmap:
             image = image.toImage()
 
-        if image.hasAlphaChannel():
+        settings = QSettings()
+        transparent_store = settings.value('mainwindow/transparent_store', False, type=bool)
+        if image.hasAlphaChannel() and not transparent_store:
             # Fill transparent color if present
-            settings = QSettings()
             color = settings.value('mainwindow/transparent_color', QColor(Qt.white), type=QColor)
             fixed_image = QImage(image.size(), QImage.Format_RGB32)
             fixed_image.fill(color)
