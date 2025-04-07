@@ -260,6 +260,10 @@
         <source>Next record</source>
         <translation type="unfinished"></translation>
     </message>
+    <message>
+        <source>Remove background</source>
+        <translation type="unfinished"></translation>
+    </message>
 </context>
 <context>
     <name>ImageEditorWindow</name>
