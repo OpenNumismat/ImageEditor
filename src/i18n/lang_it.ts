@@ -1,5 +1,24 @@
 <?xml version="1.0" ?><!DOCTYPE TS><TS version="2.1" language="it">
 <context>
+    <name>CameraDialog</name>
+    <message>
+        <source>Shoot</source>
+        <translation>Scatta</translation>
+    </message>
+    <message>
+        <source>Camera not available</source>
+        <translation>Fotocamera non disponibile</translation>
+    </message>
+    <message>
+        <source>Camera not available or disabled by antivirus</source>
+        <translation>Fotocamera non disponibile o disabilitata dall&apos;antivirus</translation>
+    </message>
+    <message>
+        <source>Camera Error</source>
+        <translation>Errore della fotocamera</translation>
+    </message>
+</context>
+<context>
     <name>CropDialog</name>
     <message>
         <source>Crop</source>
@@ -172,16 +191,95 @@
         <translation>&amp;Vista</translation>
     </message>
     <message>
-        <source>Images (*.jpg *.jpeg *.bmp *.png *.tiff *.gif)</source>
-        <translation>Immagini (*.jpg *.jpeg *.bmp *.png *.tiff *.gif)</translation>
+        <source>Image was changed. Save changes?</source>
+        <translation>L&apos;immagine è stata modificata. Salvare le modifiche?</translation>
     </message>
     <message>
-        <source>All files (*.*)</source>
-        <translation>Tutti i file (*.*)</translation>
+        <source>Save changes to current image?</source>
+        <translation>Vuoi salvare le modifiche a questa immagine?</translation>
+    </message>
+    <message>
+        <source>Don&apos;t show this again</source>
+        <translation>Non mostrarmelo di nuovo</translation>
+    </message>
+    <message>
+        <source>Settings</source>
+        <translation>Impostazioni</translation>
+    </message>
+    <message>
+        <source>Window color</source>
+        <translation>Colore della finestra</translation>
+    </message>
+    <message>
+        <source>Cut left half</source>
+        <translation>Taglia la metà sinistra</translation>
+    </message>
+    <message>
+        <source>Cut right half</source>
+        <translation>Taglia la metà destra</translation>
+    </message>
+    <message>
+        <source>Image editor</source>
+        <translation>Modifica delle immagini</translation>
+    </message>
+    <message>
+        <source>Camera</source>
+        <translation>Fotocamera</translation>
+    </message>
+    <message>
+        <source>&amp;Open...</source>
+        <translation>&amp;Apri...</translation>
+    </message>
+    <message>
+        <source>Show Scroll Panel</source>
+        <translation>Mostra pannello di scorrimento</translation>
+    </message>
+    <message>
+        <source>Open File</source>
+        <translation>Apri file</translation>
+    </message>
+    <message>
+        <source>Previous image</source>
+        <translation>Immagine precedente</translation>
+    </message>
+    <message>
+        <source>Next image</source>
+        <translation>Immagine seguente</translation>
+    </message>
+    <message>
+        <source>Navigation</source>
+        <translation>Navigazione</translation>
+    </message>
+    <message>
+        <source>Previous record</source>
+        <translation>Elemento precedente</translation>
+    </message>
+    <message>
+        <source>Next record</source>
+        <translation>Prossimo elemento</translation>
+    </message>
+</context>
+<context>
+    <name>ImageEditorWindow</name>
+    <message>
+        <source>Background color</source>
+        <translation>Colore dello sfondo</translation>
+    </message>
+    <message>
+        <source>Save</source>
+        <translation>Salva</translation>
     </message>
     <message>
         <source>Image was changed. Save changes?</source>
         <translation>L&apos;immagine è stata modificata. Salvare le modifiche?</translation>
+    </message>
+    <message>
+        <source>Open folder...</source>
+        <translation>Apri cartella...</translation>
+    </message>
+    <message>
+        <source>Open image folder</source>
+        <translation>Apri cartella delle immagini...</translation>
     </message>
 </context>
 <context>
@@ -201,6 +299,24 @@
     <message>
         <source>Show grid</source>
         <translation>Mostra griglia</translation>
+    </message>
+</context>
+<context>
+    <name>readImageFilters</name>
+    <message>
+        <source>Images (%s)</source>
+        <translation>Immagini (%s)</translation>
+    </message>
+    <message>
+        <source>All files (*.*)</source>
+        <translation>Tutti i file (*.*)</translation>
+    </message>
+</context>
+<context>
+    <name>saveImageFilters</name>
+    <message>
+        <source>All files (*.*)</source>
+        <translation>Tutti i file (*.*)</translation>
     </message>
 </context>
 </TS>
