@@ -1,6 +1,7 @@
 from PySide6.QtCore import Qt, QPointF, QPoint, QRectF
 from PySide6.QtGui import QTransform, QPolygonF, QImage, QPainter, QBrush
 from PIL import Image, ImageChops, ImageQt
+from rembg import remove, new_session
 import numpy as np
 import math
 
@@ -146,3 +147,10 @@ def _perspectiveTransformation(points, rect):
         W = int(ar_real * H)
 
     return (W, H)
+
+
+def rembg(image):
+    im = ImageQt.fromqimage(image)
+    rembg_session = new_session("u2net")
+    output = remove(im, session=rembg_session)
+    return ImageQt.ImageQt(output)

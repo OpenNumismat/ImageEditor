@@ -1200,6 +1200,7 @@ class ImageEditorDialog(QDialog):
         self.nextImageAct = QAction(QIcon(':/arrow_right.png'), self.tr("Next image"), self, shortcut=QKeySequence.MoveToNextWord, triggered=self.nextImage)
         self.prevRecordAct = QAction(QIcon(':/arrow_up.png'), self.tr("Previous record"), self, shortcut=Qt.CTRL | Qt.Key_Up, triggered=self.prevRecord)
         self.nextRecordAct = QAction(QIcon(':/arrow_down.png'), self.tr("Next record"), self, shortcut=Qt.CTRL | Qt.Key_Down, triggered=self.nextRecord)
+        self.rembgAct = QAction(self.tr("Remove background"), self, triggered=self.rembg)
 
         settings = QSettings()
         toolBarShown = settings.value('image_viewer/tool_bar', True, type=bool)
@@ -1237,6 +1238,7 @@ class ImageEditorDialog(QDialog):
         self.editMenu.addAction(self.rotateAct)
         self.editMenu.addAction(self.cropAct)
         self.editMenu.addAction(self.autocropAct)
+        self.editMenu.addAction(self.rembgAct)
         self.editMenu.addSeparator()
         if self.use_webcam:
             self.editMenu.addAction(self.cameraAct)
@@ -2011,6 +2013,7 @@ class ImageEditorDialog(QDialog):
         self.rotateAct.setEnabled(enabled and not self.readonly)
         self.cropAct.setEnabled(enabled and not self.readonly)
         self.autocropAct.setEnabled(enabled and not self.readonly)
+        self.rembgAct.setEnabled(enabled and not self.readonly)
         self.cutLeftAct.setEnabled(enabled and not self.readonly)
         self.cutRightAct.setEnabled(enabled and not self.readonly)
         if self.use_webcam:
@@ -2029,6 +2032,7 @@ class ImageEditorDialog(QDialog):
         self.rotateAct.setDisabled(inCrop)
         self.cropAct.setDisabled(inRotate)
         self.autocropAct.setDisabled(inCrop or inRotate)
+        self.rembgAct.setDisabled(inCrop or inRotate)
         self.cutLeftAct.setDisabled(inCrop or inRotate)
         self.cutRightAct.setDisabled(inCrop or inRotate)
         if self.use_webcam:
@@ -2137,3 +2141,20 @@ class ImageEditorDialog(QDialog):
                 self.markWindowTitle(self.isChanged)
                 self._updateEditActions()
         dlg.deleteLater()
+
+    def rembg(self):
+        QApplication.setOverrideCursor(QCursor(Qt.WaitCursor))
+
+        pixmap = self._pixmapHandle.pixmap()
+        self.pushUndo(pixmap)
+
+        image = pixmap.toImage()
+
+        im = rembg(image)
+
+        self.setImage(im)
+
+        self.isChanged = True
+        self.markWindowTitle(self.isChanged)
+
+        QApplication.restoreOverrideCursor()
