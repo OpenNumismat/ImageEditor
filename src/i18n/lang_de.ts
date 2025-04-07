@@ -93,7 +93,7 @@
     <name>GetSaveFileName</name>
     <message>
         <source>Save as</source>
-        <translation>Speichern als</translation>
+        <translation>Speichern unter</translation>
     </message>
 </context>
 <context>
@@ -152,11 +152,11 @@
     </message>
     <message>
         <source>Crop...</source>
-        <translation>Schnitt</translation>
+        <translation>Zuschneiden</translation>
     </message>
     <message>
         <source>Autocrop</source>
-        <translation>Autocrop-Schnitt</translation>
+        <translation>Automatisch zuschneiden</translation>
     </message>
     <message>
         <source>Save</source>
@@ -172,11 +172,11 @@
     </message>
     <message>
         <source>Undo</source>
-        <translation>rückgängig machen</translation>
+        <translation>Rückgängig</translation>
     </message>
     <message>
         <source>Redo</source>
-        <translation>Wiederholung</translation>
+        <translation>Wiederherstellung</translation>
     </message>
     <message>
         <source>&amp;File</source>
@@ -226,13 +226,41 @@
         <source>Camera</source>
         <translation>Kamera</translation>
     </message>
-</context>
-<context>
-    <name>ImageEditorWindow</name>
     <message>
         <source>&amp;Open...</source>
         <translation>Ö&amp;ffnen...</translation>
     </message>
+    <message>
+        <source>Show Scroll Panel</source>
+        <translation>Bildlauf anzeigen</translation>
+    </message>
+    <message>
+        <source>Open File</source>
+        <translation>Datei öffnen</translation>
+    </message>
+    <message>
+        <source>Previous image</source>
+        <translation>Vorheriges Bild</translation>
+    </message>
+    <message>
+        <source>Next image</source>
+        <translation>Nächstes Bild</translation>
+    </message>
+    <message>
+        <source>Navigation</source>
+        <translation>Navigation</translation>
+    </message>
+    <message>
+        <source>Previous record</source>
+        <translation>Vorheriger Eintrag</translation>
+    </message>
+    <message>
+        <source>Next record</source>
+        <translation>Nächster Eintrag</translation>
+    </message>
+</context>
+<context>
+    <name>ImageEditorWindow</name>
     <message>
         <source>Background color</source>
         <translation>Hintergrundfarbe</translation>
@@ -246,8 +274,12 @@
         <translation>Das Bild wurde geändert. Änderungen speichern?</translation>
     </message>
     <message>
-        <source>Open File</source>
-        <translation>Datei öffnen</translation>
+        <source>Open folder...</source>
+        <translation>Ordner öffnen</translation>
+    </message>
+    <message>
+        <source>Open image folder</source>
+        <translation>Bildordner öffnen</translation>
     </message>
 </context>
 <context>
