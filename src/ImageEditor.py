@@ -1996,6 +1996,7 @@ class ImageEditorDialog(QDialog):
 
         self.isChanged = True
         self.markWindowTitle(self.isChanged)
+        self._updateEditActions()
 
     def _updateActions(self):
         enabled = self.hasImage()
@@ -2156,5 +2157,6 @@ class ImageEditorDialog(QDialog):
 
         self.isChanged = True
         self.markWindowTitle(self.isChanged)
+        self._updateEditActions()
 
         QApplication.restoreOverrideCursor()
