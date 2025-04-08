@@ -1,3 +1,6 @@
+import os
+import urllib3
+
 from PySide6.QtCore import (
     QDir,
     QFileInfo,
@@ -45,6 +48,7 @@ from PySide6.QtWidgets import (
     QMenu,
     QMenuBar,
     QMessageBox,
+    QProgressDialog,
     QPushButton,
     QScrollArea,
     QSizePolicy,
@@ -68,19 +72,23 @@ except ImportError:
     from UndoStack import UndoStack
     from image_tools import *
 try:
-    from OpenNumismat import IMAGE_PATH
+    from OpenNumismat import HOME_PATH, IMAGE_PATH
     from OpenNumismat.Tools import TemporaryDir
     from OpenNumismat.Tools.DialogDecorators import storeDlgSizeDecorator, storeDlgPositionDecorator
     from OpenNumismat.Tools.Gui import getSaveFileName, Splitter
     from OpenNumismat.Tools.misc import readImageFilters, saveImageFilters
+    from OpenNumismat import version
+
+    PORTABLE = version.Portable
 except ModuleNotFoundError:
     from Tools import TemporaryDir
     from Tools.DialogDecorators import storeDlgSizeDecorator, storeDlgPositionDecorator
     from Tools.Gui import getSaveFileName, Splitter
     from Tools.misc import readImageFilters, saveImageFilters
 
+    HOME_PATH = '.'
     IMAGE_PATH = QStandardPaths.standardLocations(QStandardPaths.PicturesLocation)[0]
-
+    PORTABLE = True
 
 ZOOM_LIST = (600, 480, 385, 310, 250, 200, 158, 125,
              100, 80, 64, 50, 40, 32, 26, 20, 16,)
@@ -2143,20 +2151,80 @@ class ImageEditorDialog(QDialog):
                 self._updateEditActions()
         dlg.deleteLater()
 
+    def _download_model(self, model_name, path):
+        model_file = QFileInfo(os.path.join(path, f"{model_name}.onnx"))
+        if model_file.exists():
+            return True
+
+        models = {
+            'u2net': 'https://github.com/danielgatis/rembg/releases/download/v0.0.0/u2net.onnx',
+            'silueta': 'https://github.com/danielgatis/rembg/releases/download/v0.0.0/silueta.onnx',
+            'isnet-general-use': 'https://github.com/danielgatis/rembg/releases/download/v0.0.0/isnet-general-use.onnx',
+            'birefnet-general': 'https://github.com/danielgatis/rembg/releases/download/v0.0.0/BiRefNet-general-epoch_244.onnx',
+            'birefnet-general-lite': 'https://github.com/danielgatis/rembg/releases/download/v0.0.0/BiRefNet-general-bb_swin_v1_tiny-epoch_232.onnx',
+        }
+
+        http = urllib3.PoolManager()
+        r = http.request('GET', models[model_name], preload_content=False)
+        file_size = int(r.getheaders()['content-length'])
+
+        tmpDir = QDir(TemporaryDir.path())
+        file = QTemporaryFile(tmpDir.absoluteFilePath("XXXXXXXX.onnx"))
+        file.open()
+
+        chunk_size = 1024 * 1024
+        progressDlg = QProgressDialog(self,
+                                      Qt.WindowCloseButtonHint |
+                                      Qt.WindowSystemMenuHint)
+        progressDlg.setWindowModality(Qt.WindowModal)
+        progressDlg.setCancelButtonText(self.tr("Cancel"))
+        progressDlg.setWindowTitle(self.tr("Downloading"))
+        progressDlg.setMaximum(file_size // chunk_size + 1)
+        progressDlg.setLabelText(self.tr("Downloading AI model %s (%d Mb)") % (model_name, file_size // (1024 * 1024)))
+
+        while True:
+            progressDlg.setValue(progressDlg.value() + 1)
+            if progressDlg.wasCanceled():
+                result = False
+                break
+
+            data = r.read(chunk_size)
+            if not data:
+                file.setAutoRemove(False)
+                result = True
+                break
+            file.write(data)
+
+        r.release_conn()
+        file.close()
+
+        if result:
+            file.rename(model_file.filePath())
+
+        progressDlg.reset()
+
+        return result
+
     def rembg(self):
-        QApplication.setOverrideCursor(QCursor(Qt.WaitCursor))
+        if PORTABLE:
+            path = HOME_PATH
+        else:
+            path = QStandardPaths.standardLocations(QStandardPaths.AppLocalDataLocation)[0]
 
-        pixmap = self._pixmapHandle.pixmap()
-        self.pushUndo(pixmap)
+        if self._download_model('u2net', path):
+            pixmap = self._pixmapHandle.pixmap()
+            self.pushUndo(pixmap)
 
-        image = pixmap.toImage()
+            image = pixmap.toImage()
 
-        im = rembg(image)
+            os.environ["U2NET_HOME"] = path
 
-        self.setImage(im)
+            QApplication.setOverrideCursor(QCursor(Qt.WaitCursor))
+            im = rembg(image)
+            QApplication.restoreOverrideCursor()
 
-        self.isChanged = True
-        self.markWindowTitle(self.isChanged)
-        self._updateEditActions()
+            self.setImage(im)
 
-        QApplication.restoreOverrideCursor()
+            self.isChanged = True
+            self.markWindowTitle(self.isChanged)
+            self._updateEditActions()
