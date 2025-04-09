@@ -1,7 +1,16 @@
 import os
 
 from PySide6.QtCore import Qt, QSettings
-from PySide6.QtWidgets import QFileDialog, QApplication, QSplitter
+from PySide6.QtGui import QIcon, QPixmap
+from PySide6.QtWidgets import (
+    QApplication,
+    QColorDialog,
+    QDialog,
+    QFileDialog,
+    QPushButton,
+    QSizePolicy,
+    QSplitter,
+)
 
 
 class Splitter(QSplitter):
@@ -26,6 +35,33 @@ class Splitter(QSplitter):
             self.splitterMoved.disconnect(self.splitterPosChanged)
             self.setSizes(sizes)
             self.splitterMoved.connect(self.splitterPosChanged)
+
+
+class ColorButton(QPushButton):
+
+    def __init__(self, color, parent=None):
+        super().__init__(parent)
+
+        self._color = color
+
+        self.setSizePolicy(QSizePolicy.Fixed, QSizePolicy.Fixed)
+        self.updateColorButton(self._color)
+        self.clicked.connect(self.colorButtonClicked)
+
+    def color(self):
+        return self._color
+
+    def colorButtonClicked(self):
+        dlg = QColorDialog(self._color, self)
+        if dlg.exec() == QDialog.Accepted:
+            self._color = dlg.currentColor()
+            self.updateColorButton(self._color)
+
+    def updateColorButton(self, color):
+        pixmap = QPixmap(16, 16)
+        pixmap.fill(color)
+        icon = QIcon(pixmap)
+        self.setIcon(icon)
 
 
 def getSaveFileName(parent, name, filename, dir_, filters):

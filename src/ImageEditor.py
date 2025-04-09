@@ -77,7 +77,7 @@ try:
     from OpenNumismat import HOME_PATH, IMAGE_PATH
     from OpenNumismat.Tools import TemporaryDir
     from OpenNumismat.Tools.DialogDecorators import storeDlgSizeDecorator, storeDlgPositionDecorator
-    from OpenNumismat.Tools.Gui import getSaveFileName, Splitter
+    from OpenNumismat.Tools.Gui import getSaveFileName, Splitter, ColorButton
     from OpenNumismat.Tools.misc import readImageFilters, saveImageFilters
     from OpenNumismat import version
 
@@ -85,7 +85,7 @@ try:
 except ModuleNotFoundError:
     from Tools import TemporaryDir
     from Tools.DialogDecorators import storeDlgSizeDecorator, storeDlgPositionDecorator
-    from Tools.Gui import getSaveFileName, Splitter
+    from Tools.Gui import getSaveFileName, Splitter, ColorButton
     from Tools.misc import readImageFilters, saveImageFilters
 
     HOME_PATH = '.'
@@ -1110,12 +1110,8 @@ class SettingsDialog(QDialog):
                                          QSizePolicy.Fixed)
         self.main_layout.addRow(self.tr("Backround remover AI model"), self.modelSelector)
 
-        self.window_color = settings.value('image_viewer/window_color', QColor(Qt.white), type=QColor)
-        self.windowColorButton = QPushButton(self)
-        self.windowColorButton.setSizePolicy(QSizePolicy.Fixed,
-                                             QSizePolicy.Fixed)
-        self.updateWindowColorButton(self.window_color)
-        self.windowColorButton.clicked.connect(self.windowColorButtonClicked)
+        color = settings.value('image_viewer/window_color', QColor(Qt.white), type=QColor)
+        self.windowColorButton = ColorButton(color, self)
         self.main_layout.addRow(self.tr("Window backgroud color"), self.windowColorButton)
 
         buttonBox = QDialogButtonBox(Qt.Horizontal)
@@ -1130,23 +1126,11 @@ class SettingsDialog(QDialog):
 
         self.setLayout(layout)
 
-    def windowColorButtonClicked(self):
-        dlg = QColorDialog(self.window_color, self)
-        if dlg.exec() == QDialog.Accepted:
-            self.window_color = dlg.currentColor()
-            self.updateWindowColorButton(self.window_color)
-
-    def updateWindowColorButton(self, color):
-        pixmap = QPixmap(16, 16)
-        pixmap.fill(color)
-        icon = QIcon(pixmap)
-        self.windowColorButton.setIcon(icon)
-
     def save(self):
         settings = QSettings()
 
         settings.setValue('image_viewer/ai_model', self.modelSelector.currentText())
-        settings.setValue('image_viewer/window_color', self.window_color)
+        settings.setValue('image_viewer/window_color', self.windowColorButton.color())
 
         self.accept()
 
@@ -1405,7 +1389,7 @@ class ImageEditorDialog(QDialog):
     def settings(self):
         dlg = SettingsDialog(self)
         if dlg.exec() == QDialog.Accepted:
-            color = dlg.window_color
+            color = dlg.windowColorButton.color()
             self.viewer.setBackgroundBrush(QBrush(color))
 
     def hasImage(self):

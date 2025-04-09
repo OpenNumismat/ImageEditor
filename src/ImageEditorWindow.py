@@ -1,11 +1,11 @@
 from PySide6.QtCore import QSettings, QFileInfo, Qt, QStandardPaths, QDir
-from PySide6.QtGui import QIcon, QAction, QBrush, QColor, QImage, QPixmap
-from PySide6.QtWidgets import QApplication, QStyle, QMessageBox, QColorDialog, QDialog, QFileDialog, QPushButton, QSizePolicy, QHBoxLayout, QGroupBox, QRadioButton
+from PySide6.QtGui import QIcon, QAction, QBrush, QColor, QImage
+from PySide6.QtWidgets import QApplication, QStyle, QMessageBox, QDialog, QFileDialog, QHBoxLayout, QGroupBox, QRadioButton
 
 from ImageEditor import ImageEditorDialog, SettingsDialog
 from ImageProxy import ImageProxy
 from ImageScrollLabel import ImageScrollLabel
-from Tools.Gui import getSaveFileName
+from Tools.Gui import getSaveFileName, ColorButton
 from Tools.misc import saveImageFilters
 
 IMAGE_PATH = QStandardPaths.standardLocations(QStandardPaths.PicturesLocation)[0]
@@ -18,12 +18,8 @@ class WindowSettingsDialog(SettingsDialog):
 
         settings = QSettings()
 
-        self.transparentColorButton = QPushButton(self)
-        self.transparentColorButton.setSizePolicy(QSizePolicy.Fixed,
-                                                  QSizePolicy.Fixed)
-        self.transparent_color = settings.value('mainwindow/transparent_color', QColor(Qt.white), type=QColor)
-        self.updateTransparentColorButton(self.transparent_color)
-        self.transparentColorButton.clicked.connect(self.transparentColorButtonClicked)
+        color = settings.value('mainwindow/transparent_color', QColor(Qt.white), type=QColor)
+        self.transparentColorButton = ColorButton(color, self)
 
         self.transparentRadio = QRadioButton(self.tr("Transparent"))
         self.transparentRadio.toggled.connect(self.transparentRadioToggled)
@@ -50,23 +46,11 @@ class WindowSettingsDialog(SettingsDialog):
     def transparentRadioToggled(self, checked):
         self.transparentColorButton.setDisabled(checked)
 
-    def transparentColorButtonClicked(self):
-        dlg = QColorDialog(self.transparent_color, self)
-        if dlg.exec() == QDialog.Accepted:
-            self.transparent_color = dlg.currentColor()
-            self.updateTransparentColorButton(self.transparent_color)
-
-    def updateTransparentColorButton(self, color):
-        pixmap = QPixmap(16, 16)
-        pixmap.fill(color)
-        icon = QIcon(pixmap)
-        self.transparentColorButton.setIcon(icon)
-
     def save(self):
         settings = QSettings()
 
         settings.setValue('mainwindow/transparent_store', self.transparentRadio.isChecked())
-        settings.setValue('mainwindow/transparent_color', self.transparent_color)
+        settings.setValue('mainwindow/transparent_color', self.transparentColorButton.color())
 
         super().save()
 
@@ -201,7 +185,7 @@ class ImageEditorWindow(ImageEditorDialog):
     def settings(self):
         dlg = WindowSettingsDialog(self)
         if dlg.exec() == QDialog.Accepted:
-            color = dlg.window_color
+            color = dlg.windowColorButton.color()
             self.viewer.setBackgroundBrush(QBrush(color))
 
     def _updateEditActions(self):
