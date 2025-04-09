@@ -258,10 +258,6 @@
         <source>Next record</source>
         <translation>Следващ запис</translation>
     </message>
-    <message>
-        <source>Remove background</source>
-        <translation>Премахване на фона</translation>
-    </message>
 </context>
 <context>
     <name>ImageEditorWindow</name>
