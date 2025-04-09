@@ -203,14 +203,6 @@
         <translation>Больше не показывать</translation>
     </message>
     <message>
-        <source>Settings</source>
-        <translation>Настройки</translation>
-    </message>
-    <message>
-        <source>Window color</source>
-        <translation>Цвет окна</translation>
-    </message>
-    <message>
         <source>Cut left half</source>
         <translation>Вырезать левую половину</translation>
     </message>
@@ -258,13 +250,29 @@
         <source>Next record</source>
         <translation>Следующая запись</translation>
     </message>
+    <message>
+        <source>Remove background</source>
+        <translation>Удалить фон</translation>
+    </message>
+    <message>
+        <source>Settings...</source>
+        <translation>Настройки...</translation>
+    </message>
+    <message>
+        <source>Cancel</source>
+        <translation>Отмена</translation>
+    </message>
+    <message>
+        <source>Downloading</source>
+        <translation>Скачивание</translation>
+    </message>
+    <message>
+        <source>Downloading AI model %s (%d Mb)</source>
+        <translation>Скачивание ИИ модели %s (%d Мб)</translation>
+    </message>
 </context>
 <context>
     <name>ImageEditorWindow</name>
-    <message>
-        <source>Background color</source>
-        <translation>Цвет фона</translation>
-    </message>
     <message>
         <source>Save</source>
         <translation>Сохранить</translation>
@@ -299,6 +307,36 @@
     <message>
         <source>Show grid</source>
         <translation>Показать сетку</translation>
+    </message>
+</context>
+<context>
+    <name>SettingsDialog</name>
+    <message>
+        <source>Settings</source>
+        <translation>Настройки</translation>
+    </message>
+    <message>
+        <source>Backround remover AI model</source>
+        <translation>ИИ модель для удаления фона</translation>
+    </message>
+    <message>
+        <source>Window backgroud color</source>
+        <translation>Цвет фона окна</translation>
+    </message>
+</context>
+<context>
+    <name>WindowSettingsDialog</name>
+    <message>
+        <source>Transparent</source>
+        <translation>Прозрачный</translation>
+    </message>
+    <message>
+        <source>Color</source>
+        <translation>Цвет</translation>
+    </message>
+    <message>
+        <source>Image background color</source>
+        <translation>Цвет фона изображения</translation>
     </message>
 </context>
 <context>
