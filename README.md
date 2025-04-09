@@ -16,11 +16,12 @@ ImageEditor is a part of [OpenNumismat](https://opennumismat.github.io/) project
 
 * Support popular image formats: JPEG, PNG, BMP, TIFF, GIF, WebP
 * Takes a photo from webcam (for better results try [Camo](https://reincubate.com/camo/))
-* Full Screen mode
 * Image editing tools: rotate, crop (rectangle, ellipse, perspective transformation)
+* Remove background with [rembg](https://github.com/danielgatis/rembg)
 * Up to 10 Undo/Redo actions
 * Single click to switch between best fit and actual size mode
 * Mouse wheel zoom
+* Full Screen mode
 * Portable version - can be run from a removable storage device
 * Multilanguage: Bulgarian, English, German, Russian, Portuguese, Spanish, Ukrainian
 * Crossplatform
