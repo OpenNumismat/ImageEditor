@@ -203,14 +203,6 @@
         <translation>Не показвай това съобщение отново</translation>
     </message>
     <message>
-        <source>Settings</source>
-        <translation>Настройки</translation>
-    </message>
-    <message>
-        <source>Window color</source>
-        <translation>Цвят на прозореца</translation>
-    </message>
-    <message>
         <source>Cut left half</source>
         <translation>Отрязване на лявата половина</translation>
     </message>
@@ -258,13 +250,29 @@
         <source>Next record</source>
         <translation>Следващ запис</translation>
     </message>
+    <message>
+        <source>Remove background</source>
+        <translation>Премахване на фона</translation>
+    </message>
+    <message>
+        <source>Settings...</source>
+        <translation>Настройки...</translation>
+    </message>
+    <message>
+        <source>Cancel</source>
+        <translation>Отказ</translation>
+    </message>
+    <message>
+        <source>Downloading</source>
+        <translation>Изтегляне</translation>
+    </message>
+    <message>
+        <source>Downloading AI model %s (%d Mb)</source>
+        <translation>Изтегляне на AI модел %s (%d Mb)</translation>
+    </message>
 </context>
 <context>
     <name>ImageEditorWindow</name>
-    <message>
-        <source>Background color</source>
-        <translation>Фонов цвят на изображението</translation>
-    </message>
     <message>
         <source>Save</source>
         <translation>Записване</translation>
@@ -299,6 +307,36 @@
     <message>
         <source>Show grid</source>
         <translation>Показване на мрежа</translation>
+    </message>
+</context>
+<context>
+    <name>SettingsDialog</name>
+    <message>
+        <source>Settings</source>
+        <translation>Настройки</translation>
+    </message>
+    <message>
+        <source>Backround remover AI model</source>
+        <translation>AI модел за премахване на фона</translation>
+    </message>
+    <message>
+        <source>Window backgroud color</source>
+        <translation>Цвят на фона на прозореца</translation>
+    </message>
+</context>
+<context>
+    <name>WindowSettingsDialog</name>
+    <message>
+        <source>Transparent</source>
+        <translation>Прозрачен</translation>
+    </message>
+    <message>
+        <source>Color</source>
+        <translation>Цветен</translation>
+    </message>
+    <message>
+        <source>Image background color</source>
+        <translation>Фонов цвят на изображението</translation>
     </message>
 </context>
 <context>
