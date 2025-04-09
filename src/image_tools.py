@@ -149,8 +149,8 @@ def _perspectiveTransformation(points, rect):
     return (W, H)
 
 
-def rembg(image):
+def rembg(image, model_name):
     im = ImageQt.fromqimage(image)
-    rembg_session = new_session("u2net")
+    rembg_session = new_session(model_name)
     output = remove(im, session=rembg_session)
     return ImageQt.ImageQt(output)

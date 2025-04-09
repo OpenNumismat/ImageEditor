@@ -30,11 +30,13 @@ from PySide6.QtGui import (
 from PySide6.QtWidgets import (
     QApplication,
     QCheckBox,
+    QComboBox,
     QColorDialog,
     QDialog,
     QDialogButtonBox,
     QDoubleSpinBox,
     QFileDialog,
+    QFormLayout,
     QGraphicsEllipseItem,
     QGraphicsItem,
     QGraphicsLineItem,
@@ -1082,6 +1084,73 @@ class ScrollPanel(QScrollArea):
                 break
 
 
+@storeDlgPositionDecorator
+class SettingsDialog(QDialog):
+
+    def __init__(self, parent=None):
+        super().__init__(parent,
+                         Qt.WindowCloseButtonHint | Qt.WindowSystemMenuHint)
+
+        self.setWindowTitle(self.tr("Settings"))
+
+        settings = QSettings()
+
+        self.main_layout = QFormLayout()
+        self.main_layout.setRowWrapPolicy(QFormLayout.WrapLongRows)
+
+        ai_model = settings.value('image_viewer/ai_model', 'u2net')
+        self.modelSelector = QComboBox(self)
+        self.modelSelector.addItem("u2net")
+        self.modelSelector.addItem("silueta")
+        self.modelSelector.addItem("isnet-general-use")
+        self.modelSelector.addItem("birefnet-general")
+        self.modelSelector.addItem("birefnet-general-lite")
+        self.modelSelector.setCurrentText(ai_model)
+        self.modelSelector.setSizePolicy(QSizePolicy.Fixed,
+                                         QSizePolicy.Fixed)
+        self.main_layout.addRow(self.tr("Backround remover AI model"), self.modelSelector)
+
+        self.window_color = settings.value('image_viewer/window_color', QColor(Qt.white), type=QColor)
+        self.windowColorButton = QPushButton(self)
+        self.windowColorButton.setSizePolicy(QSizePolicy.Fixed,
+                                             QSizePolicy.Fixed)
+        self.updateWindowColorButton(self.window_color)
+        self.windowColorButton.clicked.connect(self.windowColorButtonClicked)
+        self.main_layout.addRow(self.tr("Window backgroud color"), self.windowColorButton)
+
+        buttonBox = QDialogButtonBox(Qt.Horizontal)
+        buttonBox.addButton(QDialogButtonBox.Ok)
+        buttonBox.addButton(QDialogButtonBox.Cancel)
+        buttonBox.accepted.connect(self.save)
+        buttonBox.rejected.connect(self.reject)
+
+        layout = QVBoxLayout()
+        layout.addLayout(self.main_layout)
+        layout.addWidget(buttonBox)
+
+        self.setLayout(layout)
+
+    def windowColorButtonClicked(self):
+        dlg = QColorDialog(self.window_color, self)
+        if dlg.exec() == QDialog.Accepted:
+            self.window_color = dlg.currentColor()
+            self.updateWindowColorButton(self.window_color)
+
+    def updateWindowColorButton(self, color):
+        pixmap = QPixmap(16, 16)
+        pixmap.fill(color)
+        icon = QIcon(pixmap)
+        self.windowColorButton.setIcon(icon)
+
+    def save(self):
+        settings = QSettings()
+
+        settings.setValue('image_viewer/ai_model', self.modelSelector.currentText())
+        settings.setValue('image_viewer/window_color', self.window_color)
+
+        self.accept()
+
+
 @storeDlgSizeDecorator
 class ImageEditorDialog(QDialog):
     imageSaved = pyqtSignal(QImage)
@@ -1199,7 +1268,7 @@ class ImageEditorDialog(QDialog):
         self.undoAct.setDisabled(True)
         self.redoAct = QAction(QIcon(':/redo.png'), self.tr("Redo"), self, shortcut=QKeySequence.Redo, triggered=self.redo)
         self.redoAct.setDisabled(True)
-        self.windowColorAct = QAction(self.tr("Window color"), self, triggered=self.selectWindowColor)
+        self.settingsAct = QAction(QIcon(':/cog.png'), self.tr("Settings..."), self, triggered=self.settings)
         self.cutLeftAct = QAction(self.tr("Cut left half"), self, triggered=self.cutLeft)
         self.cutRightAct = QAction(self.tr("Cut right half"), self, triggered=self.cutRight)
         if self.use_webcam:
@@ -1229,6 +1298,8 @@ class ImageEditorDialog(QDialog):
         self.fileMenu.addAction(self.saveAct)
         self.fileMenu.addAction(self.saveAsAct)
         # self.fileMenu.addAction(self.printAct)
+        self.fileMenu.addSeparator()
+        self.fileMenu.addAction(self.settingsAct)
         self.fileMenu.addSeparator()
         self.fileMenu.addAction(self.exitAct)
 
@@ -1271,14 +1342,10 @@ class ImageEditorDialog(QDialog):
         if self.has_scrollpanel:
             self.viewMenu.addAction(self.showScrollPanelAct)
 
-        self.settingsMenu = QMenu(self.tr("Settings"), self)
-        self.settingsMenu.addAction(self.windowColorAct)
-
         self.menuBar.addMenu(self.fileMenu)
         self.menuBar.addMenu(self.editMenu)
         self.menuBar.addMenu(self.navigationMenu)
         self.menuBar.addMenu(self.viewMenu)
-        self.menuBar.addMenu(self.settingsMenu)
 
     def createToolBar(self):
         self.zoomSpin = QSpinBox(self)
@@ -1335,14 +1402,10 @@ class ImageEditorDialog(QDialog):
         settings.setValue('image_viewer/scroll_panel', status)
         self.scrollPanel.setVisible(status)
 
-    def selectWindowColor(self):
-        settings = QSettings()
-        color = settings.value('image_viewer/window_color', QColor(Qt.white), type=QColor)
-
-        dlg = QColorDialog(color, self)
+    def settings(self):
+        dlg = SettingsDialog(self)
         if dlg.exec() == QDialog.Accepted:
-            color = dlg.currentColor()
-            settings.setValue('image_viewer/window_color', color)
+            color = dlg.window_color
             self.viewer.setBackgroundBrush(QBrush(color))
 
     def hasImage(self):
@@ -1453,7 +1516,7 @@ class ImageEditorDialog(QDialog):
             image = image.toImage()
 
         settings = QSettings()
-        transparent_store = settings.value('mainwindow/transparent_store', False, type=bool)
+        transparent_store = settings.value('mainwindow/transparent_store', True, type=bool)
         if image.hasAlphaChannel() and not transparent_store:
             # Fill transparent color if present
             color = settings.value('mainwindow/transparent_color', QColor(Qt.white), type=QColor)
@@ -2017,6 +2080,7 @@ class ImageEditorDialog(QDialog):
         self.normalSizeAct.setEnabled(enabled)
         self.fitToWindowAct.setEnabled(enabled)
         self.copyAct.setEnabled(enabled)
+        self.pasteAct.setEnabled(enabled and not self.readonly)
         self.rotateLeftAct.setEnabled(enabled and not self.readonly)
         self.rotateRightAct.setEnabled(enabled and not self.readonly)
         self.rotateAct.setEnabled(enabled and not self.readonly)
@@ -2152,10 +2216,6 @@ class ImageEditorDialog(QDialog):
         dlg.deleteLater()
 
     def _download_model(self, model_name, path):
-        model_file = QFileInfo(os.path.join(path, f"{model_name}.onnx"))
-        if model_file.exists():
-            return True
-
         models = {
             'u2net': 'https://github.com/danielgatis/rembg/releases/download/v0.0.0/u2net.onnx',
             'silueta': 'https://github.com/danielgatis/rembg/releases/download/v0.0.0/silueta.onnx',
@@ -2163,6 +2223,10 @@ class ImageEditorDialog(QDialog):
             'birefnet-general': 'https://github.com/danielgatis/rembg/releases/download/v0.0.0/BiRefNet-general-epoch_244.onnx',
             'birefnet-general-lite': 'https://github.com/danielgatis/rembg/releases/download/v0.0.0/BiRefNet-general-bb_swin_v1_tiny-epoch_232.onnx',
         }
+
+        model_file = QFileInfo(os.path.join(path, f"{model_name}.onnx"))
+        if model_file.exists():
+            return True
 
         http = urllib3.PoolManager()
         r = http.request('GET', models[model_name], preload_content=False)
@@ -2211,7 +2275,9 @@ class ImageEditorDialog(QDialog):
         else:
             path = QStandardPaths.standardLocations(QStandardPaths.AppLocalDataLocation)[0]
 
-        if self._download_model('u2net', path):
+        settings = QSettings()
+        model_name = settings.value('image_viewer/ai_model', 'u2net')
+        if self._download_model(model_name, path):
             pixmap = self._pixmapHandle.pixmap()
             self.pushUndo(pixmap)
 
@@ -2220,7 +2286,7 @@ class ImageEditorDialog(QDialog):
             os.environ["U2NET_HOME"] = path
 
             QApplication.setOverrideCursor(QCursor(Qt.WaitCursor))
-            im = rembg(image)
+            im = rembg(image, model_name)
             QApplication.restoreOverrideCursor()
 
             self.setImage(im)
