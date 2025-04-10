@@ -23,7 +23,7 @@ ImageEditor is a part of [OpenNumismat](https://opennumismat.github.io/) project
 * Mouse wheel zoom
 * Full Screen mode
 * Portable version - can be run from a removable storage device
-* Multilanguage: Bulgarian, English, German, Russian, Portuguese, Spanish, Ukrainian
+* Multilanguage: Bulgarian, English, German, Italian, Russian, Portuguese, Spanish, Ukrainian
 * Crossplatform
 
 ##### Keyboard Shortcuts
