@@ -27,7 +27,7 @@ jobs:
     - uses: actions/checkout@v4
       with:
         submodules: 'recursive'
-    - uses: actions/setup-python@v3
+    - uses: actions/setup-python@v5
       with:
         python-version: '3.12'
     - name: install dependencies
@@ -53,7 +53,7 @@ jobs:
         move ${{ needs.title.outputs.PACKAGENAME }}.zip ..
         cd ..
     - name: upload
-      uses: actions/upload-artifact@v2
+      uses: actions/upload-artifact@v4
       with:
         name: ${{ needs.title.outputs.PACKAGENAME }}
         path: ${{ needs.title.outputs.PACKAGENAME }}.zip
@@ -67,7 +67,7 @@ jobs:
       GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
     steps:
     - name: Download artifacts
-      uses: actions/download-artifact@v2
+      uses: actions/download-artifact@v4
       with:
         path: artifacts
     - name: release
