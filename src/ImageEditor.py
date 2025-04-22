@@ -31,7 +31,6 @@ from PySide6.QtWidgets import (
     QApplication,
     QCheckBox,
     QComboBox,
-    QColorDialog,
     QDialog,
     QDialogButtonBox,
     QDoubleSpinBox,
@@ -79,6 +78,7 @@ try:
     from OpenNumismat.Tools.DialogDecorators import storeDlgSizeDecorator, storeDlgPositionDecorator
     from OpenNumismat.Tools.Gui import getSaveFileName, Splitter, ColorButton
     from OpenNumismat.Tools.misc import readImageFilters, saveImageFilters
+    from OpenNumismat.Tools.dependencies import HAS_REMBG
     from OpenNumismat import version
 
     PORTABLE = version.Portable
@@ -91,6 +91,7 @@ except ModuleNotFoundError:
     HOME_PATH = '.'
     IMAGE_PATH = QStandardPaths.standardLocations(QStandardPaths.PicturesLocation)[0]
     PORTABLE = True
+    HAS_REMBG = True
 
 ZOOM_LIST = (600, 480, 385, 310, 250, 200, 158, 125,
              100, 80, 64, 50, 40, 32, 26, 20, 16,)
@@ -1261,7 +1262,8 @@ class ImageEditorDialog(QDialog):
         self.nextImageAct = QAction(QIcon(':/arrow_right.png'), self.tr("Next image"), self, shortcut=QKeySequence.MoveToNextWord, triggered=self.nextImage)
         self.prevRecordAct = QAction(QIcon(':/arrow_up.png'), self.tr("Previous record"), self, shortcut=Qt.CTRL | Qt.Key_Up, triggered=self.prevRecord)
         self.nextRecordAct = QAction(QIcon(':/arrow_down.png'), self.tr("Next record"), self, shortcut=Qt.CTRL | Qt.Key_Down, triggered=self.nextRecord)
-        self.rembgAct = QAction(self.tr("Remove background"), self, triggered=self.rembg)
+        if HAS_REMBG:
+            self.rembgAct = QAction(self.tr("Remove background"), self, triggered=self.rembg)
 
         settings = QSettings()
         toolBarShown = settings.value('image_viewer/tool_bar', True, type=bool)
@@ -1301,7 +1303,8 @@ class ImageEditorDialog(QDialog):
         self.editMenu.addAction(self.rotateAct)
         self.editMenu.addAction(self.cropAct)
         self.editMenu.addAction(self.autocropAct)
-        self.editMenu.addAction(self.rembgAct)
+        if HAS_REMBG:
+            self.editMenu.addAction(self.rembgAct)
         self.editMenu.addSeparator()
         if self.use_webcam:
             self.editMenu.addAction(self.cameraAct)
@@ -2070,7 +2073,8 @@ class ImageEditorDialog(QDialog):
         self.rotateAct.setEnabled(enabled and not self.readonly)
         self.cropAct.setEnabled(enabled and not self.readonly)
         self.autocropAct.setEnabled(enabled and not self.readonly)
-        self.rembgAct.setEnabled(enabled and not self.readonly)
+        if HAS_REMBG:
+            self.rembgAct.setEnabled(enabled and not self.readonly)
         self.cutLeftAct.setEnabled(enabled and not self.readonly)
         self.cutRightAct.setEnabled(enabled and not self.readonly)
         if self.use_webcam:
@@ -2089,7 +2093,8 @@ class ImageEditorDialog(QDialog):
         self.rotateAct.setDisabled(inCrop)
         self.cropAct.setDisabled(inRotate)
         self.autocropAct.setDisabled(inCrop or inRotate)
-        self.rembgAct.setDisabled(inCrop or inRotate)
+        if HAS_REMBG:
+            self.rembgAct.setDisabled(inCrop or inRotate)
         self.cutLeftAct.setDisabled(inCrop or inRotate)
         self.cutRightAct.setDisabled(inCrop or inRotate)
         if self.use_webcam:
