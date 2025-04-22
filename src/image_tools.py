@@ -1,12 +1,11 @@
 from PySide6.QtCore import Qt, QPointF, QPoint, QRectF
 from PySide6.QtGui import QTransform, QPolygonF, QImage, QPainter, QBrush
-from PIL import Image, ImageChops, ImageQt
-from rembg import remove, new_session
-import numpy as np
 import math
 
 
 def findBorders(image):
+    from PIL import Image, ImageChops, ImageQt
+
     im = ImageQt.fromqimage(image)
 
     bg = Image.new(im.mode, im.size, im.getpixel((0, 0)))
@@ -76,6 +75,8 @@ def perspectiveTransformation(pixmap, points):
 
 def _perspectiveTransformation(points, rect):
 # Based on https://stackoverflow.com/questions/38285229/calculating-aspect-ratio-of-perspective-transform-destination-image
+    import numpy as np
+
     rows = rect.height()
     cols = rect.width()
 
@@ -150,6 +151,9 @@ def _perspectiveTransformation(points, rect):
 
 
 def rembg(image, model_name):
+    from PIL import ImageQt
+    from rembg import remove, new_session
+
     im = ImageQt.fromqimage(image)
     rembg_session = new_session(model_name)
     output = remove(im, session=rembg_session)
