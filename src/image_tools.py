@@ -129,6 +129,9 @@ def _perspectiveTransformation(points, rect):
     n32 = n3[1]
     n33 = n3[2]
 
+    if n23 == 0. or n33 == 0.:
+        return (cols, rows)
+
     f = math.sqrt(np.abs((1.0 / (n23 * n33)) * ((n21 * n31 - (n21 * n33 + n23 * n31) * u0 + n23 * n33 * u0 * u0) + (n22 * n32 - (n22 * n33 + n23 * n32) * v0 + n23 * n33 * v0 * v0))))
 
     A = np.array([[f, 0, u0], [0, f, v0], [0, 0, 1]]).astype('float32')
