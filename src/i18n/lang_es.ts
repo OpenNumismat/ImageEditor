@@ -203,14 +203,6 @@
         <translation>No mostrar de nuevo esto</translation>
     </message>
     <message>
-        <source>Settings</source>
-        <translation>Configuración</translation>
-    </message>
-    <message>
-        <source>Window color</source>
-        <translation>Color de ventana</translation>
-    </message>
-    <message>
         <source>Cut left half</source>
         <translation>Cortar mitad izquierda</translation>
     </message>
@@ -258,13 +250,29 @@
         <source>Next record</source>
         <translation>Registro siguiente</translation>
     </message>
+    <message>
+        <source>Remove background</source>
+        <translation>Eliminar fondo</translation>
+    </message>
+    <message>
+        <source>Settings...</source>
+        <translation>Configuración...</translation>
+    </message>
+    <message>
+        <source>Cancel</source>
+        <translation>Cancelar</translation>
+    </message>
+    <message>
+        <source>Downloading</source>
+        <translation>Descargando</translation>
+    </message>
+    <message>
+        <source>Downloading AI model %s (%d Mb)</source>
+        <translation>Descargando modelo de IA %s (%d Mb)</translation>
+    </message>
 </context>
 <context>
     <name>ImageEditorWindow</name>
-    <message>
-        <source>Background color</source>
-        <translation>Color de fondo</translation>
-    </message>
     <message>
         <source>Save</source>
         <translation>Guardar</translation>
@@ -299,6 +307,36 @@
     <message>
         <source>Show grid</source>
         <translation>Ver parrilla</translation>
+    </message>
+</context>
+<context>
+    <name>SettingsDialog</name>
+    <message>
+        <source>Settings</source>
+        <translation>Configuración</translation>
+    </message>
+    <message>
+        <source>Backround remover AI model</source>
+        <translation>Modelo de IA eliminador de fondo</translation>
+    </message>
+    <message>
+        <source>Window backgroud color</source>
+        <translation>Color de fondo de ventana</translation>
+    </message>
+</context>
+<context>
+    <name>WindowSettingsDialog</name>
+    <message>
+        <source>Transparent</source>
+        <translation>Transparente</translation>
+    </message>
+    <message>
+        <source>Color</source>
+        <translation>Color</translation>
+    </message>
+    <message>
+        <source>Image background color</source>
+        <translation>Color de fondo de imagen</translation>
     </message>
 </context>
 <context>
