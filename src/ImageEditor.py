@@ -2217,7 +2217,8 @@ class ImageEditorDialog(QDialog):
         if model_file.exists():
             return True
 
-        http = urllib3.PoolManager()
+        urllib3.disable_warnings()
+        http = urllib3.PoolManager(num_pools=1, cert_reqs="CERT_NONE")
         r = http.request('GET', models[model_name], preload_content=False)
         file_size = int(r.getheaders()['content-length'])
 
