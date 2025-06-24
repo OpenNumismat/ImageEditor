@@ -2217,13 +2217,15 @@ class ImageEditorDialog(QDialog):
         if model_file.exists():
             return True
 
+        os.makedirs(model_file.absolutePath(), exist_ok=True)
+
         urllib3.disable_warnings()
         http = urllib3.PoolManager(num_pools=1, cert_reqs="CERT_NONE")
         r = http.request('GET', models[model_name], preload_content=False)
         file_size = int(r.getheaders()['content-length'])
 
         tmpDir = QDir(TemporaryDir.path())
-        file = QTemporaryFile(tmpDir.absoluteFilePath("XXXXXXXX.onnx"))
+        file = QTemporaryFile(tmpDir.absoluteFilePath("XXXXXXXX.onnx"), self)
         file.open()
 
         chunk_size = 1024 * 1024
@@ -2253,7 +2255,7 @@ class ImageEditorDialog(QDialog):
         file.close()
 
         if result:
-            file.rename(model_file.filePath())
+            result = file.rename(model_file.filePath())
 
         progressDlg.reset()
 
