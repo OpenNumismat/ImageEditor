@@ -1263,7 +1263,7 @@ class ImageEditorDialog(QDialog):
         self.prevRecordAct = QAction(QIcon(':/arrow_up.png'), self.tr("Previous record"), self, shortcut=Qt.CTRL | Qt.Key_Up, triggered=self.prevRecord)
         self.nextRecordAct = QAction(QIcon(':/arrow_down.png'), self.tr("Next record"), self, shortcut=Qt.CTRL | Qt.Key_Down, triggered=self.nextRecord)
         if HAS_REMBG:
-            self.rembgAct = QAction(self.tr("Remove background"), self, triggered=self.rembg)
+            self.rembgAct = QAction(self.tr("Remove background"), self, shortcut=Qt.Key_B, triggered=self.rembg)
 
         settings = QSettings()
         toolBarShown = settings.value('image_viewer/tool_bar', True, type=bool)

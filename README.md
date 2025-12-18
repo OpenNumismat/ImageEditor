@@ -38,6 +38,7 @@ ImageEditor is a part of [OpenNumismat](https://opennumismat.github.io/) project
 `Alt`+`Right` - Rotate to right  
 `C` - Open crop tool  
 `R` - Open rotate tool  
+`B` - Remove backgroud with AI  
 `Ctrl`+`Left` - Previous image  
 `Ctrl`+`Right` - Next image  
 `+` - Zoom in  
