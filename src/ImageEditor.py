@@ -2,8 +2,11 @@ import os
 import urllib3
 
 from PySide6.QtCore import (
+    QBuffer,
+    QByteArray,
     QDir,
     QFileInfo,
+    QIODevice,
     QMargins,
     QMimeData,
     QObject,
@@ -1601,8 +1604,16 @@ class ImageEditorDialog(QDialog):
         self.showFullScreen()
 
     def copy(self):
-        image = self._pixmapHandle.pixmap().toImage()
+        pixmap = self._pixmapHandle.pixmap().toImage()
         mime = QMimeData()
+
+        png_data = QByteArray()
+        buffer = QBuffer(png_data)
+        buffer.open(QIODevice.WriteOnly)
+        pixmap.save(buffer, 'png')
+        mime.setData('image/png', png_data)
+
+        image = self._pixmapHandle.pixmap().toImage()
         mime.setImageData(image)
 
         clipboard = QApplication.clipboard()
@@ -1610,13 +1621,17 @@ class ImageEditorDialog(QDialog):
 
     def paste(self):
         mime = QApplication.clipboard().mimeData()
-        if mime.hasImage():
-            pixmap = self._pixmapHandle.pixmap()
-            self.pushUndo(pixmap)
-            self.setImage(mime.imageData())
-            self.isChanged = True
-            self.markWindowTitle(self.isChanged)
-            self._updateEditActions()
+        if mime.hasFormat('image/webp'):
+            data = mime.data('image/webp')
+            self.loadFromData(data)
+        elif mime.hasFormat('image/png'):
+            data = mime.data('image/png')
+            self.loadFromData(data)
+        elif mime.hasFormat('application/x-qt-windows-mime;value="PNG"'):
+            data = mime.data('application/x-qt-windows-mime;value="PNG"')
+            self.loadFromData(data)
+        elif mime.hasImage():
+            self._setImage(mime.imageData())
         elif mime.hasUrls():
             url = mime.urls()[0]
             self.loadFromFile(url.toLocalFile())
@@ -1661,16 +1676,25 @@ class ImageEditorDialog(QDialog):
         self.markWindowTitle(self.isChanged)
         self._updateEditActions()
 
+    def _setImage(self, image):
+        pixmap = self._pixmapHandle.pixmap()
+        self.pushUndo(pixmap)
+        self.setImage(image)
+        self.isChanged = True
+        self.markWindowTitle(self.isChanged)
+        self._updateEditActions()
+
     def loadFromFile(self, fileName):
         image = QImage()
         result = image.load(fileName)
         if result:
-            pixmap = self._pixmapHandle.pixmap()
-            self.pushUndo(pixmap)
-            self.setImage(image)
-            self.isChanged = True
-            self.markWindowTitle(self.isChanged)
-            self._updateEditActions()
+            self._setImage(image)
+
+    def loadFromData(self, data):
+        image = QImage()
+        result = image.loadFromData(data)
+        if result:
+            self._setImage(image)
 
     def normalSize(self):
         self.zoom(100)
