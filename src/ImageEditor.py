@@ -1611,7 +1611,7 @@ class ImageEditorDialog(QDialog):
         buffer = QBuffer(png_data)
         buffer.open(QIODevice.WriteOnly)
         pixmap.save(buffer, 'png')
-        mime.setData('image/png', png_data)
+        mime.setData('application/x-qt-windows-mime;value="PNG"', png_data)
 
         image = self._pixmapHandle.pixmap().toImage()
         mime.setImageData(image)
@@ -1623,9 +1623,6 @@ class ImageEditorDialog(QDialog):
         mime = QApplication.clipboard().mimeData()
         if mime.hasFormat('image/webp'):
             data = mime.data('image/webp')
-            self.loadFromData(data)
-        elif mime.hasFormat('image/png'):
-            data = mime.data('image/png')
             self.loadFromData(data)
         elif mime.hasFormat('application/x-qt-windows-mime;value="PNG"'):
             data = mime.data('application/x-qt-windows-mime;value="PNG"')
