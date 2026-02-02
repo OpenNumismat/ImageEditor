@@ -1112,11 +1112,16 @@ class SettingsDialog(QDialog):
         self.modelSelector.setCurrentText(ai_model)
         self.modelSelector.setSizePolicy(QSizePolicy.Fixed,
                                          QSizePolicy.Fixed)
-        self.main_layout.addRow(self.tr("Backround remover AI model"), self.modelSelector)
+        self.main_layout.addRow(self.tr("Background remover AI model"), self.modelSelector)
+
+        crop = settings.value('image_viewer/crop_after_rembg', True, type=bool)
+        self.cropCheckbox = QCheckBox(self.tr("Crop after background remover"), self)
+        self.cropCheckbox.setChecked(crop)
+        self.main_layout.addRow(self.cropCheckbox)
 
         color = settings.value('image_viewer/window_color', QColor(Qt.white), type=QColor)
         self.windowColorButton = ColorButton(color, self)
-        self.main_layout.addRow(self.tr("Window backgroud color"), self.windowColorButton)
+        self.main_layout.addRow(self.tr("Window background color"), self.windowColorButton)
 
         buttonBox = QDialogButtonBox(Qt.Horizontal)
         buttonBox.addButton(QDialogButtonBox.Ok)
@@ -1134,6 +1139,7 @@ class SettingsDialog(QDialog):
         settings = QSettings()
 
         settings.setValue('image_viewer/ai_model', self.modelSelector.currentText())
+        settings.setValue('image_viewer/crop_after_rembg', self.modelSelector.currentText())
         settings.setValue('image_viewer/window_color', self.windowColorButton.color())
 
         self.accept()
@@ -2290,6 +2296,7 @@ class ImageEditorDialog(QDialog):
 
         settings = QSettings()
         model_name = settings.value('image_viewer/ai_model', 'u2net')
+        crop = settings.value('image_viewer/crop_after_rembg', True)
         if self._download_model(model_name, path):
             pixmap = self._pixmapHandle.pixmap()
             self.pushUndo(pixmap)
@@ -2299,7 +2306,7 @@ class ImageEditorDialog(QDialog):
             os.environ["U2NET_HOME"] = path
 
             QApplication.setOverrideCursor(QCursor(Qt.WaitCursor))
-            im = rembg(image, model_name)
+            im = rembg(image, model_name, crop)
             QApplication.restoreOverrideCursor()
 
             self.setImage(im)

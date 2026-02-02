@@ -153,11 +153,15 @@ def _perspectiveTransformation(points, rect):
     return (W, H)
 
 
-def rembg(image, model_name):
+def rembg(image, model_name, crop=False):
     from PIL import ImageQt
     from rembg import remove, new_session
 
     im = ImageQt.fromqimage(image)
     rembg_session = new_session(model_name)
     output = remove(im, session=rembg_session)
+    if crop:
+        bbox = output.getbbox()
+        if bbox:
+            output = output.crop(bbox)
     return ImageQt.ImageQt(output)
