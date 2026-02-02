@@ -316,11 +316,15 @@
         <translation>Definições</translation>
     </message>
     <message>
-        <source>Backround remover AI model</source>
-        <translation>Modelo IA de remoção de fundo</translation>
+        <source>Background remover AI model</source>
+        <translation>Modelo IA de remoção de fundos</translation>
     </message>
     <message>
-        <source>Window backgroud color</source>
+        <source>Crop after background remover</source>
+        <translation>Cortar após remoção do fundo</translation>
+    </message>
+    <message>
+        <source>Window background color</source>
         <translation>Cor de fundo da janela</translation>
     </message>
 </context>
