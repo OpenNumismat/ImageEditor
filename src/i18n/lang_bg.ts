@@ -317,7 +317,7 @@
     </message>
     <message>
         <source>Background remover AI model</source>
-        <translation>ИИ модел за премахване на фон</translation>
+        <translation>AI модел за премахване на фон</translation>
     </message>
     <message>
         <source>Crop after background remover</source>
