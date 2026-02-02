@@ -318,11 +318,15 @@
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <source>Backround remover AI model</source>
+        <source>Background remover AI model</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <source>Window backgroud color</source>
+        <source>Crop after background remover</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Window background color</source>
         <translation type="unfinished"></translation>
     </message>
 </context>
