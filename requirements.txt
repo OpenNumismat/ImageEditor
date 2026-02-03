@@ -1,5 +1,5 @@
-numpy==1.26.4
-pillow==11.2.1
-pyside6==6.8.3
-rembg[cpu]==2.0.66
-scipy==1.14.0
+numpy==2.4.2
+pillow==12.1.0
+pyside6==6.10.2
+rembg[cpu]==2.0.72
+scipy==1.17.0
