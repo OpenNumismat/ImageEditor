@@ -316,11 +316,15 @@
         <translation>Настройки</translation>
     </message>
     <message>
-        <source>Backround remover AI model</source>
+        <source>Background remover AI model</source>
         <translation>ИИ модель для удаления фона</translation>
     </message>
     <message>
-        <source>Window backgroud color</source>
+        <source>Crop after background remover</source>
+        <translation>Обрезать после удаления фона</translation>
+    </message>
+    <message>
+        <source>Window background color</source>
         <translation>Цвет фона окна</translation>
     </message>
 </context>
