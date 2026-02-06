@@ -316,12 +316,16 @@
         <translation>Configuración</translation>
     </message>
     <message>
-        <source>Backround remover AI model</source>
-        <translation>Modelo de IA eliminador de fondo</translation>
+        <source>Background remover AI model</source>
+        <translation>Modelo de IA de eliminación de fondo</translation>
     </message>
     <message>
-        <source>Window backgroud color</source>
-        <translation>Color de fondo de ventana</translation>
+        <source>Crop after background remover</source>
+        <translation>Recortar después de eliminar el fondo</translation>
+    </message>
+    <message>
+        <source>Window background color</source>
+        <translation>Color de fondo de la ventana</translation>
     </message>
 </context>
 <context>
