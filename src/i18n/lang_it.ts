@@ -316,12 +316,16 @@
         <translation>Impostazioni</translation>
     </message>
     <message>
-        <source>Backround remover AI model</source>
-        <translation>Modello di IA per la rimozione dello sfondo</translation>
+        <source>Background remover AI model</source>
+        <translation>Modello IA per la rimozione dello sfondo</translation>
     </message>
     <message>
-        <source>Window backgroud color</source>
-        <translation>Colore dello sfondo della finestra</translation>
+        <source>Crop after background remover</source>
+        <translation>Ritaglia dopo la rimozione dello sfondo</translation>
+    </message>
+    <message>
+        <source>Window background color</source>
+        <translation>Colore di sfondo della finestra</translation>
     </message>
 </context>
 <context>
