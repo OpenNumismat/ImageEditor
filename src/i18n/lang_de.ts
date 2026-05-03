@@ -321,7 +321,7 @@
     </message>
     <message>
         <source>Crop after background remover</source>
-        <translation type="unfinished"/>
+        <translation>Zuschneiden nach Hintergrundentfernung</translation>
     </message>
     <message>
         <source>Window background color</source>
