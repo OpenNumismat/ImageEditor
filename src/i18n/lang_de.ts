@@ -325,7 +325,7 @@
     </message>
     <message>
         <source>Window background color</source>
-        <translation type="unfinished"/>
+        <translation>Hintergrundfarbe des Fensters</translation>
     </message>
 </context>
 <context>
