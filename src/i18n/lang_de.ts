@@ -317,7 +317,7 @@
     </message>
     <message>
         <source>Background remover AI model</source>
-        <translation type="unfinished"/>
+        <translation>KI-Modell zur Hintergrundentfernung</translation>
     </message>
     <message>
         <source>Crop after background remover</source>
