@@ -14,8 +14,8 @@ ImageEditor is a part of [OpenNumismat](https://opennumismat.github.io/) project
 
 #### Features
 
-* Support popular image formats: JPEG, PNG, BMP, TIFF, GIF, WebP
-* Takes a photo from webcam (for better results try [Camo](https://reincubate.com/camo/))
+* Supports popular image formats: JPEG, PNG, BMP, TIFF, GIF, WebP
+* Capture a photo from webcam (for better results try [Camo](https://reincubate.com/camo/))
 * Image editing tools: rotate, crop (rectangle, ellipse, perspective transformation)
 * Remove background with [rembg](https://github.com/danielgatis/rembg)
 * Up to 10 Undo/Redo actions
@@ -38,7 +38,7 @@ ImageEditor is a part of [OpenNumismat](https://opennumismat.github.io/) project
 `Alt`+`Right` - Rotate to right  
 `C` - Open crop tool  
 `R` - Open rotate tool  
-`B` - Remove backgroud with AI  
+`B` - Remove background with AI  
 `Ctrl`+`Left` - Previous image  
 `Ctrl`+`Right` - Next image  
 `+` - Zoom in  
