@@ -316,12 +316,16 @@
         <translation>Einstellungen</translation>
     </message>
     <message>
-        <source>Backround remover AI model</source>
-        <translation>Hintergrund-Entferner AI Modell</translation>
+        <source>Background remover AI model</source>
+        <translation>KI-Modell zur Hintergrundentfernung</translation>
     </message>
     <message>
-        <source>Window backgroud color</source>
-        <translation>Fenster-Hintergrundfarbe</translation>
+        <source>Crop after background remover</source>
+        <translation>Zuschneiden nach Hintergrundentfernung</translation>
+    </message>
+    <message>
+        <source>Window background color</source>
+        <translation>Hintergrundfarbe des Fensters</translation>
     </message>
 </context>
 <context>
