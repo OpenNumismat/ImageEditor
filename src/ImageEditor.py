@@ -1139,7 +1139,7 @@ class SettingsDialog(QDialog):
         settings = QSettings()
 
         settings.setValue('image_viewer/ai_model', self.modelSelector.currentText())
-        settings.setValue('image_viewer/crop_after_rembg', self.modelSelector.currentText())
+        settings.setValue('image_viewer/crop_after_rembg', self.cropCheckbox.isChecked())
         settings.setValue('image_viewer/window_color', self.windowColorButton.color())
 
         self.accept()
