@@ -100,7 +100,7 @@
     <name>ImageEditorDialog</name>
     <message>
         <source>Browse in viewer</source>
-        <translation>Преглед с външна програма</translation>
+        <translation>Преглед с външно приложение</translation>
     </message>
     <message>
         <source>&amp;Save As...</source>
