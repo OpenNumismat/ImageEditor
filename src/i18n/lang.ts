@@ -205,6 +205,10 @@
         <translation type="unfinished"></translation>
     </message>
     <message>
+        <source>Downloading AI model %s (%d MB)</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
         <source>Cut left half</source>
         <translation type="unfinished"></translation>
     </message>
@@ -266,10 +270,6 @@
     </message>
     <message>
         <source>Downloading</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <source>Downloading AI model %s (%d Mb)</source>
         <translation type="unfinished"></translation>
     </message>
 </context>
