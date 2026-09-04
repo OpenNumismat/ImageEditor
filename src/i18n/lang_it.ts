@@ -203,6 +203,10 @@
         <translation>Non mostrarmelo di nuovo</translation>
     </message>
     <message>
+        <source>Downloading AI model %s (%d MB)</source>
+        <translation type="unfinished"/>
+    </message>
+    <message>
         <source>Cut left half</source>
         <translation>Taglia la metà sinistra</translation>
     </message>
@@ -265,10 +269,6 @@
     <message>
         <source>Downloading</source>
         <translation>Download in corso</translation>
-    </message>
-    <message>
-        <source>Downloading AI model %s (%d Mb)</source>
-        <translation>Modello IA in scaricamento %s (%d Mb)</translation>
     </message>
 </context>
 <context>

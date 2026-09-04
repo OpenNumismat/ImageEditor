@@ -11,7 +11,7 @@
     </message>
     <message>
         <source>Camera not available or disabled by antivirus</source>
-        <translation>Камерата не е налична или е деактивирана от антивирусната програма</translation>
+        <translation>Камерата не е налична или е блокирана от антивирусната програма</translation>
     </message>
     <message>
         <source>Camera Error</source>
@@ -100,7 +100,7 @@
     <name>ImageEditorDialog</name>
     <message>
         <source>Browse in viewer</source>
-        <translation>Преглед с външна програма</translation>
+        <translation>Преглед с външно приложение</translation>
     </message>
     <message>
         <source>&amp;Save As...</source>
@@ -203,6 +203,10 @@
         <translation>Не показвай това съобщение отново</translation>
     </message>
     <message>
+        <source>Downloading AI model %s (%d MB)</source>
+        <translation>Изтегляне на AI модел %s (%d MB)</translation>
+    </message>
+    <message>
         <source>Cut left half</source>
         <translation>Отрязване на лявата половина</translation>
     </message>
@@ -265,10 +269,6 @@
     <message>
         <source>Downloading</source>
         <translation>Изтегляне</translation>
-    </message>
-    <message>
-        <source>Downloading AI model %s (%d Mb)</source>
-        <translation>Изтегляне на AI модел %s (%d Mb)</translation>
     </message>
 </context>
 <context>
