@@ -2263,7 +2263,7 @@ class ImageEditorDialog(QDialog):
         progressDlg.setCancelButtonText(self.tr("Cancel"))
         progressDlg.setWindowTitle(self.tr("Downloading"))
         progressDlg.setMaximum(file_size // chunk_size + 1)
-        progressDlg.setLabelText(self.tr("Downloading AI model %s (%d Mb)") % (model_name, file_size // (1024 * 1024)))
+        progressDlg.setLabelText(self.tr("Downloading AI model %s (%d MB)") % (model_name, file_size // (1024 * 1024)))
 
         while True:
             progressDlg.setValue(progressDlg.value() + 1)
