@@ -204,7 +204,7 @@
     </message>
     <message>
         <source>Downloading AI model %s (%d MB)</source>
-        <translation type="unfinished"/>
+        <translation>A transferir o modelo de IA %s (%d MB)</translation>
     </message>
     <message>
         <source>Cut left half</source>
