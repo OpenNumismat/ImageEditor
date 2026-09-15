@@ -204,7 +204,7 @@
     </message>
     <message>
         <source>Downloading AI model %s (%d MB)</source>
-        <translation type="unfinished"/>
+        <translation>Скачивание ИИ модели %s (%d МБ)</translation>
     </message>
     <message>
         <source>Cut left half</source>
