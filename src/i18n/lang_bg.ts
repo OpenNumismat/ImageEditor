@@ -204,15 +204,15 @@
     </message>
     <message>
         <source>Downloading AI model %s</source>
-        <translation type="unfinished"/>
+        <translation>Изтегляне на ИИ модел %s</translation>
     </message>
     <message>
         <source>Downloading AI model %s (%d MB)</source>
-        <translation>Изтегляне на AI модел %s (%d MB)</translation>
+        <translation>Изтегляне на ИИ модел %s (%d MB)</translation>
     </message>
     <message>
         <source>Failed to download: %s</source>
-        <translation type="unfinished"/>
+        <translation>Неуспешно изтегляне: %s</translation>
     </message>
     <message>
         <source>Cut left half</source>
