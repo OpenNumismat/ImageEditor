@@ -203,7 +203,15 @@
         <translation>Non mostrarmelo di nuovo</translation>
     </message>
     <message>
+        <source>Downloading AI model %s</source>
+        <translation type="unfinished"/>
+    </message>
+    <message>
         <source>Downloading AI model %s (%d MB)</source>
+        <translation type="unfinished"/>
+    </message>
+    <message>
+        <source>Failed to download: %s</source>
         <translation type="unfinished"/>
     </message>
     <message>
