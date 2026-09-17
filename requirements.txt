@@ -1,8 +1,7 @@
-numpy==2.2.2
-pillow==11.2.1
-pyside6==6.8.3
-rembg[cpu]==2.0.66
-scipy==1.14.0
-urllib3==2.6.3
-opencv-python-headless==4.10.0.84
+numpy==2.2.6
+pillow==12.3.0
+pyside6==6.11.2
+rembg[cpu]==2.0.69
+scipy==1.15.3
+opencv-python-headless==4.13.0.92
 pymatting==1.1.14

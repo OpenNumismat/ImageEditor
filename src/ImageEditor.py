@@ -1,10 +1,10 @@
 import os
-import urllib3
 
 from PySide6.QtCore import (
     QBuffer,
     QByteArray,
     QDir,
+    QEventLoop,
     QFileInfo,
     QIODevice,
     QMargins,
@@ -30,6 +30,7 @@ from PySide6.QtGui import (
     QResizeEvent,
     QShortcut,
 )
+from PySide6.QtNetwork import QNetworkAccessManager, QNetworkRequest
 from PySide6.QtWidgets import (
     QApplication,
     QCheckBox,
@@ -2231,6 +2232,34 @@ class ImageEditorDialog(QDialog):
                 self._updateEditActions()
         dlg.deleteLater()
 
+    def rembg(self):
+        if PORTABLE:
+            path = HOME_PATH
+        else:
+            path = QStandardPaths.standardLocations(QStandardPaths.AppLocalDataLocation)[0]
+
+        settings = QSettings()
+        model_name = settings.value('image_viewer/ai_model', 'u2net')
+        if self._download_model(model_name, path):
+            crop = settings.value('image_viewer/crop_after_rembg', True)
+
+            os.environ["U2NET_HOME"] = path
+
+            pixmap = self._pixmapHandle.pixmap()
+            self.pushUndo(pixmap)
+
+            image = pixmap.toImage()
+
+            QApplication.setOverrideCursor(QCursor(Qt.WaitCursor))
+            im = rembg(image, model_name, crop)
+            QApplication.restoreOverrideCursor()
+
+            self.setImage(im)
+
+            self.isChanged = True
+            self.markWindowTitle(self.isChanged)
+            self._updateEditActions()
+
     def _download_model(self, model_name, path):
         models = {
             'u2net': 'https://github.com/danielgatis/rembg/releases/download/v0.0.0/u2net.onnx',
@@ -2246,71 +2275,65 @@ class ImageEditorDialog(QDialog):
 
         os.makedirs(model_file.absolutePath(), exist_ok=True)
 
-        urllib3.disable_warnings()
-        http = urllib3.PoolManager(num_pools=1, cert_reqs="CERT_NONE")
-        r = http.request('GET', models[model_name], preload_content=False)
-        file_size = int(r.getheaders()['content-length'])
-
         tmpDir = QDir(TemporaryDir.path())
         file = QTemporaryFile(tmpDir.absoluteFilePath("XXXXXXXX.onnx"), self)
         file.open()
 
-        chunk_size = 1024 * 1024
-        progressDlg = QProgressDialog(self,
-                                      Qt.WindowCloseButtonHint |
-                                      Qt.WindowSystemMenuHint)
-        progressDlg.setWindowModality(Qt.WindowModal)
-        progressDlg.setCancelButtonText(self.tr("Cancel"))
-        progressDlg.setWindowTitle(self.tr("Downloading"))
-        progressDlg.setMaximum(file_size // chunk_size + 1)
-        progressDlg.setLabelText(self.tr("Downloading AI model %s (%d MB)") % (model_name, file_size // (1024 * 1024)))
+        progress_bar = QProgressDialog(self,
+                                       Qt.WindowCloseButtonHint |
+                                       Qt.WindowSystemMenuHint)
+        progress_bar.setWindowModality(Qt.WindowModal)
+        progress_bar.setCancelButtonText(self.tr("Cancel"))
+        progress_bar.setWindowTitle(self.tr("Downloading"))
+        progress_bar.setLabelText(self.tr("Downloading AI model %s") % model_name)
 
-        while True:
-            progressDlg.setValue(progressDlg.value() + 1)
-            if progressDlg.wasCanceled():
-                result = False
-                break
+        loop = QEventLoop()
 
-            data = r.read(chunk_size)
-            if not data:
-                file.setAutoRemove(False)
-                result = True
-                break
-            file.write(data)
+        network_manager = QNetworkAccessManager(self)
+        request = QNetworkRequest(models[model_name])
+        reply = network_manager.get(request)
 
-        r.release_conn()
+        def write_chunks():
+            file.write(reply.readAll())
+
+        def handle_progress(bytes_received, bytes_total):
+            if bytes_total > 0:
+                progress_bar.setLabelText(self.tr("Downloading AI model %s (%d MB)") % (model_name, bytes_total // (1024 * 1024)))
+                progress_bar.setMaximum(bytes_total)
+                progress_bar.setValue(bytes_received)
+            else:
+                progress_bar.setMaximum(0)
+                progress_bar.setValue(0)
+
+        reply.readyRead.connect(write_chunks)
+        reply.downloadProgress.connect(handle_progress)
+        reply.finished.connect(loop.quit)
+        reply.finished.connect(progress_bar.close)
+
+        def handle_cancel():
+            reply.abort()
+            loop.quit()
+
+        progress_bar.canceled.connect(handle_cancel)
+
+        loop.exec()
+
+        result = False
+
+        if reply.error() == reply.NetworkError.NoError:
+            file.setAutoRemove(False)
+            result = True
+        elif reply.error() == reply.NetworkError.OperationCanceledError:
+            pass
+        else:
+            QMessageBox.warning(self, self.tr("Downloading"),
+                                self.tr("Failed to download: %s") % reply.errorString())
+
+        reply.deleteLater()
+        network_manager.deleteLater()
+
         file.close()
-
         if result:
             result = file.rename(model_file.filePath())
 
-        progressDlg.reset()
-
         return result
-
-    def rembg(self):
-        if PORTABLE:
-            path = HOME_PATH
-        else:
-            path = QStandardPaths.standardLocations(QStandardPaths.AppLocalDataLocation)[0]
-
-        settings = QSettings()
-        model_name = settings.value('image_viewer/ai_model', 'u2net')
-        crop = settings.value('image_viewer/crop_after_rembg', True)
-        if self._download_model(model_name, path):
-            pixmap = self._pixmapHandle.pixmap()
-            self.pushUndo(pixmap)
-
-            image = pixmap.toImage()
-
-            os.environ["U2NET_HOME"] = path
-
-            QApplication.setOverrideCursor(QCursor(Qt.WaitCursor))
-            im = rembg(image, model_name, crop)
-            QApplication.restoreOverrideCursor()
-
-            self.setImage(im)
-
-            self.isChanged = True
-            self.markWindowTitle(self.isChanged)
-            self._updateEditActions()
