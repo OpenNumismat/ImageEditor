@@ -203,8 +203,16 @@
         <translation>Не показвай това съобщение отново</translation>
     </message>
     <message>
+        <source>Downloading AI model %s</source>
+        <translation type="unfinished"/>
+    </message>
+    <message>
         <source>Downloading AI model %s (%d MB)</source>
         <translation>Изтегляне на AI модел %s (%d MB)</translation>
+    </message>
+    <message>
+        <source>Failed to download: %s</source>
+        <translation type="unfinished"/>
     </message>
     <message>
         <source>Cut left half</source>
