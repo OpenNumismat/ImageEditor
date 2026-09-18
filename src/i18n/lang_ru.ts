@@ -203,6 +203,18 @@
         <translation>Больше не показывать</translation>
     </message>
     <message>
+        <source>Downloading AI model %s</source>
+        <translation>Скачивание ИИ модели %s</translation>
+    </message>
+    <message>
+        <source>Downloading AI model %s (%d MB)</source>
+        <translation>Скачивание ИИ модели %s (%d МБ)</translation>
+    </message>
+    <message>
+        <source>Failed to download: %s</source>
+        <translation>Не удалось скачать: %s</translation>
+    </message>
+    <message>
         <source>Cut left half</source>
         <translation>Вырезать левую половину</translation>
     </message>
@@ -265,10 +277,6 @@
     <message>
         <source>Downloading</source>
         <translation>Скачивание</translation>
-    </message>
-    <message>
-        <source>Downloading AI model %s (%d Mb)</source>
-        <translation>Скачивание ИИ модели %s (%d Мб)</translation>
     </message>
 </context>
 <context>
