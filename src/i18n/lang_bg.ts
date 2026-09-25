@@ -191,6 +191,14 @@
         <translation>&amp;Изглед</translation>
     </message>
     <message>
+        <source>Saving</source>
+        <translation>Записване</translation>
+    </message>
+    <message>
+        <source>Transparency will be lost when saving in the selected format. Continue?</source>
+        <translation>Прозрачността ще бъде загубена при записване в избрания формат. Искате ли да продължите?</translation>
+    </message>
+    <message>
         <source>Image was changed. Save changes?</source>
         <translation>Изображението е променено. Да се запазят ли промените?</translation>
     </message>

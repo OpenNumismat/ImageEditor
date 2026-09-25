@@ -191,6 +191,14 @@
         <translation>&amp;Ansehen</translation>
     </message>
     <message>
+        <source>Saving</source>
+        <translation>Speichern</translation>
+    </message>
+    <message>
+        <source>Transparency will be lost when saving in the selected format. Continue?</source>
+        <translation type="unfinished"/>
+    </message>
+    <message>
         <source>Image was changed. Save changes?</source>
         <translation>Das Bild wurde geändert. Änderungen speichern?</translation>
     </message>
