@@ -24,6 +24,8 @@ from PySide6.QtGui import (
     QCursor,
     QDesktopServices,
     QIcon,
+    QImageIOHandler,
+    QImageWriter,
     QKeySequence,
     QPen,
     QPixmap,
@@ -1579,6 +1581,18 @@ class ImageEditorDialog(QDialog):
         fileName, _selectedFilter = getSaveFileName(
             self, 'images', self.name, IMAGE_PATH, saveImageFilters())
         if fileName:
+            if self._pixmapHandle.pixmap().hasAlphaChannel():
+                writer = QImageWriter(fileName)
+                if not writer.supportsOption(QImageIOHandler.BackgroundColor):
+                    result = QMessageBox.information(
+                        self, self.tr("Saving"),
+                        self.tr("Transparency will be lost when saving"
+                                " in the selected format. Continue?"),
+                        QMessageBox.Yes | QMessageBox.Cancel,
+                        QMessageBox.Cancel)
+                    if result == QMessageBox.Cancel:
+                        return
+
             self._pixmapHandle.pixmap().save(fileName)
 
     def done(self, r):
