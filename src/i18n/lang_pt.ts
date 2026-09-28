@@ -196,7 +196,7 @@
     </message>
     <message>
         <source>Transparency will be lost when saving in the selected format. Continue?</source>
-        <translation>A transparência será perdida ao ggravar no formato seleccionado. Deseja continuar?</translation>
+        <translation>A transparência será perdida ao gravar no formato seleccionado. Deseja continuar?</translation>
     </message>
     <message>
         <source>Image was changed. Save changes?</source>
