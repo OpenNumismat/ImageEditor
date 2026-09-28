@@ -196,7 +196,7 @@
     </message>
     <message>
         <source>Transparency will be lost when saving in the selected format. Continue?</source>
-        <translation type="unfinished"/>
+        <translation>Beim Speichern im gewählten Format geht die Transparenz verloren. Fortfahren?</translation>
     </message>
     <message>
         <source>Image was changed. Save changes?</source>
@@ -212,7 +212,7 @@
     </message>
     <message>
         <source>Downloading AI model %s</source>
-        <translation type="unfinished"/>
+        <translation>KI-Modell %s wird heruntergeladen</translation>
     </message>
     <message>
         <source>Downloading AI model %s (%d MB)</source>
