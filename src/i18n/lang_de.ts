@@ -220,7 +220,7 @@
     </message>
     <message>
         <source>Failed to download: %s</source>
-        <translation type="unfinished"/>
+        <translation>Download von: %s fehlgeschlagen</translation>
     </message>
     <message>
         <source>Cut left half</source>
