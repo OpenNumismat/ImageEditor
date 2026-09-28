@@ -216,7 +216,7 @@
     </message>
     <message>
         <source>Downloading AI model %s (%d MB)</source>
-        <translation type="unfinished"/>
+        <translation>KI-Modell %s (%d MB) wird heruntergeladen</translation>
     </message>
     <message>
         <source>Failed to download: %s</source>
