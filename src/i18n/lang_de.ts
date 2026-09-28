@@ -191,6 +191,14 @@
         <translation>&amp;Ansehen</translation>
     </message>
     <message>
+        <source>Saving</source>
+        <translation>Speichern</translation>
+    </message>
+    <message>
+        <source>Transparency will be lost when saving in the selected format. Continue?</source>
+        <translation>Beim Speichern im gewählten Format geht die Transparenz verloren. Fortfahren?</translation>
+    </message>
+    <message>
         <source>Image was changed. Save changes?</source>
         <translation>Das Bild wurde geändert. Änderungen speichern?</translation>
     </message>
@@ -204,15 +212,15 @@
     </message>
     <message>
         <source>Downloading AI model %s</source>
-        <translation type="unfinished"/>
+        <translation>KI-Modell %s wird heruntergeladen</translation>
     </message>
     <message>
         <source>Downloading AI model %s (%d MB)</source>
-        <translation type="unfinished"/>
+        <translation>KI-Modell %s (%d MB) wird heruntergeladen</translation>
     </message>
     <message>
         <source>Failed to download: %s</source>
-        <translation type="unfinished"/>
+        <translation>Download von: %s fehlgeschlagen</translation>
     </message>
     <message>
         <source>Cut left half</source>
