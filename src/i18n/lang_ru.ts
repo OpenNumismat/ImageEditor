@@ -191,6 +191,14 @@
         <translation>&amp;Вид</translation>
     </message>
     <message>
+        <source>Saving</source>
+        <translation>Сохранение</translation>
+    </message>
+    <message>
+        <source>Transparency will be lost when saving in the selected format. Continue?</source>
+        <translation>При сохранении в выбранном формате прозрачность будет утрачена. Продолжить?</translation>
+    </message>
+    <message>
         <source>Image was changed. Save changes?</source>
         <translation>Изображение изменено. Сохранить изменения?</translation>
     </message>

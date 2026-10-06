@@ -191,6 +191,14 @@
         <translation>&amp;Vista</translation>
     </message>
     <message>
+        <source>Saving</source>
+        <translation>Salvataggio</translation>
+    </message>
+    <message>
+        <source>Transparency will be lost when saving in the selected format. Continue?</source>
+        <translation type="unfinished"/>
+    </message>
+    <message>
         <source>Image was changed. Save changes?</source>
         <translation>L&apos;immagine è stata modificata. Salvare le modifiche?</translation>
     </message>
