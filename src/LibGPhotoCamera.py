@@ -3,6 +3,7 @@
 import ctypes
 import copy
 import atexit
+import glob
 import json
 import os
 import sys
@@ -113,35 +114,82 @@ class CameraFilePath(ctypes.Structure):
 
 
 _INSTALL_HINT = (
-    "Camera capture is optional: install MSYS2 UCRT64 plus the package "
+    "Camera capture is optional: packaged builds bundle the libgphoto2 runtime; "
+    "when running from source install MSYS2 UCRT64 plus the package "
     "mingw-w64-ucrt-x86_64-gphoto2 to enable it (see README_libgphoto2.md)."
 )
 
+# Environment variable overriding the libgphoto2 runtime root, used to point
+# builds at a specific runtime (e.g. the bundled one in packaging smoke tests).
+_RUNTIME_ENV_VAR = "GPHOTO2_RUNTIME"
 
-def _msys2_paths() -> Tuple[str, str, str]:
-    """Return the MSYS2 UCRT64 binary, camera-driver, and port-driver directories."""
-    msys2_bin = r"C:\msys64\ucrt64\bin"
-    if not os.path.isdir(msys2_bin):
-        raise OSError(f"No libgphoto2 installation at {msys2_bin}. {_INSTALL_HINT}")
 
-    def versioned_directory(path: str) -> str:
-        """Choose the newest numeric-version subdirectory under ``path``."""
-        versions = [
-            name for name in os.listdir(path)
-            if os.path.isdir(os.path.join(path, name))
-            and all(part.isdigit() for part in name.split("."))
-        ]
-        if not versions:
-            raise OSError(f"No libgphoto2 plugin directory found in {path}. {_INSTALL_HINT}")
-        versions.sort(key=lambda item: tuple(int(part) for part in item.split(".")))
-        return os.path.join(path, versions[-1])
+def _versioned_directory(path: str) -> str:
+    """Choose the newest numeric-version subdirectory under ``path``."""
+    versions = [
+        name for name in os.listdir(path)
+        if os.path.isdir(os.path.join(path, name))
+        and all(part.isdigit() for part in name.split("."))
+    ]
+    if not versions:
+        raise OSError(f"No libgphoto2 plugin directory found in {path}")
+    versions.sort(key=lambda item: tuple(int(part) for part in item.split(".")))
+    return os.path.join(path, versions[-1])
 
-    msys2_lib = os.path.join(os.path.dirname(msys2_bin), "lib")
-    return (
-        msys2_bin,
-        versioned_directory(os.path.join(msys2_lib, "libgphoto2")),
-        versioned_directory(os.path.join(msys2_lib, "libgphoto2_port")),
+
+def _candidate_roots() -> List[str]:
+    """Return libgphoto2 runtime roots to try, most specific first.
+
+    A root is a directory with ``bin/`` (DLLs) and ``lib/libgphoto2*/<version>/``
+    (camera-driver and port-driver plugins); the runtime bundled next to the
+    executable and an MSYS2 UCRT64 prefix share this layout. The bundled root is
+    preferred so packaged builds work on machines without MSYS2.
+    """
+    roots = []
+    override = os.environ.get(_RUNTIME_ENV_VAR)
+    if override:
+        roots.append(override)
+    # Frozen apps: sys._MEIPASS covers PyInstaller both with and without
+    # contents_directory; Nuitka standalone puts data next to the executable.
+    for base in (getattr(sys, "_MEIPASS", None),
+                 os.path.dirname(os.path.abspath(sys.executable))):
+        if base:
+            roots.append(os.path.join(base, "libgphoto2"))
+    roots.append(r"C:\msys64\ucrt64")
+    return roots
+
+
+def _runtime_paths() -> Tuple[str, str, str]:
+    """Return the binary, camera-driver, and port-driver directories.
+
+    Searches the ``%GPHOTO2_RUNTIME%`` override, a ``libgphoto2`` folder
+    bundled next to the executable, then a system-wide MSYS2 UCRT64
+    installation.
+    """
+    problems = []
+    for root in _candidate_roots():
+        binary_dir = os.path.join(root, "bin")
+        try:
+            camlibs = _versioned_directory(os.path.join(root, "lib", "libgphoto2"))
+            iolibs = _versioned_directory(os.path.join(root, "lib", "libgphoto2_port"))
+        except OSError as error:
+            problems.append(str(error))
+            continue
+        if not glob.glob(os.path.join(binary_dir, "libgphoto2-*.dll")):
+            problems.append(f"No libgphoto2 DLLs in {binary_dir}")
+            continue
+        return binary_dir, camlibs, iolibs
+    raise OSError(
+        "No usable libgphoto2 runtime. " + " / ".join(problems) + f". {_INSTALL_HINT}"
     )
+
+
+def _dll_named(binary_dir: str, pattern: str, description: str) -> str:
+    """Return the newest DLL in ``binary_dir`` matching ``pattern``."""
+    matches = sorted(glob.glob(os.path.join(binary_dir, pattern)))
+    if not matches:
+        raise OSError(f"No {description} found in {binary_dir}. {_INSTALL_HINT}")
+    return matches[-1]
 
 
 def _set_msys2_environment(name: str, value: str) -> None:
@@ -159,33 +207,33 @@ def _set_msys2_environment(name: str, value: str) -> None:
 def _load_libraries() -> Tuple[ctypes.CDLL, ctypes.CDLL]:
     """Load libgphoto2 and its port library for the current platform."""
     if sys.platform.startswith("win"):
-        msys2_bin, camlibs, iolibs = _msys2_paths()
-        _dll_directory_handles.append(os.add_dll_directory(msys2_bin))
+        binary_dir, camlibs, iolibs = _runtime_paths()
+        _dll_directory_handles.append(os.add_dll_directory(binary_dir))
         _set_msys2_environment("CAMLIBS", camlibs)
         _set_msys2_environment("IOLIBS", iolibs)
         # libgphoto2 loads its camlib and port-driver plugins at runtime with
         # plain LoadLibrary calls, and resolving a plugin's own dependencies
         # (usb1.dll needs libusb-1.0.dll) ignores os.add_dll_directory(): it
         # falls back to the process PATH. Outside an MSYS2 shell PATH usually
-        # lacks the MSYS2 bin folder, the usb1 port driver then fails to load
+        # lacks the runtime bin folder, the usb1 port driver then fails to load
         # and autodetection silently reports zero cameras. Prepending the bin
         # folder to PATH and preloading the plugin dependencies makes plugin
         # loading independent of how the app was started. The preloaded
         # handles must stay referenced to keep the DLLs loaded.
-        os.environ["PATH"] = msys2_bin + os.pathsep + os.environ.get("PATH", "")
+        os.environ["PATH"] = binary_dir + os.pathsep + os.environ.get("PATH", "")
         for dependency in (
             "libusb-1.0.dll",
             "libgcc_s_seh-1.dll",
             "libwinpthread-1.dll",
             "libltdl-7.dll",
         ):
-            dependency_path = os.path.join(msys2_bin, dependency)
+            dependency_path = os.path.join(binary_dir, dependency)
             if os.path.isfile(dependency_path):
                 _preloaded_dlls.append(ctypes.CDLL(dependency_path))
         try:
             return (
-                ctypes.CDLL(os.path.join(msys2_bin, "libgphoto2-6.dll")),
-                ctypes.CDLL(os.path.join(msys2_bin, "libgphoto2_port-12.dll")),
+                ctypes.CDLL(_dll_named(binary_dir, "libgphoto2-*.dll", "libgphoto2 DLL")),
+                ctypes.CDLL(_dll_named(binary_dir, "libgphoto2_port-*.dll", "libgphoto2 port DLL")),
             )
         except OSError as error:
             raise OSError(f"Could not load libgphoto2: {error}. {_INSTALL_HINT}") from error

@@ -10,13 +10,17 @@ This page describes installing and verifying `libgphoto2` and its `gphoto2` comm
 
 ## How to install libgphoto2 on Windows
 
-We will install `gphoto2` which installs the required library and enables us to test the installation. `gphoto2` is a command line utility using `libgphoto2` to work with the camera.
+Released packages bundle `libgphoto2` and all its dependencies - no library setup is needed. The bundled runtime is unpacked into a `libgphoto2` folder next to the executable; `libgphoto2/VERSIONS.txt` records the exact packaged versions, which is handy for diagnostics. Setting the `GPHOTO2_RUNTIME` environment variable forces the application to use a specific runtime instead.
 
-It talks to USB connected camera using `libusb` compatible driver. For this we will install `WinUSB` driver using [Zadig](https://zadig.akeo.ie).
+The only manual step is the `WinUSB` driver for the camera (see below).
+
+When running from source the library is not bundled and we install it with MSYS2. We will install `gphoto2` which installs the required library and enables us to test the installation. `gphoto2` is a command line utility using `libgphoto2` to work with the camera.
+
+The library talks to a USB connected camera using a `libusb` compatible driver. For this we will install `WinUSB` driver using [Zadig](https://zadig.akeo.ie).
 
 Note that we will install UCRT64 version (and not MINGW64).
 
-### MSYS2 gphoto2
+### MSYS2 gphoto2 (running from source)
 
 1. Download latest version of [MSYS2](https://www.msys2.org/).
 2. Run the installation, keep the defaults (next, next, install, next, run now, finish).
