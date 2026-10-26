@@ -1,6 +1,7 @@
 #!/usr/bin/env python3
 
 import os
+import subprocess
 from PySide6.QtCore import QLibraryInfo
 
 base_path = os.path.join(os.path.dirname(__file__), "../src")
@@ -17,5 +18,5 @@ for dirname, _, filenames in os.walk(base_path):
 
 i18n_path = os.path.join(os.path.dirname(__file__), "../src/i18n")
 dst_file = os.path.join(i18n_path, "lang.ts")
-os.system(' '.join([lupdate_path, ' '.join(src_files), '-ts', dst_file, '-noobsolete', '-locations', 'none']))
+subprocess.run([lupdate_path, *src_files, '-ts', dst_file, '-noobsolete', '-locations', 'none'], check=True)
 #os.system(' '.join([lupdate_path, base_path, '-ts', dst_file, '-noobsolete', '-extensions', ','.join(['py', 'ui'])]))

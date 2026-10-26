@@ -278,6 +278,22 @@
         <source>Downloading</source>
         <translation>Скачивание</translation>
     </message>
+    <message>
+        <source>Camera Error</source>
+        <translation>Ошибка камеры</translation>
+    </message>
+    <message>
+        <source>No libgphoto2 camera is configured. Open Camera (libgphoto2) to configure one.</source>
+        <translation>Камера libgphoto2 не настроена. Откройте «Камера (libgphoto2)», чтобы настроить её.</translation>
+    </message>
+    <message>
+        <source>Captured data is not a supported image.</source>
+        <translation>Полученные данные не являются изображением поддерживаемого формата.</translation>
+    </message>
+    <message>
+        <source>Capturing image...</source>
+        <translation>Съёмка изображения...</translation>
+    </message>
 </context>
 <context>
     <name>ImageEditorWindow</name>
@@ -367,6 +383,89 @@
     <message>
         <source>All files (*.*)</source>
         <translation>Все файлы (*.*)</translation>
+    </message>
+</context>
+<context>
+    <name>CameraGPhotoDialog</name>
+    <message>
+        <source>Camera (libgphoto2)</source>
+        <translation>Камера (libgphoto2)</translation>
+    </message>
+    <message>
+        <source>Capture in preview mode</source>
+        <translation>Съёмка в режиме предварительного просмотра</translation>
+    </message>
+    <message>
+        <source>Restore original capture target after each shot</source>
+        <translation>Восстанавливать исходное место сохранения после каждого снимка</translation>
+    </message>
+    <message>
+        <source>Re-evaluate cameras</source>
+        <translation>Повторно обнаружить камеры</translation>
+    </message>
+    <message>
+        <source>Shoot</source>
+        <translation>Снимок</translation>
+    </message>
+    <message>
+        <source>Could not initialize libgphoto2.</source>
+        <translation>Не удалось инициализировать libgphoto2.</translation>
+    </message>
+    <message>
+        <source>Camera Error</source>
+        <translation>Ошибка камеры</translation>
+    </message>
+    <message>
+        <source>No cameras detected.</source>
+        <translation>Камеры не обнаружены.</translation>
+    </message>
+    <message>
+        <source>Reading camera settings...</source>
+        <translation>Чтение настроек камеры...</translation>
+    </message>
+    <message>
+        <source>Could not read camera settings.</source>
+        <translation>Не удалось прочитать настройки камеры.</translation>
+    </message>
+    <message>
+        <source>Camera is unavailable; showing saved settings. Capture is disabled.</source>
+        <translation>Камера недоступна; отображаются сохранённые настройки. Съёмка отключена.</translation>
+    </message>
+    <message>
+        <source>This camera does not advertise image capture.</source>
+        <translation>Эта камера не поддерживает съёмку изображений.</translation>
+    </message>
+    <message>
+        <source>Camera settings loaded.</source>
+        <translation>Настройки камеры загружены.</translation>
+    </message>
+    <message>
+        <source>Standard capture is unavailable unless an internal-RAM target is selected.</source>
+        <translation>Обычная съёмка доступна только при выборе внутренней памяти (RAM) в качестве места сохранения.</translation>
+    </message>
+    <message>
+        <source>Capturing preview...</source>
+        <translation>Создание предварительного снимка...</translation>
+    </message>
+    <message>
+        <source>Capturing image...</source>
+        <translation>Съёмка изображения...</translation>
+    </message>
+    <message>
+        <source>The captured data is not a supported image</source>
+        <translation>Полученные данные не являются изображением поддерживаемого формата</translation>
+    </message>
+    <message>
+        <source>Capture failed.</source>
+        <translation>Не удалось сделать снимок.</translation>
+    </message>
+    <message>
+        <source>Re-evaluating cameras...</source>
+        <translation>Повторное обнаружение камер...</translation>
+    </message>
+    <message>
+        <source>Could not re-evaluate cameras.</source>
+        <translation>Не удалось повторно обнаружить камеры.</translation>
     </message>
 </context>
 </TS>

@@ -16,6 +16,7 @@ ImageEditor is a part of [OpenNumismat](https://opennumismat.github.io/) project
 
 * Supports popular image formats: JPEG, PNG, BMP, TIFF, GIF, WebP
 * Capture a photo from webcam (for better results try [Camo](https://reincubate.com/camo/))
+* Capture photo from a [libgphoto2 supported camera](http://www.gphoto.org/proj/libgphoto2/support.php) (Windows packages bundle libgphoto2; the camera needs a one-time [WinUSB driver setup](README_libgphoto2.md))
 * Image editing tools: rotate, crop (rectangle, ellipse, perspective transformation)
 * Remove background with [rembg](https://github.com/danielgatis/rembg)
 * Up to 10 Undo/Redo actions
@@ -50,6 +51,7 @@ ImageEditor is a part of [OpenNumismat](https://opennumismat.github.io/) project
 `4` - Scale 400%  
 `5` - Scale 500%  
 `6` - Scale 600%  
+`Shift`+`K` - capture image from libgphoto2 camera using last settings
 `F11` - Full screen  
 `Esc` - Quit  
 
@@ -57,5 +59,24 @@ ImageEditor is a part of [OpenNumismat](https://opennumismat.github.io/) project
 [Latest version for Windows 10 and later](https://github.com/OpenNumismat/ImageEditor/releases/latest)
 
 #### For run from source code
-    pip3 install -r requirements.txt
-    python3 src/run.py [<image_file_name>]
+
+```sh
+pip3 install -r requirements.txt
+python3 src/run.py [<image_file_name>]
+```
+
+#### For developers
+Generated files (`src/resources.py`, `src/i18n/lang_*.qm`) are committed to the repository,
+so running from source code does not require to regenerate them.
+Rebuild them only after changing icons, `src/resources.qrc` or translations:
+
+```sh
+python3 misc/py2ts.py    # extract tr() strings into src/i18n/lang.ts
+python3 misc/ts2qm.py    # compile src/i18n/lang_*.ts into *.qm
+python3 misc/qrc2py.py   # embed icons and *.qm into src/resources.py
+```
+
+Compiled translations are embedded into `src/resources.py`, so after changing
+translations both last steps (`ts2qm.py` and `qrc2py.py`) are required.
+The same scripts are run automatically on push to `main` by GitHub Actions
+(`.github/workflows/py2ts.yml`, `.github/workflows/resources.yml`).

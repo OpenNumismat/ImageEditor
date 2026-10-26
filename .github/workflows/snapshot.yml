@@ -1,6 +1,7 @@
 name: "Snapshot"
 
 on:
+  workflow_dispatch:
   push:
     branches: [ "main" ]
     paths-ignore:
@@ -57,6 +58,12 @@ jobs:
       run: |
         SET PYTHONOPTIMIZE=1
         pyinstaller image-editor.spec
+    - name: install libgphoto2 runtime
+      run: C:\msys64\usr\bin\bash.exe -lc "pacman -Sy --noconfirm --needed mingw-w64-ucrt-x86_64-libgphoto2"
+    - name: bundle libgphoto2
+      run: python misc/bundle_gphoto2.py dist/${{ needs.title.outputs.APPNAME }}
+    - name: test libgphoto2 bundle
+      run: python misc/test_gphoto2_bundle.py dist/${{ needs.title.outputs.APPNAME }}
     - name: package
       run: |
         cd dist
@@ -75,6 +82,8 @@ jobs:
     name: Create pre-release
     needs: [title, windows]
     runs-on: ubuntu-latest
+    permissions:
+      contents: write
     env:
       GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
     steps:

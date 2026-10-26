@@ -19,6 +19,7 @@
     <file alias="zoom_in.png">icons/zoom_in.png</file>
     <file alias="zoom_out.png">icons/zoom_out.png</file>
     <file alias="webcam.png">icons/webcam.png</file>
+    <file alias="camera.png">icons/camera.png</file>
 </qresource>
 <qresource prefix="i18n">
     <file alias="lang_bg.qm">i18n/lang_bg.qm</file>

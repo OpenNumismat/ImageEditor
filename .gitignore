@@ -2,3 +2,6 @@ __pycache__/
 build/
 dist/
 *.zip
+*.onnx
+metadata.yml
+versionfile.txt

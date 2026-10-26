@@ -278,6 +278,22 @@
         <source>Downloading</source>
         <translation>Descargando</translation>
     </message>
+    <message>
+        <source>Camera Error</source>
+        <translation>Error de cámara</translation>
+    </message>
+    <message>
+        <source>No libgphoto2 camera is configured. Open Camera (libgphoto2) to configure one.</source>
+        <translation>No hay ninguna cámara libgphoto2 configurada. Abre «Cámara (libgphoto2)» para configurarla.</translation>
+    </message>
+    <message>
+        <source>Captured data is not a supported image.</source>
+        <translation>Los datos capturados no corresponden a un formato de imagen compatible.</translation>
+    </message>
+    <message>
+        <source>Capturing image...</source>
+        <translation>Capturando imagen...</translation>
+    </message>
 </context>
 <context>
     <name>ImageEditorWindow</name>
@@ -367,6 +383,89 @@
     <message>
         <source>All files (*.*)</source>
         <translation>Todos los archivos (*.*)</translation>
+    </message>
+</context>
+<context>
+    <name>CameraGPhotoDialog</name>
+    <message>
+        <source>Camera (libgphoto2)</source>
+        <translation>Cámara (libgphoto2)</translation>
+    </message>
+    <message>
+        <source>Capture in preview mode</source>
+        <translation>Capturar en modo de vista previa</translation>
+    </message>
+    <message>
+        <source>Restore original capture target after each shot</source>
+        <translation>Restaurar el destino de captura original después de cada toma</translation>
+    </message>
+    <message>
+        <source>Re-evaluate cameras</source>
+        <translation>Volver a detectar cámaras</translation>
+    </message>
+    <message>
+        <source>Shoot</source>
+        <translation>Disparar</translation>
+    </message>
+    <message>
+        <source>Could not initialize libgphoto2.</source>
+        <translation>No se pudo inicializar libgphoto2.</translation>
+    </message>
+    <message>
+        <source>Camera Error</source>
+        <translation>Error de cámara</translation>
+    </message>
+    <message>
+        <source>No cameras detected.</source>
+        <translation>No se detectaron cámaras.</translation>
+    </message>
+    <message>
+        <source>Reading camera settings...</source>
+        <translation>Leyendo los ajustes de la cámara...</translation>
+    </message>
+    <message>
+        <source>Could not read camera settings.</source>
+        <translation>No se pudieron leer los ajustes de la cámara.</translation>
+    </message>
+    <message>
+        <source>Camera is unavailable; showing saved settings. Capture is disabled.</source>
+        <translation>La cámara no está disponible; se muestran los ajustes guardados. La captura está desactivada.</translation>
+    </message>
+    <message>
+        <source>This camera does not advertise image capture.</source>
+        <translation>Esta cámara no admite la captura de imágenes.</translation>
+    </message>
+    <message>
+        <source>Camera settings loaded.</source>
+        <translation>Ajustes de la cámara cargados.</translation>
+    </message>
+    <message>
+        <source>Standard capture is unavailable unless an internal-RAM target is selected.</source>
+        <translation>La captura estándar solo está disponible si se selecciona la memoria RAM interna como destino.</translation>
+    </message>
+    <message>
+        <source>Capturing preview...</source>
+        <translation>Capturando vista previa...</translation>
+    </message>
+    <message>
+        <source>Capturing image...</source>
+        <translation>Capturando imagen...</translation>
+    </message>
+    <message>
+        <source>The captured data is not a supported image</source>
+        <translation>Los datos capturados no corresponden a un formato de imagen compatible</translation>
+    </message>
+    <message>
+        <source>Capture failed.</source>
+        <translation>Error al capturar.</translation>
+    </message>
+    <message>
+        <source>Re-evaluating cameras...</source>
+        <translation>Volviendo a detectar cámaras...</translation>
+    </message>
+    <message>
+        <source>Could not re-evaluate cameras.</source>
+        <translation>No se pudieron volver a detectar las cámaras.</translation>
     </message>
 </context>
 </TS>

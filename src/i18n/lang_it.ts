@@ -278,6 +278,22 @@
         <source>Downloading</source>
         <translation>Download in corso</translation>
     </message>
+    <message>
+        <source>Camera Error</source>
+        <translation>Errore della fotocamera</translation>
+    </message>
+    <message>
+        <source>No libgphoto2 camera is configured. Open Camera (libgphoto2) to configure one.</source>
+        <translation>Nessuna fotocamera libgphoto2 configurata. Apri «Fotocamera (libgphoto2)» per configurarla.</translation>
+    </message>
+    <message>
+        <source>Captured data is not a supported image.</source>
+        <translation>I dati acquisiti non sono in un formato immagine supportato.</translation>
+    </message>
+    <message>
+        <source>Capturing image...</source>
+        <translation>Acquisizione dell'immagine...</translation>
+    </message>
 </context>
 <context>
     <name>ImageEditorWindow</name>
@@ -367,6 +383,89 @@
     <message>
         <source>All files (*.*)</source>
         <translation>Tutti i file (*.*)</translation>
+    </message>
+</context>
+<context>
+    <name>CameraGPhotoDialog</name>
+    <message>
+        <source>Camera (libgphoto2)</source>
+        <translation>Fotocamera (libgphoto2)</translation>
+    </message>
+    <message>
+        <source>Capture in preview mode</source>
+        <translation>Acquisisci in modalità anteprima</translation>
+    </message>
+    <message>
+        <source>Restore original capture target after each shot</source>
+        <translation>Ripristina la destinazione di acquisizione originale dopo ogni scatto</translation>
+    </message>
+    <message>
+        <source>Re-evaluate cameras</source>
+        <translation>Rileva nuovamente le fotocamere</translation>
+    </message>
+    <message>
+        <source>Shoot</source>
+        <translation>Scatta</translation>
+    </message>
+    <message>
+        <source>Could not initialize libgphoto2.</source>
+        <translation>Impossibile inizializzare libgphoto2.</translation>
+    </message>
+    <message>
+        <source>Camera Error</source>
+        <translation>Errore della fotocamera</translation>
+    </message>
+    <message>
+        <source>No cameras detected.</source>
+        <translation>Nessuna fotocamera rilevata.</translation>
+    </message>
+    <message>
+        <source>Reading camera settings...</source>
+        <translation>Lettura delle impostazioni della fotocamera...</translation>
+    </message>
+    <message>
+        <source>Could not read camera settings.</source>
+        <translation>Impossibile leggere le impostazioni della fotocamera.</translation>
+    </message>
+    <message>
+        <source>Camera is unavailable; showing saved settings. Capture is disabled.</source>
+        <translation>Fotocamera non disponibile; vengono mostrate le impostazioni salvate. Acquisizione disabilitata.</translation>
+    </message>
+    <message>
+        <source>This camera does not advertise image capture.</source>
+        <translation>Questa fotocamera non supporta l'acquisizione di immagini.</translation>
+    </message>
+    <message>
+        <source>Camera settings loaded.</source>
+        <translation>Impostazioni della fotocamera caricate.</translation>
+    </message>
+    <message>
+        <source>Standard capture is unavailable unless an internal-RAM target is selected.</source>
+        <translation>L'acquisizione standard è disponibile solo se è selezionata una destinazione nella RAM interna.</translation>
+    </message>
+    <message>
+        <source>Capturing preview...</source>
+        <translation>Acquisizione dell'anteprima...</translation>
+    </message>
+    <message>
+        <source>Capturing image...</source>
+        <translation>Acquisizione dell'immagine...</translation>
+    </message>
+    <message>
+        <source>The captured data is not a supported image</source>
+        <translation>I dati acquisiti non sono in un formato immagine supportato</translation>
+    </message>
+    <message>
+        <source>Capture failed.</source>
+        <translation>Acquisizione non riuscita.</translation>
+    </message>
+    <message>
+        <source>Re-evaluating cameras...</source>
+        <translation>Nuova rilevazione delle fotocamere...</translation>
+    </message>
+    <message>
+        <source>Could not re-evaluate cameras.</source>
+        <translation>Impossibile rilevare nuovamente le fotocamere.</translation>
     </message>
 </context>
 </TS>

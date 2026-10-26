@@ -278,6 +278,22 @@
         <source>Downloading</source>
         <translation>Изтегляне</translation>
     </message>
+    <message>
+        <source>Camera Error</source>
+        <translation>Грешка в камерата</translation>
+    </message>
+    <message>
+        <source>No libgphoto2 camera is configured. Open Camera (libgphoto2) to configure one.</source>
+        <translation>Не е конфигурирана камера за libgphoto2. Отворете Камера (libgphoto2), за да я конфигурирате.</translation>
+    </message>
+    <message>
+        <source>Captured data is not a supported image.</source>
+        <translation>Заснетите данни не са във формат на поддържано изображение.</translation>
+    </message>
+    <message>
+        <source>Capturing image...</source>
+        <translation>Заснемане на изображение...</translation>
+    </message>
 </context>
 <context>
     <name>ImageEditorWindow</name>
@@ -367,6 +383,89 @@
     <message>
         <source>All files (*.*)</source>
         <translation>Всички файлове (*.*)</translation>
+    </message>
+</context>
+<context>
+    <name>CameraGPhotoDialog</name>
+    <message>
+        <source>Camera (libgphoto2)</source>
+        <translation>Камера (libgphoto2)</translation>
+    </message>
+    <message>
+        <source>Capture in preview mode</source>
+        <translation>Заснемане в режим на преглед</translation>
+    </message>
+    <message>
+        <source>Restore original capture target after each shot</source>
+        <translation>Възстановяване на първоначалното място за заснемане след всяка снимка</translation>
+    </message>
+    <message>
+        <source>Re-evaluate cameras</source>
+        <translation>Повторно откриване на камерите</translation>
+    </message>
+    <message>
+        <source>Shoot</source>
+        <translation>Снимай</translation>
+    </message>
+    <message>
+        <source>Could not initialize libgphoto2.</source>
+        <translation>Не може да се инициализира libgphoto2.</translation>
+    </message>
+    <message>
+        <source>Camera Error</source>
+        <translation>Грешка в камерата</translation>
+    </message>
+    <message>
+        <source>No cameras detected.</source>
+        <translation>Не са открити камери.</translation>
+    </message>
+    <message>
+        <source>Reading camera settings...</source>
+        <translation>Четене на настройките на камерата...</translation>
+    </message>
+    <message>
+        <source>Could not read camera settings.</source>
+        <translation>Не може да се прочетат настройките на камерата.</translation>
+    </message>
+    <message>
+        <source>Camera is unavailable; showing saved settings. Capture is disabled.</source>
+        <translation>Камерата не е налична; показват се запазените настройки. Заснемането е деактивирано.</translation>
+    </message>
+    <message>
+        <source>This camera does not advertise image capture.</source>
+        <translation>Тази камера не поддържа заснемане на изображения.</translation>
+    </message>
+    <message>
+        <source>Camera settings loaded.</source>
+        <translation>Настройките на камерата са заредени.</translation>
+    </message>
+    <message>
+        <source>Standard capture is unavailable unless an internal-RAM target is selected.</source>
+        <translation>Стандартното заснемане е недостъпно, освен ако не е избрана цел във вътрешната RAM памет.</translation>
+    </message>
+    <message>
+        <source>Capturing preview...</source>
+        <translation>Заснемане на предварителен преглед...</translation>
+    </message>
+    <message>
+        <source>Capturing image...</source>
+        <translation>Заснемане на изображение...</translation>
+    </message>
+    <message>
+        <source>The captured data is not a supported image</source>
+        <translation>Заснетите данни не са във формат на поддържано изображение</translation>
+    </message>
+    <message>
+        <source>Capture failed.</source>
+        <translation>Заснемането е неуспешно.</translation>
+    </message>
+    <message>
+        <source>Re-evaluating cameras...</source>
+        <translation>Повторно откриване на камерите...</translation>
+    </message>
+    <message>
+        <source>Could not re-evaluate cameras.</source>
+        <translation>Камерите не могат да бъдат открити повторно.</translation>
     </message>
 </context>
 </TS>

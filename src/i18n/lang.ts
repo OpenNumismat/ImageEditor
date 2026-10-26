@@ -21,6 +21,101 @@
     </message>
 </context>
 <context>
+    <name>CameraGPhotoDialog</name>
+    <message>
+        <source>Camera (libgphoto2)</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Capture in preview mode</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Restore original capture target after each shot</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Re-evaluate cameras</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Use camera&apos;s current settings</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Forget the values saved in this dialog and reload the camera&apos;s own current settings. Camera factory defaults are not reported by gphoto2, so the values the camera holds now are used.</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Shoot</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Could not initialize libgphoto2.</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Camera Error</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>No cameras detected.</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Reading camera settings...</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Could not read camera settings.</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Camera is unavailable; showing saved settings. Capture is disabled.</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>This camera does not advertise image capture.</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Camera settings loaded.</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Standard capture is unavailable unless an internal-RAM target is selected.</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Reloading camera settings...</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Could not reload camera settings.</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Capturing preview...</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Capture failed.</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>The captured data is not a supported image. If the camera shoots RAW, switch its image format to JPEG and try again.</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Re-evaluating cameras...</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Could not re-evaluate cameras.</source>
+        <translation type="unfinished"></translation>
+    </message>
+</context>
+<context>
     <name>CropDialog</name>
     <message>
         <source>Crop</source>
@@ -181,6 +276,10 @@
         <translation type="unfinished"></translation>
     </message>
     <message>
+        <source>Camera (libgphoto2)</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
         <source>&amp;File</source>
         <translation type="unfinished"></translation>
     </message>
@@ -210,6 +309,10 @@
     </message>
     <message>
         <source>Don&apos;t show this again</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>The captured data is not a supported image. If the camera shoots RAW, switch its image format to JPEG and try again.</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
@@ -286,6 +389,18 @@
     </message>
     <message>
         <source>Downloading</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Camera Error</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>No libgphoto2 camera is configured. Open Camera (libgphoto2) to configure one.</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Capturing image...</source>
         <translation type="unfinished"></translation>
     </message>
 </context>
