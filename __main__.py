@@ -1,9 +1,10 @@
 import sys
+
 from PySide6.QtCore import QCoreApplication, QLibraryInfo, QLocale, QTranslator
 from PySide6.QtWidgets import QApplication
 
-from ImageEditorWindow import ImageEditorWindow
-from Tools import TemporaryDir
+from .src.ImageEditorWindow import ImageEditorWindow
+from .src.Tools import TemporaryDir
 
 
 def main():
@@ -36,5 +37,5 @@ def main():
 
 
 if __name__ == "__main__":
-    import resources
+    from .src import resources  # noqa: F401
     main()

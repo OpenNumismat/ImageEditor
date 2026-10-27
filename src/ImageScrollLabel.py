@@ -1,7 +1,7 @@
 from PySide6.QtCore import Qt
-from PySide6.QtGui import QPalette, QImage, QPixmap
-from PySide6.QtWidgets import QLabel, QWidget, QSizePolicy
 from PySide6.QtCore import Signal as pyqtSignal
+from PySide6.QtGui import QImage, QPalette, QPixmap
+from PySide6.QtWidgets import QLabel, QSizePolicy, QWidget
 
 
 class ImageScrollLabel(QLabel):
@@ -76,12 +76,7 @@ class ImageScrollLabel(QLabel):
         if not self.isVisible():
             return
 
-        if self.image.width() > self.width() or \
-                                        self.image.height() > self.height():
-            scaledImage = self.image.scaled(self.size(),
-                                Qt.KeepAspectRatio, Qt.SmoothTransformation)
-        else:
-            scaledImage = self.image
+        scaledImage = self.image.scaled(self.size(), Qt.KeepAspectRatio, Qt.SmoothTransformation) if self.image.width() > self.width() or self.image.height() > self.height() else self.image
 
         pixmap = QPixmap.fromImage(scaledImage)
         self.setPixmap(pixmap)

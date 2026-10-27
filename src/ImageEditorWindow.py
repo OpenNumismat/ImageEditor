@@ -1,12 +1,12 @@
-from PySide6.QtCore import QSettings, QFileInfo, Qt, QStandardPaths, QDir
-from PySide6.QtGui import QIcon, QAction, QBrush, QColor, QImage
-from PySide6.QtWidgets import QApplication, QStyle, QMessageBox, QDialog, QFileDialog, QHBoxLayout, QGroupBox, QRadioButton
+from PySide6.QtCore import QDir, QFileInfo, QSettings, QStandardPaths, Qt
+from PySide6.QtGui import QAction, QBrush, QColor, QIcon, QImage
+from PySide6.QtWidgets import QApplication, QDialog, QFileDialog, QGroupBox, QHBoxLayout, QMessageBox, QRadioButton, QStyle
 
-from ImageEditor import ImageEditorDialog, SettingsDialog
-from ImageProxy import ImageProxy
-from ImageScrollLabel import ImageScrollLabel
-from Tools.Gui import getSaveFileName, ColorButton
-from Tools.misc import saveImageFilters
+from .ImageEditor import ImageEditorDialog, SettingsDialog
+from .ImageProxy import ImageProxy
+from .ImageScrollLabel import ImageScrollLabel
+from .Tools.Gui import ColorButton, getSaveFileName
+from .Tools.misc import saveImageFilters
 
 IMAGE_PATH = QStandardPaths.standardLocations(QStandardPaths.PicturesLocation)[0]
 
@@ -64,7 +64,7 @@ class ImageEditorWindow(ImageEditorDialog):
         self.navigationMenu.removeAction(self.nextRecordAct)
 
         self.setWindowIcon(QIcon(':/slide.png'))
-        
+
         self.viewer.doubleClicked.connect(self.viewerDoubleClicked)
 
         self.scrollPanel.hide()
@@ -119,7 +119,7 @@ class ImageEditorWindow(ImageEditorDialog):
                     image.loadFromFile(file.filePath())
                     image.imageEdited.connect(self.imageEdited)
                     proxy.append(image)
-    
+
                 proxy.setCurrent(files[0].filePath())
                 self.setImageProxy(proxy)
                 self.scrollPanel.show()

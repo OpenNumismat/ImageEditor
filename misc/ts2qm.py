@@ -1,6 +1,7 @@
 #!/usr/bin/env python3
 
 import os
+
 from PySide6.QtCore import QLibraryInfo
 
 i18n_path = os.path.join(os.path.dirname(__file__), "../src/i18n")

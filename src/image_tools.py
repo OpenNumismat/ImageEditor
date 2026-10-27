@@ -1,6 +1,7 @@
-from PySide6.QtCore import Qt, QPointF, QPoint, QRectF
-from PySide6.QtGui import QTransform, QPolygonF, QImage, QPainter, QBrush
 import math
+
+from PySide6.QtCore import QPoint, QPointF, QRectF, Qt
+from PySide6.QtGui import QBrush, QImage, QPainter, QPolygonF, QTransform
 
 
 def findBorders(image):
@@ -92,14 +93,10 @@ def _perspectiveTransformation(points, rect):
     p.append((points[2].x(), points[2].y()))
 
     # widths and heights of the projected image
-    # w1 = scipy.spatial.distance.euclidean(p[0], p[1])
     w1 = math.sqrt(pow((points[0].x() - points[1].x()), 2) + pow((points[0].y() - points[1].y()), 2))
-    # w2 = scipy.spatial.distance.euclidean(p[2], p[3])
     w2 = math.sqrt(pow((points[2].x() - points[3].x()), 2) + pow((points[2].y() - points[3].y()), 2))
 
-    # h1 = scipy.spatial.distance.euclidean(p[0], p[2])
     h1 = math.sqrt(pow((points[0].x() - points[2].x()), 2) + pow((points[0].y() - points[2].y()), 2))
-    # h2 = scipy.spatial.distance.euclidean(p[1], p[3])
     h2 = math.sqrt(pow((points[1].x() - points[3].x()), 2) + pow((points[1].y() - points[3].y()), 2))
 
     w = max(w1, w2)
@@ -155,7 +152,7 @@ def _perspectiveTransformation(points, rect):
 
 def rembg(image, model_name, crop=False):
     from PIL import ImageQt
-    from rembg import remove, new_session
+    from rembg import new_session, remove
 
     im = ImageQt.fromqimage(image)
     rembg_session = new_session(model_name)

@@ -57,5 +57,5 @@ ImageEditor is a part of [OpenNumismat](https://opennumismat.github.io/) project
 [Latest version for Windows 10 and later](https://github.com/OpenNumismat/ImageEditor/releases/latest)
 
 #### For run from source code
-    pip3 install -r requirements.txt
-    python3 src/run.py [<image_file_name>]
+    pip install # use 'pip install ".[edit]"' to install optional dependencies also
+    python -m ImageEditor [<image_file_name>] # from parent dir

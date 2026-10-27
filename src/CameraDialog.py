@@ -1,13 +1,13 @@
-from PySide6.QtCore import QTimer, QSettings, Qt
+from PySide6.QtCore import QSettings, Qt, QTimer
 from PySide6.QtGui import QIcon, QShortcut
-from PySide6.QtWidgets import QComboBox, QDialog, QMessageBox, QVBoxLayout, QPushButton
 from PySide6.QtMultimedia import QCamera, QImageCapture, QMediaCaptureSession, QMediaDevices
 from PySide6.QtMultimediaWidgets import QVideoWidget
+from PySide6.QtWidgets import QComboBox, QDialog, QMessageBox, QPushButton, QVBoxLayout
 
 try:
     from OpenNumismat.Tools.DialogDecorators import storeDlgSizeDecorator
 except ModuleNotFoundError:
-    from Tools.DialogDecorators import storeDlgSizeDecorator
+    from .Tools.DialogDecorators import storeDlgSizeDecorator
 
 
 @storeDlgSizeDecorator

@@ -1,4 +1,4 @@
-class UndoStack():
+class UndoStack:
     STACK_SIZE = 10
 
     def __init__(self):

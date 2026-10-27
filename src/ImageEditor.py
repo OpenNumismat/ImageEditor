@@ -1,3 +1,4 @@
+import importlib.util
 import os
 
 from PySide6.QtCore import (
@@ -10,27 +11,36 @@ from PySide6.QtCore import (
     QMargins,
     QMimeData,
     QObject,
+    QPoint,
+    QPointF,
     QRect,
+    QRectF,
     QSettings,
     QStandardPaths,
+    Qt,
     QTemporaryFile,
     QTimer,
     QUrl,
 )
+from PySide6.QtCore import Signal as pyqtSignal
 from PySide6.QtGui import (
     QAction,
     QBitmap,
+    QBrush,
     QColor,
     QCursor,
     QDesktopServices,
     QIcon,
+    QImage,
     QImageIOHandler,
     QImageWriter,
     QKeySequence,
+    QPainter,
     QPen,
     QPixmap,
     QResizeEvent,
     QShortcut,
+    QTransform,
 )
 from PySide6.QtNetwork import QNetworkAccessManager, QNetworkRequest
 from PySide6.QtWidgets import (
@@ -61,43 +71,32 @@ from PySide6.QtWidgets import (
     QSizePolicy,
     QSlider,
     QSpinBox,
-    QStyle,
     QStatusBar,
+    QStyle,
     QTabWidget,
     QToolBar,
     QVBoxLayout,
     QWidget,
 )
-from PySide6.QtCore import Signal as pyqtSignal
+
+from .CameraDialog import CameraDialog
+from .image_tools import cropCircle, findBorders, perspectiveTransformation, rembg
+from .Tools import TemporaryDir
+from .Tools.DialogDecorators import storeDlgPositionDecorator, storeDlgSizeDecorator
+from .Tools.Gui import ColorButton, Splitter, getSaveFileName
+from .Tools.misc import readImageFilters, saveImageFilters
+from .UndoStack import UndoStack
 
 try:
-    from .CameraDialog import CameraDialog
-    from .UndoStack import UndoStack
-    from .image_tools import *
-except ImportError:
-    from CameraDialog import CameraDialog
-    from UndoStack import UndoStack
-    from image_tools import *
-try:
-    from OpenNumismat import HOME_PATH, IMAGE_PATH
-    from OpenNumismat.Tools import TemporaryDir
-    from OpenNumismat.Tools.DialogDecorators import storeDlgSizeDecorator, storeDlgPositionDecorator
-    from OpenNumismat.Tools.Gui import getSaveFileName, Splitter, ColorButton
-    from OpenNumismat.Tools.misc import readImageFilters, saveImageFilters
-    from OpenNumismat.Tools.dependencies import HAS_REMBG
-    from OpenNumismat import version
-
+    from OpenNumismat import HOME_PATH, IMAGE_PATH, version
     PORTABLE = version.Portable
 except ModuleNotFoundError:
-    from Tools import TemporaryDir
-    from Tools.DialogDecorators import storeDlgSizeDecorator, storeDlgPositionDecorator
-    from Tools.Gui import getSaveFileName, Splitter, ColorButton
-    from Tools.misc import readImageFilters, saveImageFilters
-
     HOME_PATH = '.'
     IMAGE_PATH = QStandardPaths.standardLocations(QStandardPaths.PicturesLocation)[0]
     PORTABLE = True
-    HAS_REMBG = True
+
+HAS_REMBG = importlib.util.find_spec("rembg") is not None and importlib.util.find_spec("PIL") is not None
+
 
 ZOOM_LIST = (600, 480, 385, 310, 250, 200, 158, 125,
              100, 80, 64, 50, 40, 32, 26, 20, 16,)
@@ -114,9 +113,9 @@ class CropDialog(QDialog):
     def __init__(self, width, height, auto_rect, parent):
         super().__init__(parent, Qt.WindowCloseButtonHint)
         self.setWindowTitle(self.tr("Crop"))
-        
+
         self.auto_rect = auto_rect
-        
+
         self.rectAutoButton = QPushButton(self.tr("Auto"))
         self.rectAutoButton.clicked.connect(self.setAutoBorders)
         self.xSpin = QSpinBox()
@@ -256,7 +255,7 @@ class CropDialog(QDialog):
 
     def currentTool(self):
         return self.tab.currentIndex()
-    
+
     def setAutoBorders(self):
         if self.currentTool() == 0:
             self.xSpin.setValue(self.auto_rect[0])
@@ -704,7 +703,7 @@ class GraphicsBoundingItem(QObject):
         self.rectChanged.emit()
 
         return pos
-    
+
     def is_convex(self, xa, ya, xb, yb, xc, yc, xd, yd):
         t1 = ((xd - xa) * (yb - ya) - (yd - ya) * (xb - xa))
         t2 = ((xd - xb) * (yc - yb) - (yd - yb) * (xc - xb))
@@ -747,7 +746,7 @@ class GraphicsBoundingItem(QObject):
         self.updateRect()
 
     def items(self):
-        return [self.mask, ] + self.lines + self.points
+        return [self.mask, *self.lines, *self.points]
 
     def cropPoints(self):
         return [p.pos() for p in self.points]
@@ -927,7 +926,7 @@ class GraphicsCircleBoundingItem(QObject):
         self.updateRect()
 
     def items(self):
-        return [self.mask, self.circle] + self.points
+        return [self.mask, self.circle, *self.points]
 
     def cropPoints(self):
         return [p.pos() for p in self.points]
@@ -1776,10 +1775,9 @@ class ImageEditorDialog(QDialog):
             return
 
         scale = zoom / 100
-        if scale < self.minScale:
-            scale = self.minScale
-        if scale > ZOOM_MAX / 100:
-            scale = ZOOM_MAX / 100
+        scale = max(scale, self.minScale)
+        scale = min(scale, ZOOM_MAX / 100)
+
         need_scale = scale / self.scale
 
         if scale > self.minScale:
@@ -1902,7 +1900,7 @@ class ImageEditorDialog(QDialog):
         w = self._startPixmap.width()
         h = self._startPixmap.height()
         if self.rotateDlg.isAutoCrop():
-            if (-45 < value and value < 45) or value < -135 or 135 < value:
+            if abs(value) < 45 or abs(value) > 135:
                 xoffset = (pixmap.width() - w) // 2
                 yoffset = (pixmap.height() - h) // 2
                 rect = QRect(xoffset, yoffset, w, h)
@@ -2247,10 +2245,7 @@ class ImageEditorDialog(QDialog):
         dlg.deleteLater()
 
     def rembg(self):
-        if PORTABLE:
-            path = HOME_PATH
-        else:
-            path = QStandardPaths.standardLocations(QStandardPaths.AppLocalDataLocation)[0]
+        path = HOME_PATH if PORTABLE else QStandardPaths.standardLocations(QStandardPaths.AppLocalDataLocation)[0]
 
         settings = QSettings()
         model_name = settings.value('image_viewer/ai_model', 'u2net')

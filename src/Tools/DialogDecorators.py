@@ -1,4 +1,4 @@
-from PySide6.QtCore import Qt, QSettings
+from PySide6.QtCore import QSettings, Qt
 from PySide6.QtWidgets import QApplication
 
 
@@ -13,9 +13,8 @@ def storeDlgSizeDecorator(original_class):
         settings = QSettings()
         orig_class_name = self.__class__.__name__
         geometry = settings.value(f"{orig_class_name}/geometry")
-        if geometry:
-            if QApplication.screenAt(geometry.center()):
-                self.setGeometry(geometry)
+        if geometry and QApplication.screenAt(geometry.center()):
+            self.setGeometry(geometry)
         if settings.value(f"{orig_class_name}/maximized", False, type=bool):
             # NOTE: Uses setWindowState(Qt.WindowMaximized) instead showMaximized()
             # for workaround Qt 6.8
@@ -47,9 +46,8 @@ def storeDlgPositionDecorator(original_class):
         settings = QSettings()
         orig_class_name = self.__class__.__name__
         position = settings.value(f"{orig_class_name}/position")
-        if position:
-            if QApplication.screenAt(self.rect().center() + position):
-                self.move(position)
+        if position and QApplication.screenAt(self.rect().center() + position):
+            self.move(position)
 
     def done(self, r):
         settings = QSettings()
